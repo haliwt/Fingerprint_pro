@@ -52,7 +52,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 						// run_t.password_unlock=0;
                          run_t.password_unlock_model =0;
 				 }
-			     
+			     //MOTOR open run ->stop Position 
 				 if(run_t.motorRunCount>1600 && run_t.motorRunCount <2101){
 					 Motor_Stop();
 					 if(led==0){
@@ -64,6 +64,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 					 }
 					  run_t.inputDeepSleep_times =0;
 				      run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
+				      
 					}
 				 
                   if(run_t.motorRunCount >2099){
@@ -77,7 +78,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 				  else  ERR_LED_ON();
 
           }
-		
+		  //motor after return back home 
          /*--------motor return run back home position--------*/
 		  if(run_t.motor_returnRun_flag ==1){
 		
