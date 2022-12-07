@@ -74,11 +74,12 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
     
 
 
-   if(GPIO_Pin == SC12B_INT_INPUT_Pin){
+   if(GPIO_Pin == SC12B_INT_INPUT_Pin || GPIO_Pin == GPIO_PIN_5){
    
       run_t.input_lowpower_stopmodel_flag=0;
         POWER_ON();
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+       __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_5);//WT.EDIT 2022.09.09
       if(run_t.lowPower_flag==0){
       do{
 	 	    run_t.lowPower_flag++;

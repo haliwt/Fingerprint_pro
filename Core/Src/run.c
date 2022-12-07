@@ -122,7 +122,7 @@ void SavePassword_To_EEPROM(void)
 		   case 10:
 		   	  
 				run_t.Confirm_newPassword =0; //to save new password of flag 
-				
+				run_t.password_unlock_model=0;
 				run_t.open_lock_success=0;
 				run_t.inputNewPasswordTimes =0;
 				run_t.open_lock_fail=1;//WT.EDIT 2022.12.07
@@ -293,7 +293,7 @@ void RunCheck_Mode(uint16_t dat)
 	
 			  run_t.Numbers_counter =0 ;
 			   run_t.gTimer_8s=0;
-			  run_t.open_lock_success=3;
+			 run_t.password_unlock_model=STORE_MODEL; //run_t.open_lock_success=STORE_MODEL;//3;
 		     run_t.Confirm_newPassword=1;
 			 run_t.inputNewPwd_OK_led_blank_times=0;
 			   
@@ -1055,6 +1055,7 @@ void ReadPassword_EEPROM_SaveData(void)
 				   if(value==1){
 									   
 						 run_t.open_lock_success=1;
+						   run_t.open_lock_fail = 0;
 						 run_t.Led_OK_flag =1;
 						 run_t.Led_ERR_flag=0;
 					
@@ -1064,6 +1065,7 @@ void ReadPassword_EEPROM_SaveData(void)
 					else{
 
 					     run_t.open_lock_fail = 1;
+						 run_t.open_lock_success=0;
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						 return ;

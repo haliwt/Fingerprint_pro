@@ -56,7 +56,7 @@ void DisplayLed_Handler(void)
 
         Buzzer_RunSound();
          
-        Buzzer_InputNewPassword_two_short();
+     //   Buzzer_InputNewPassword_two_short();
 		BackLight_Fun();
 		
 
@@ -257,6 +257,8 @@ static void BackLight_Fun(void)
 		//  run_t.BackLight =0;//WT.EDIT .2022.10.19
 		  run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
 	      run_t.led_blank	=0;
+		  run_t.password_unlock_model=0;
+		  run_t.open_lock_success=0;
 		  if(syspara_t.PS_wakeup_flag==0)
 		     run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
 		  run_t.inputNewPasswordTimes =0;//WT.EDIT .2022.10.07
