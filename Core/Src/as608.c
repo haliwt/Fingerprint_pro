@@ -651,8 +651,9 @@ void Press_ReadFingerprint_Data(void)
 	
 
 	}
+	
     
-    if(run_t.Confirm_newPassword==0){
+    if(run_t.Confirm_newPassword==0 && run_t.panel_lock==0){
 		syspara_t.ps_thefist_input_fp =0;
 		syspara_t.PS_read_template=0;
 	    syspara_t.ps_serch_getimage=PS_GetImage();
@@ -660,10 +661,10 @@ void Press_ReadFingerprint_Data(void)
 		{	
            
 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			if( syspara_t.ps_readEeprom_data==1){
+			if( syspara_t.ps_readEeprom_data >0){
 				if(syspara_t.ps_serch_genchar==0x00)//生成特征成功 
 				{	 
-	                syspara_t.PS_read_template=2;//receive data is 16bytes.
+	                syspara_t.PS_read_template=2;//receive data is 16bytes by USART1 port
 	            
 					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,41,&seach);
 					
@@ -697,7 +698,7 @@ void Press_ReadFingerprint_Data(void)
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						  syspara_t.PS_wakeup_flag=0;
-						
+						  run_t.error_times ++ ;
 	                    
 						return ;
 					}		
@@ -714,6 +715,7 @@ void Press_ReadFingerprint_Data(void)
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						   syspara_t.PS_wakeup_flag=0;
+						   
 					
 	                return ;
 
@@ -734,7 +736,7 @@ void Press_ReadFingerprint_Data(void)
 		}
     }
 
-	
+	//To save new fingerprint data statement
     if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefist_input_fp ==0){//don't the first input FP.and to store has FP data
 
 		syspara_t.ps_serch_getimage=PS_GetImage();
@@ -777,6 +779,15 @@ void Press_ReadFingerprint_Data(void)
     }
 	
     }
+
+	//judge input fingerprint error times
+	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
+        run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
+        run_t.gTimer_input_error_times_60s =0;
+        run_t.panel_lock=1;
+		run_t.gTimer_8s=0;
+
+       }
 }
 
 /**********************************************************************
@@ -816,7 +827,7 @@ void Del_FR(void)
 void Fingerprint_NewClinet_Login_Fun(void)
 {
    
- uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff,STEP_CNT;
+ uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff;
  uint8_t ps_genChar_2=0xff,ps_storechar=0xff,ps_regmodel=0xff;
 
 

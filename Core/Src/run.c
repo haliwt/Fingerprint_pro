@@ -239,15 +239,8 @@ void SavePassword_To_EEPROM(void)
 void RunCheck_Mode(uint16_t dat)
 {
    unsigned char temp, i;
-  
-   static unsigned char k0=0xff,k1=0xff,k2=0xff,key,spec;
- 
-   
-
-    switch(dat){
-
-	  
-
+  static unsigned char k0=0xff,k1=0xff,k2=0xff,key,spec;
+   switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*'
 		
        if(k0 != run_t.getSpecial_1_key){
