@@ -148,14 +148,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
 		 DisplayLed_Handler();
 		 RunMotor_Definite_Handler(); //definite motor
 	   
-	  
-     
- 
-     	//Fingerprint_NewClinet_Login_Fun();
-     
-      
-   
-  }
+	 }
   
   /* USER CODE END 3 */
 }

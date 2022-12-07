@@ -42,7 +42,7 @@ void Start_PowerOn_Handler(void)
 
 				run_t.powerOn++;
 				run_t.passwordsMatch =0;
-				run_t.password_unlock_model =4; // 4: power on is motor 1/4 angle
+				run_t.password_unlock_model =POWER_ON_MODEL; // 4: power on is motor 1/4 angle
 				run_t.motor_return_homePosition=0; //
 				run_t.gTimer_8s=0;
 			
@@ -73,7 +73,7 @@ void CheckPassword_Lock_Handler(void)
 	  	TouchKey_Handler();
      }
     //fingerprint lock
-	 if(syspara_t.PS_wakeup_flag ==1 ){
+	 if(syspara_t.PS_wakeup_flag ==1 && syspara_t.PS_save_NewFP==0){
            syspara_t.PS_wakeup_flag=0;
          RunCommand_Unlock_Fingerprint();
 	     if(run_t.motor_return_homePosition==1){
@@ -90,10 +90,12 @@ void CheckPassword_Lock_Handler(void)
 		  if(run_t.login_in_success ==0) //WT.EDIT 2022.10.31
              run_t.gTimer_8s=0;
           RunCommand_Unlock_Keyboard();
+		  Lock_Open_Order();
     }
-
-    Lock_Open_Order();
-
+    if(syspara_t.PS_wakeup_flag ==1){
+	 syspara_t.PS_wakeup_flag=0;
+       Lock_Open_Order();
+    }
     UnLock_Aand_SaveData_Handler();
 
 }
@@ -111,8 +113,9 @@ static void UnLock_Aand_SaveData_Handler(void)
    switch(run_t.password_unlock_model){
 
 	case STORE_MODEL: //SaveData to EEPROM //new password for the first input 
-	    if(syspara_t.PS_wakeup_flag==1){ //new fingerprint input and be save data
-			
+	    if(syspara_t.PS_wakeup_flag==1 || syspara_t.PS_save_NewFP==1){ //new fingerprint input and be save data
+			 syspara_t.PS_save_NewFP=1;
+			 
 			 Fingerprint_NewClinet_Login_Fun();
         }
 		else{

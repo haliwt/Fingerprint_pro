@@ -691,7 +691,7 @@ void Lock_Open_Order(void)
 				run_t.Numbers_counter =0 ;
 				run_t.eepromAddress=0;
 				run_t.passwordsMatch = 0;
-				run_t.open_lock_success=3; // permit to save new password
+				//run_t.open_lock_success=3; // permit to save new password
 				run_t.buzzer_key_sound_flag =0; 
 				run_t.buzzer_highsound_flag =1; //WT.EDIT 2022.10.28
 				run_t.inputDeepSleep_times =0;
@@ -700,6 +700,7 @@ void Lock_Open_Order(void)
 				run_t.open_lock_fail = 0;
 				run_t.gTimer_8s =0;
 				run_t.inputNewPwd_OK_led_blank_times=0;
+				run_t.password_unlock_model=STORE_MODEL;// permit to save new password
 			
 			
 		}

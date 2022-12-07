@@ -940,12 +940,13 @@ void Fingerprint_NewClinet_Login_Fun(void)
 					   	}
 					   else
 				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
-				   
+				       syspara_t.PS_save_NewFP =0;
 				   }
 				   else{
 					state= 0;
 				   syspara_t.PS_wakeup_flag = 0;
 					 STEP_CNT=0;
+					 syspara_t.PS_save_NewFP =0;
 				   }
 	              }
 				  else{
@@ -954,6 +955,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
                     run_t.open_lock_fail = 1;
 					ERR_LED_ON();
 					OK_LED_OFF(); //WT.EDIT 2022.10.28
+					syspara_t.PS_save_NewFP =0;
 				  }
 			break;
 				   
@@ -963,6 +965,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				 
 		   state=0;
 			 STEP_CNT=0;
+			 syspara_t.PS_save_NewFP =0;
 		   
 		   break;
 			   }
