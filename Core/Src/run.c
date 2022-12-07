@@ -711,7 +711,7 @@ void Lock_Open_Order(void)
 					run_t.Led_OK_flag =1;
 					run_t.Led_ERR_flag=0;
 					run_t.buzzer_key_sound_flag=0;
-					run_t.oneself_copy_behavior=0;
+					//run_t.oneself_copy_behavior=0;
 					run_t.open_lock_success=0;
 					run_t.open_lock_fail=0;
 					 run_t.Numbers_counter =0 ;

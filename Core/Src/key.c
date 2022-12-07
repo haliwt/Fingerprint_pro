@@ -31,6 +31,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
 
     if(GPIO_Pin == KEY_INPUT_Pin){
+		 POWER_ON();
    
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 		if(run_t.lowPower_flag==0){
@@ -48,7 +49,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 				  
 				 run_t.inputDeepSleep_times =0;
 				
-				 	POWER_ON();
+				 	
 				}
 				run_t.readI2C_data =1;//WT.EDIT 2022.09.26 jump the "if(run_t.touchkey_first_turn_on_led==1 && run_t.panel_lock ==0)"
 				run_t.touchkey_first_turn_on_led =1;//WT.EDIT 2022.09.26
@@ -104,7 +105,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
       	}while(run_t.lowPower_flag ==0);
       	
     }
-   	}
+}
 
   
    //fingerprint 
@@ -125,8 +126,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
            //  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
 		   
 		  	run_t.inputDeepSleep_times =0;
-		    POWER_ON();
-		    FP_POWER_ON()  ;
+		  
        }
 	}
 

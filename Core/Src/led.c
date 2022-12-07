@@ -236,8 +236,6 @@ static void BackLight_Fun(void)
 				
 					
 				   LowPower_GPIO_Set();
-					run_t.normal_works_state =0;
-					run_t.lowPower_flag=0;
 					 syspara_t.PS_wakeup_flag=0;
 			       HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,PWR_STOPENTRY_WFI);//WFI ->wait for interrupt
                    run_t.input_lowpower_stopmodel_flag=1;
