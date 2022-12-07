@@ -22,8 +22,8 @@
 SysPara syspara_t;
 
 uint8_t ps_buffer[50];
-uint16_t ArraypageID[16] ;
-uint16_t Arraymathscore[16];
+uint16_t ArraypageID ;
+uint16_t Arraymathscore;
 
 uint8_t ensure_getImage,ensure_regModel, ensure_storeChar;
 
@@ -32,7 +32,7 @@ SysPara AS608Para;//指纹模块AS608参数
 
 uint32_t AS608Addr = 0XFFFFFFFF; //Ĭ��
 
-uint16_t EEPROM_AS608Addr = 0x61;
+uint16_t EEPROM_AS608Addr = 0x60;
 
 //��ʼ��PA6Ϊ��������		    
 //��������Ӧ״̬(������Ӧʱ����ߵ�ƽ�ź�)
@@ -108,8 +108,8 @@ void PS_Rx_InputInfo_Handler(void)
         
 		   	
 }
-//判断中断接收的数组有没有应答包
-//waittime为等待中断接收数据的时间（单位1ms）
+//判断中断接收的数组有没有应答匄1�7
+//waittime为等待中断接收数据的时间（单佄1�71ms＄1�7
 //返回值：数据包首地址
 static uint8_t *JudgeStr(uint16_t waittime)
 {
@@ -141,8 +141,8 @@ static uint8_t *JudgeStr(uint16_t waittime)
    
 }
 //录入图像 PS_GetImage
-//功能:探测手指，探测到后录入指纹图像存于ImageBuffer。 
-//模块返回确认字
+//功能:探测手指，探测到后录入指纹图像存于ImageBuffer〄1�7 
+//模块返回确认孄1�7
 uint8_t PS_GetImage(void)
 {
   uint16_t temp;
@@ -150,7 +150,7 @@ uint8_t PS_GetImage(void)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//命令包标识
+	SendFlag(0x01);//命令包标评1�7
 	SendLength(0x03);
 	Sendcmd(0x01);
      temp =  0x01+0x03+0x01;
@@ -168,7 +168,7 @@ uint8_t PS_GetImage(void)
 //生成特征 PS_GenChar
 //功能:将ImageBuffer中的原始图像生成指纹特征文件存于CharBuffer1或CharBuffer2			 
 //参数:BufferID --> charBuffer1:0x01	charBuffer1:0x02												
-//模块返回确认字
+//模块返回确认孄1�7
 uint8_t PS_GenChar(uint8_t BufferID)
 {
 	uint16_t temp;
@@ -191,7 +191,7 @@ uint8_t PS_GenChar(uint8_t BufferID)
 }
 //精确比对两枚指纹特征 PS_Match
 //功能:精确比对CharBuffer1 与CharBuffer2 中的特征文件 
-//模块返回确认字
+//模块返回确认孄1�7
 uint8_t PS_Match(void)
 {
 	uint16_t temp;
@@ -212,7 +212,7 @@ uint8_t PS_Match(void)
 	return ensure;
 }
 //搜索指纹 PS_Search
-//功能:以CharBuffer1或CharBuffer2中的特征文件搜索整个或部分指纹库.若搜索到，则返回页码。			
+//功能:以CharBuffer1或CharBuffer2中的特征文件搜索整个或部分指纹库.若搜索到，则返回页码〄1�7			
 //参数:  BufferID @ref CharBuffer1	CharBuffer2
 //说明:  模块返回确认字，页码（相配指纹模板）
 uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p)
@@ -247,7 +247,7 @@ uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchRes
 }
 //合并特征（生成模板）PS_RegModel
 //功能:将CharBuffer1与CharBuffer2中的特征文件合并生成 模板,结果存于CharBuffer1与CharBuffer2	
-//说明:  模块返回确认字
+//说明:  模块返回确认孄1�7
 uint8_t PS_RegModel(void)
 {
 	uint16_t temp;
@@ -268,15 +268,15 @@ uint8_t PS_RegModel(void)
 	return ensure;		
 }
 //储存模板 PS_StoreChar
-//功能:将 CharBuffer1 或 CharBuffer2 中的模板文件存到 PageID 号flash数据库位置。			
+//功能:射1�7 CharBuffer1 戄1�7 CharBuffer2 中的模板文件存到 PageID 号flash数据库位置��1�7			
 //参数:  BufferID @ref charBuffer1:0x01	charBuffer1:0x02
 //       PageID（指纹库位置号）
-//说明:  模块返回确认字
+//说明:  模块返回确认孄1�7
 
 uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 {
 	uint16_t temp;
-  uint8_t  ensure;
+  	uint8_t  ensure;
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
@@ -297,9 +297,9 @@ uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 	return ensure;	
 }
 //删除模板 PS_DeletChar
-//功能:  删除flash数据库中指定ID号开始的N个指纹模板
-//参数:  PageID(指纹库模板号)，N删除的模板个数。
-//说明:  模块返回确认字
+//功能:  删除flash数据库中指定ID号开始的N个指纹模杄1�7
+//参数:  PageID(指纹库模板号)，N删除的模板个数��1�7
+//说明:  模块返回确认孄1�7
 //uint8_t PS_DeletChar(uint16_t PageID,uint16_t N)
 //{
 //	uint16_t temp;
@@ -325,10 +325,10 @@ uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 //		ensure=0xff;
 //	return ensure;
 //}
-//清空指纹库 PS_Empty
-//功能:  删除flash数据库中所有指纹模板
-//参数:  无
-//说明:  模块返回确认字
+//清空指纹庄1�7 PS_Empty
+//功能:  删除flash数据库中扢�有指纹模杄1�7
+//参数:  旄1�7
+//说明:  模块返回确认孄1�7
 uint8_t PS_Empty(void)
 {
 	uint16_t temp;
@@ -510,12 +510,12 @@ uint8_t PS_Empty(void)
 //		ensure=0xff;
 //	return ensure;
 //}
-//高速搜索PS_HighSpeedSearch
-//功能：以 CharBuffer1或CharBuffer2中的特征文件高速搜索整个或部分指纹库。
-//		  若搜索到，则返回页码,该指令对于的确存在于指纹库中 ，且登录时质量
-//		  很好的指纹，会很快给出搜索结果。
-//参数:  BufferID， StartPage(起始页)，PageNum（页数）
-//说明:  模块返回确认字+页码（相配指纹模板）
+//高��搜索PS_HighSpeedSearch
+//功能：以 CharBuffer1或CharBuffer2中的特征文件高��搜索整个或部分指纹库��1�7
+//		  若搜索到，则返回页码,该指令对于的确存在于指纹库中 ，且登录时质釄1�7
+//		  很好的指纹，会很快给出搜索结果��1�7
+//参数:  BufferID＄1�7 StartPage(起始顄1�7)，PageNum（页数）
+//说明:  模块返回确认孄1�7+页码（相配指纹模板）
 uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p)
 {
 	uint16_t temp;
@@ -541,9 +541,9 @@ uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,
 	{
 		ensure=data[9];
 		//p->pageID 	=(data[10]<<8) +data[11];
-        ArraypageID[16]=(data[10]<<8) +data[11];
+        ArraypageID=(data[10]<<8) +data[11];
 		//p->mathscore=(data[12]<<8) +data[13];
-        Arraymathscore[16]=(data[12]<<8) +data[13];
+        Arraymathscore=(data[12]<<8) +data[13];
 	}
 	else
 		 ensure=data[9]; //ensure=0xff;
@@ -621,177 +621,8 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 
 /**********************************************************************
 	*
-	*Function Name:void Add_FR(void)
-	*Function : 录指纹
-	*Iinput Ref: NO
-	*Return Ref:NO
-	*
-***********************************************************************/
-void Add_FR(void)
-{
-	uint8_t ensure ,processnum=0;
-	static uint8_t genChar,genModel,i;
-	while(syspara_t.PS_wakeup_flag==1)
-	{
-
-       run_t.gTimer_8s=0;
-
-		switch(processnum){
-
-		case 0:
-		i++;
-		ensure_getImage=PS_GetImage();
-		if(ensure_getImage==0x00) 
-		{
-			ensure=PS_GenChar(CharBuffer1);//生成特征
-			if(ensure==0x00)
-			{
-						
-				//run_t.buzzer_fail_sound_flag=0;
-				//run_t.buzzer_key_sound_flag =1;
-				i=0;	
-				genChar= 1;
-				processnum=1;//跳到第二步						
-			}
-			else{
-
-			i=0;
-			genChar= 0;
-			processnum=3;//跳到第3步	
-
-			}						
-				
-		}
-        else{
-            i=0;
-			genChar= 0;
-			processnum=3;//跳到第3步	
-
-        
-        }
-	
-	   break;
-
-
-	  case 1:
-      
-	      ensure_regModel = PS_RegModel();// generate FP template
-	      if(ensure_regModel == 0x00)
-	      {
-	        genModel = 1;            
-	        processnum = 2; //generate FP template is success 
-	      }
-	      else
-	      {
-	        genModel = 0;  
-	        processnum = 3;
-	        
-	      }
-      
-      break;
-
-	  case 2:
-
-	
-	  	
-          syspara_t.PS_save_numbers = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-		  HAL_Delay(5);
-          syspara_t.PS_save_numbers++;//maximum number is 40
-		  ensure_storeChar = PS_StoreChar(CharBuffer1, (syspara_t.PS_save_numbers)); //save template 
-	      if(ensure_storeChar  ==0x00)
-	      {
-	       
-	        syspara_t.PS_login_success=1;
-			syspara_t.PS_login_times++;   //FP login four times exit
-			if(syspara_t.PS_login_times ==4){
-				i=0;
-				syspara_t.PS_login_times=0;
-				syspara_t.PS_save_numbers=0; //maximum number is 40
-			    syspara_t.PS_wakeup_flag=0; //exit login this is times 
-				run_t.buzzer_fail_sound_flag=0;
-				run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
-				run_t.buzzer_longsound_flag = 1; //buzzer sound long 
-                AT24CXX_WriteOneByte(EEPROM_AS608Addr,syspara_t.PS_save_numbers);
-				HAL_Delay(5);
-				run_t.motor_return_homePosition=0;
-				run_t.Confirm_newPassword =0; //WT.EDIT 2022.12.02
-				OK_LED_ON(); //WT.EDIT 2022.10.28
-				ERR_LED_OFF();
-				run_t.gTimer_8s=7;
-				 return;
-
-			 }
-			 else{
-			 	i=0;
-			 	AT24CXX_WriteOneByte(EEPROM_AS608Addr,syspara_t.PS_save_numbers);
-				HAL_Delay(5);
-			    run_t.buzzer_fail_sound_flag=0;
-				run_t.buzzer_key_sound_flag =1;
-			    run_t.gTimer_8s=0;
-				syspara_t.PS_wakeup_flag=0; //exit FP login onece 
-				syspara_t.PS_login_success=1;
-
-
-			 }
-	      }
-		  else{
-
-			processnum = 3;
-		  }
-	  
-      break;
-
-	  case 3://generate char is fail 
-        
-		syspara_t.PS_login_success=0;
-
-        syspara_t.PS_login_times++;
-		if(syspara_t.PS_login_times ==4){
-			i=0;
-            processnum=0;
-			syspara_t.PS_login_times=0;
-		    syspara_t.PS_wakeup_flag=0;
-				run_t.buzzer_fail_sound_flag=0;
-				run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
-				run_t.buzzer_longsound_flag = 1; //buzzer sound long
-				run_t.motor_return_homePosition=0;
-				 run_t.Confirm_newPassword =0; //WT.EDIT 2022.12.02
-				OK_LED_ON(); //WT.EDIT 2022.10.28
-				ERR_LED_OFF();
-				run_t.gTimer_8s=7;
-			return;
-
-		}
-		else{ //don't has been save FP data
-
-           i=0;
-		   processnum = 0;
-		syspara_t.PS_login_success=0;
-	       syspara_t.PS_wakeup_flag=0; //exit FP login onece 
-		   
-		    run_t.buzzer_fail_sound_flag=0;
-			run_t.buzzer_key_sound_flag =1;
-            run_t.gTimer_8s=0;
-
-		}
-	  break;
-
-	  }
-	if(i> 30) //³¬¹ý5´ÎÃ»ÓÐ°´ÊÖÖ¸ÔòÍË³ö
-    {
-      i=0;
-	  run_t.led_blank	=1;
-	  syspara_t.PS_exit_login_flag =1;
-	  return ;
-    }
-	
-	
-}
-}
-/**********************************************************************
-	*
 	*Function Name:void press_FR(void)
-	*Function : 刷指纹
+	*Function : read fingerprint data 
 	*Iinput Ref: NO
 	*Return Ref:NO
 	*
@@ -799,27 +630,40 @@ void Add_FR(void)
 void Press_ReadFingerprint_Data(void)
 {
 	SearchResult seach;
-	static uint8_t read_at;
+
+	if(run_t.Confirm_newPassword==1){
+	  run_t.gTimer_8s=0;
+	  syspara_t.PS_wakeup_flag=1;
+      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+	  if(syspara_t.ps_readEeprom_data ==0){ //the first new fingerprint must be is administrator password "1234"
+         syspara_t.ps_thefist_input_fp =1; //the first input fingerprint administrator password
+         run_t.open_lock_success =0;
+		 run_t.open_lock_fail = 1;
+		 run_t.Led_OK_flag =0;
+		  run_t.Led_ERR_flag=1;
+	  }
+	}
+	else{
+	   syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	
-    read_at = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 
-
-	syspara_t.PS_read_template=0;
-    syspara_t.ps_serch_getimage=PS_GetImage();
+	}
+    
+    if(run_t.Confirm_newPassword==0){
+		syspara_t.ps_thefist_input_fp =0;
+		syspara_t.PS_read_template=0;
+	    syspara_t.ps_serch_getimage=PS_GetImage();
 		while(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//获取图像成功 
 		{	
            
 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			if(read_at==1){
+			if( syspara_t.ps_readEeprom_data==1){
 				if(syspara_t.ps_serch_genchar==0x00)//���������ɹ� 
 				{	 
 	                syspara_t.PS_read_template=2;//receive data is 16bytes.
-	                if(read_at==1 && run_t.Confirm_newPassword==1){
-	                       syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,1,&seach);
-	                }
-					else{
-					    syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,41,&seach);
-					}
+	            
+					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,41,&seach);
+					
 					
 					if(syspara_t.ps_serach_result==0x00)//�����ɹ�
 					{				
@@ -835,7 +679,7 @@ void Press_ReadFingerprint_Data(void)
 						 run_t.Led_OK_flag =1;
 						 run_t.Led_ERR_flag=0;
 						  syspara_t.PS_wakeup_flag=0;
-						// Buzzer_LongSound();
+						
 						return ;
 					}
 					if(syspara_t.ps_serach_result==0x09) 
@@ -850,7 +694,7 @@ void Press_ReadFingerprint_Data(void)
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						  syspara_t.PS_wakeup_flag=0;
-						//Fail_Buzzer_Sound();
+						
 	                    
 						return ;
 					}		
@@ -867,12 +711,12 @@ void Press_ReadFingerprint_Data(void)
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						   syspara_t.PS_wakeup_flag=0;
-					// Fail_Buzzer_Sound();
+					
 	                return ;
 
 			    }
             }
-			else if(read_at==0)
+			else if(syspara_t.ps_readEeprom_data==0 )
 			{
                   
 				 syspara_t.ps_serch_getimage=0xff;
@@ -885,8 +729,52 @@ void Press_ReadFingerprint_Data(void)
 			}
 			
 		}
-}
+    }
 
+	
+    if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefist_input_fp ==0){//don't the first input FP.and to store has FP data
+
+		syspara_t.ps_serch_getimage=PS_GetImage();
+		while(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//获取图像成功 
+		{	
+           
+			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+			if(syspara_t.ps_readEeprom_data ==1){
+				if(syspara_t.ps_serch_genchar==0x00)//���������ɹ� 
+				{	 
+	                syspara_t.PS_read_template=2;//receive data is 16bytes.
+	            
+					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,1,&seach);
+					
+					
+					if(syspara_t.ps_serach_result==0x00)//�����ɹ�
+					{				
+						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  指纹验证成功  ");	
+                        run_t.open_lock_success=1;
+						run_t.open_lock_fail = 0;
+						 syspara_t.ps_serch_getimage=0xff;
+						return ;
+						
+					}
+					else{
+						run_t.open_lock_success=0;
+						run_t.open_lock_fail = 1;
+						syspara_t.ps_serch_getimage=0xff;
+						return ;
+					}
+				}
+		        else{
+                    run_t.open_lock_success=0;
+                    run_t.open_lock_fail = 1;
+                    syspara_t.ps_serch_getimage=0xff;
+                    return ;
+                }
+
+		}
+    }
+	
+    }
+}
 
 /**********************************************************************
 	*
@@ -899,11 +787,11 @@ void Press_ReadFingerprint_Data(void)
 void Del_FR(void)
 {
 	uint8_t  ensure;
-	ensure=PS_Empty();//清空指纹库
+	ensure=PS_Empty();//清空指纹庄1�7
 	if(ensure==0)
 	{
 			//OLED_Clear();
-			//OLED_ShowCH(0,2," 清空指纹库成功 ");		
+			//OLED_ShowCH(0,2," 清空指纹库成劄1�7 ");		
 			syspara_t.PS_clear_ps_success=1;
 			syspara_t.PS_clear_ps_fail=0;
 	}
@@ -925,10 +813,9 @@ void Del_FR(void)
 void Fingerprint_NewClinet_Login_Fun(void)
 {
     static uint8_t state;
-  uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff,cnt,STEP_CNT;
- uint8_t ps_genChar_2=0xff,ps_storechar=0xff,ps_regmodel=0xff,del_ensure=0xff;
- uint8_t  ser_getImage=0xff,ser_genChar=0xff,ser_speedSer=0xff,ps_templete=0xff,del_empty=0xff;
- uint16_t Valid_n[1];
+ uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff,STEP_CNT;
+ uint8_t ps_genChar_2=0xff,ps_storechar=0xff,ps_regmodel=0xff;
+
 
  
 	switch(state){
@@ -1029,24 +916,30 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		   
 		   case 4:
 				
-	   
-				  ps_storechar=PS_StoreChar(CharBuffer2,syspara_t.PS_login_success);//????
-	
+	              if(syspara_t.ps_readEeprom_data ==0){
+				     ps_storechar=PS_StoreChar(CharBuffer2,1);//administrator of fingerprint
+	              }
+				  else
+				  	ps_storechar=PS_StoreChar(CharBuffer2,(syspara_t.ps_readEeprom_data+1));//????
+				  	
+	              if(syspara_t.ps_readEeprom_data < 41){
 				  if(ps_storechar==0){
 						STEP_CNT=5;
-					  Buzzer_LongSound();
-					  syspara_t.PS_login_success++;
-					  syspara_t.PS_login_flag=1;		  
-					  BACKLIGHT_2_OFF() ;
-					  HAL_Delay(500);
-					  BACKLIGHT_2_ON() ;
-					  HAL_Delay(500);
-					  BACKLIGHT_2_OFF() ;
-					   HAL_Delay(500);
-					  BACKLIGHT_2_ON() ;
-					  syspara_t.PS_read_template=1;
+					    run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+						run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
+						run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+					
+					    OK_LED_ON(); //WT.EDIT 2022.10.28
+						ERR_LED_OFF();
+                        run_t.gTimer_8s=7;
+						run_t.login_in_success=1; //WT.EDIT 2022.10.31
+						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
 					   state= 5;
-				   
+					   if(syspara_t.ps_readEeprom_data ==0){
+				  	     AT24CXX_WriteOneByte(EEPROM_AS608Addr,0x01);
+					   	}
+					   else
+				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
 				   
 				   }
 				   else{
@@ -1054,12 +947,20 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				   syspara_t.PS_wakeup_flag = 0;
 					 STEP_CNT=0;
 				   }
+	              }
+				  else{
+                     state= 5;
+					run_t.open_lock_success=0;
+                    run_t.open_lock_fail = 1;
+					ERR_LED_ON();
+					OK_LED_OFF(); //WT.EDIT 2022.10.28
+				  }
 			break;
 				   
 		   case 5:
-			   
-			 ps_templete = PS_ValidTempleteNum(Valid_n);//¶Á¿âÖ¸ÎÆ¸öÊý
-				 syspara_t.PS_wakeup_flag = 0;
+			  syspara_t.PS_read_template=1;
+			  syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//¶Á¿âÖ¸ÎÆ¸öÊý
+				 
 		   state=0;
 			 STEP_CNT=0;
 		   

@@ -84,6 +84,7 @@ typedef struct __RUN_T{
 	uint8_t inputNewPwd_OK_led_blank_times;
 	uint8_t motor_doing_flag;
 	uint8_t motor_returnRun_flag;
+
     
     
 	unsigned char BackLight;
@@ -102,7 +103,7 @@ typedef struct __RUN_T{
 	uint8_t  open_lock_success;
 	unsigned char Numbers_counter;
 	unsigned char passwordsMatch;
-	unsigned char password_unlock;
+    uint8_t password_unlock_model;
 	uint8_t       Led_OK_flag;
 	uint8_t 	  Led_ERR_flag ;
 	
@@ -157,7 +158,8 @@ extern uint8_t Readpwd[6];
 
 extern void (*RunChed_KeyMode)(uint16_t keydat);
 void RunCheck_Mode(uint16_t dat);
-void RunCommand_Unlock(void);
+void RunCommand_Unlock_Keyboard(void);
+
 
 
 void SavePassword_To_EEPROM(void);

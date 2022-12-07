@@ -42,6 +42,13 @@ typedef struct _syspara
 	uint8_t PS_login_success;
     uint8_t uart1_rx_data;
     uint8_t PS_read_template;
+	uint8_t ps_thefist_input_fp;
+    
+    
+    uint8_t ps_judeg_read_templete_flag;
+	
+	//eeprom 
+	uint8_t ps_readEeprom_data;
 
 
 	//search
@@ -53,6 +60,8 @@ typedef struct _syspara
 	uint8_t PS_save_numbers;
     uint8_t PS_exit_login_flag;
     uint8_t PS_exit_times;
+    
+    uint16_t ps_read_templete_numbers;
 	
     
 }SysPara;

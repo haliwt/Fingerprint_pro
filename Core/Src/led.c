@@ -82,7 +82,7 @@ void DisplayLed_Handler(void)
 			
 			 Panle_InputTimesError_LED_Off();
 
-			 run_t.lock_fail=0;
+			 run_t.open_lock_fail=0;//run_t.lock_fail=0;
 			 run_t.BackLight=0;
 
 		
@@ -178,13 +178,13 @@ static void BackLight_Fun(void)
 	  if(((run_t.gTimer_8s >8 && run_t.factory_test !=1 && run_t.panel_lock ==0)|| run_t.stop_gTimer_8s==1)&& run_t.eeprom_Reset_flag !=1){
 
             if(run_t.inputNewPassword_Enable ==0 && run_t.led_blank==0){
-		  	if(run_t.lock_fail==0 && run_t.input_newPassword_over_number==0){
+		  	if(run_t.open_lock_fail==0 && run_t.input_newPassword_over_number==0){
 	  	 
 		   run_t.login_in_success =0;//WT.EDIT 2022.10.31
 		   run_t.gTimer_1s=0;
 		  run_t.stop_gTimer_8s =0;
 		  run_t.BackLight =0;
-		  run_t.lock_fail=0;
+		  run_t.open_lock_fail=0;//run_t.lock_fail=0;
 		  run_t.gTimer_8s=0;
 		  run_t.gTimer_200ms=0;//WT.EDIT 2022.10.19
 		   Panel_LED_Off();
@@ -197,7 +197,7 @@ static void BackLight_Fun(void)
 
 		 
 	
-	     run_t.password_unlock=0;
+	  
 		 run_t.motor_return_homePosition=0;
 
 		 //clear new password flag
@@ -254,12 +254,11 @@ static void BackLight_Fun(void)
 	  }
 	  /*____________________error led blank _________________________*/
 	 //LED error bank function .
-	  if(run_t.lock_fail==1 || run_t.input_newPassword_over_number==1){
+	  if(run_t.open_lock_fail==1 || run_t.input_newPassword_over_number==1){
 		   cnt ++ ;
 		//  run_t.BackLight =0;//WT.EDIT .2022.10.19
 		  run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
 	      run_t.led_blank	=0;
-		  run_t.password_unlock=0;//WT.EDIT 2022.10.06
 		  if(syspara_t.PS_wakeup_flag==0)
 		     run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
 		  run_t.inputNewPasswordTimes =0;//WT.EDIT .2022.10.07
@@ -284,7 +283,7 @@ static void BackLight_Fun(void)
 		  	cntrecoder =0;
 		 
 		      run_t.saveEEPROM_fail_flag =0;
-			  run_t.lock_fail=0;
+			  run_t.open_lock_fail=0;//run_t.lock_fail=0;
 			  run_t.input_newPassword_over_number=0;
 
 			  ERR_LED_OFF();
@@ -299,7 +298,7 @@ static void BackLight_Fun(void)
 	  if((run_t.inputNewPassword_Enable ==1 || run_t.led_blank	==1) && run_t.BackLight !=2){	
 	    
 		 cnt0 ++ ;
-		 run_t.lock_fail=0;
+		 run_t.open_lock_fail=0;//run_t.lock_fail=0;
 	     run_t.readI2C_data =1;
 	     run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 	

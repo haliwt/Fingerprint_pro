@@ -36,7 +36,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 					  run_t.Led_OK_flag=1;
 					 run_t.Led_ERR_flag =0;
 				     run_t.buzzer_key_sound_flag=0;
-					 run_t.lock_fail=0;
+					 run_t.open_lock_fail=0;//run_t.lock_fail=0;
 					 ERR_LED_OFF();
 				     OK_LED_ON();
 					
@@ -49,7 +49,8 @@ void RunMotor_Definite_Handler(void) //definite motor
 						 run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
 
 						 run_t.returnHomePosition_Count=0;
-						 run_t.password_unlock=0;
+						// run_t.password_unlock=0;
+                         run_t.password_unlock_model =0;
 				 }
 			     
 				 if(run_t.motorRunCount>1600 && run_t.motorRunCount <2101){

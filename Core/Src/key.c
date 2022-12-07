@@ -312,10 +312,13 @@ void  SideKey_Fun(uint8_t keyvalue)
 		run_t.BackLight =1; //WT.EDIT .2022.10.06
 
        	run_t.inputNewPasswordTimes =0;
-		run_t.password_unlock=0;//accomplish by save task//WT.EIDT 2022.09.12
-		run_t.lock_fail =0;
+		//run_t.password_unlock=0;//accomplish by save task//WT.EIDT 2022.09.12
+        run_t.password_unlock_model=0;
+		run_t.open_lock_fail=0;//run_t.lock_fail =0;
+		run_t.open_lock_success=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
+		syspara_t.ps_thefist_input_fp =0;//clear fingerprint flag
 		
         BACKLIGHT_2_ON();        
 		

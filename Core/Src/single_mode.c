@@ -42,7 +42,7 @@ void Start_PowerOn_Handler(void)
 
 				run_t.powerOn++;
 				run_t.passwordsMatch =0;
-				run_t.password_unlock =4; // 4: power on is motor 1/4 angle
+				run_t.password_unlock_model =4; // 4: power on is motor 1/4 angle
 				run_t.motor_return_homePosition=0; //
 				run_t.gTimer_8s=0;
 			
@@ -73,19 +73,19 @@ void CheckPassword_Lock_Handler(void)
 	  	TouchKey_Handler();
      }
     //fingerprint lock
-	 if(syspara_t.PS_wakeup_flag ==1 && run_t.passwordsMatch ==0 ){
+	 if(syspara_t.PS_wakeup_flag ==1 ){
            syspara_t.PS_wakeup_flag=0;
          RunCommand_Unlock_Fingerprint();
 
 	 }
 
 
-   if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0 && syspara_t.PS_wakeup_flag ==0){
+   if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0){
 		  
 		  run_t.passwordsMatch=0;
 		  if(run_t.login_in_success ==0) //WT.EDIT 2022.10.31
              run_t.gTimer_8s=0;
-          RunCommand_Unlock();
+          RunCommand_Unlock_Keyboard();
     }
 
     Lock_Open_Order();
@@ -98,23 +98,18 @@ void CheckPassword_Lock_Handler(void)
 	*
 	*Funtcion Name:static void UnLock_Aand_SaveData_Handler(void)
 	*Function : to special action process 
-	*
-	*
+	*Input Ref:NO
+	*Return Ref:NO
 	*
 **************************************************************************/
 static void UnLock_Aand_SaveData_Handler(void)
 {
-   
+   switch(run_t.password_unlock_model){
 
-
-    switch(run_t.password_unlock){
-
-
-	case 3: //SaveData to EEPROM //new password for the first input 
+	case STORE_MODEL: //SaveData to EEPROM //new password for the first input 
 	    if(syspara_t.PS_wakeup_flag==1){ //new fingerprint input and be save data
-			run_t.inputNewPassword_Enable =0; //touch key dont' Input Administrator password 
-			 
-            Add_FR();
+			
+			 Fingerprint_NewClinet_Login_Fun();
         }
 		else{
         	run_t.passwordsMatch=0  ;
@@ -122,21 +117,18 @@ static void UnLock_Aand_SaveData_Handler(void)
 		}
     break;
 
-	
-	case 4: //Power On motor run 1/4 angle
+	case POWER_ON_MODEL: //Power On motor run 1/4 angle
 	  
          Motor_CW_Run();// Close 
 		 HAL_Delay(530);//WT.EDIT 2022.09.19
 		 Motor_Stop();
 		 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
-		 run_t.password_unlock=0;
+		 run_t.password_unlock_model=0;
 	     run_t.gTimer_8s=0;
 		 Panel_LED_Off();
 	
 
 	break;
-
-	case 5: //save to fingerprint
 
 	default :
 
@@ -156,10 +148,7 @@ static void UnLock_Aand_SaveData_Handler(void)
 ********************************************************/
 static void Save_To_EeepromNewPwd(void)
 {
-
-	
-	
-	 if(run_t.inputNewPassword_Enable ==1 && run_t.inputNewPasswordTimes !=1 ){//WT.EDIT .2022.09.28.if(run_t.adminiId==1){
+	if(run_t.inputNewPassword_Enable ==1 && run_t.inputNewPasswordTimes !=1 ){//WT.EDIT .2022.09.28.if(run_t.adminiId==1){
 		
 		   SavePassword_To_EEPROM();
 			
