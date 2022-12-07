@@ -25,6 +25,9 @@ uint8_t ps_buffer[50];
 uint16_t ArraypageID ;
 uint16_t Arraymathscore;
 
+uint8_t STEP_CNT;
+uint8_t state;
+  
 uint8_t ensure_getImage,ensure_regModel, ensure_storeChar;
 
 SysPara AS608Para;//指纹模块AS608参数
@@ -812,7 +815,7 @@ void Del_FR(void)
 ***********************************************************************/
 void Fingerprint_NewClinet_Login_Fun(void)
 {
-    static uint8_t state;
+   
  uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff,STEP_CNT;
  uint8_t ps_genChar_2=0xff,ps_storechar=0xff,ps_regmodel=0xff;
 
@@ -934,13 +937,14 @@ void Fingerprint_NewClinet_Login_Fun(void)
                         run_t.gTimer_8s=7;
 						run_t.login_in_success=1; //WT.EDIT 2022.10.31
 						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
+						syspara_t.PS_save_NewFP =0;
 					   state= 5;
 					   if(syspara_t.ps_readEeprom_data ==0){
 				  	     AT24CXX_WriteOneByte(EEPROM_AS608Addr,0x01);
 					   	}
 					   else
 				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
-				       syspara_t.PS_save_NewFP =0;
+				       
 				   }
 				   else{
 					state= 0;
@@ -974,14 +978,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
  }
 
 
-/**********************************************************************
-	*
-	*Function Name:void Del_FR(void)
-	*Function : 删除指纹
-	*Iinput Ref: NO
-	*Return Ref:NO
-	*
-***********************************************************************/
+
 
 
 

@@ -194,7 +194,7 @@ static void BackLight_Fun(void)
 		 run_t.led_blank =0;
          run_t.passwordsMatch =0 ;
 	     run_t.powerOn =3;
-
+         syspara_t.PS_save_NewFP =0;
 		 
 	
 	  

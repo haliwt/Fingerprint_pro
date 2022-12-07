@@ -55,10 +55,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
  uint16_t sidekey;
- uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff,cnt,STEP_CNT;
- uint8_t ps_genChar_2=0xff,ps_storechar=0xff,ps_regmodel=0xff,state=0,del_ensure=0xff;
- uint8_t  ser_getImage=0xff,ser_genChar=0xff,ser_speedSer=0xff,ps_templete=0xff,del_empty=0xff;
- uint16_t Valid_n[1];
+
 
 /* USER CODE END PM */
 
@@ -127,6 +124,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
     syspara_t.ps_serch_getimage=0xff;
 	 syspara_t.ps_serch_genchar=0xff;
 	 syspara_t.ps_serach_result=0xff;
+     syspara_t.ps_judeg_read_templete_flag=0XFF;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
