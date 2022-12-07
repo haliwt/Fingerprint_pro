@@ -90,12 +90,11 @@ void CheckPassword_Lock_Handler(void)
 		  if(run_t.login_in_success ==0) //WT.EDIT 2022.10.31
              run_t.gTimer_8s=0;
           RunCommand_Unlock_Keyboard();
-		  Lock_Open_Order();
+		 
     }
-    if(syspara_t.PS_wakeup_flag ==1){
-	 syspara_t.PS_wakeup_flag=0;
-       Lock_Open_Order();
-    }
+ 
+    Lock_Open_Order();
+    
     UnLock_Aand_SaveData_Handler();
 
 }

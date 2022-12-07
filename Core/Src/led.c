@@ -296,7 +296,9 @@ static void BackLight_Fun(void)
 	  if((run_t.inputNewPassword_Enable ==1 || run_t.led_blank	==1) && run_t.BackLight !=2){	
 	    
 		 cnt0 ++ ;
+		  ERR_LED_OFF();
 		 run_t.open_lock_fail=0;//run_t.lock_fail=0;
+		 run_t.input_newPassword_over_number=0;
 	     run_t.readI2C_data =1;
 	     run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 	
@@ -340,24 +342,7 @@ static void BackLight_Fun(void)
 				 }
                   
 			}
-		    //FP_blank times 10
-              if(syspara_t.PS_exit_login_flag ==1){
-
-			     syspara_t.PS_exit_times++;
-				 if(syspara_t.PS_exit_times >9){
-				 	 syspara_t.PS_exit_times=0;
-                     syspara_t.PS_wakeup_flag =0;
-					 syspara_t.PS_exit_login_flag=0;
-				     run_t.led_blank=0;
-					 syspara_t.PS_login_times=0;
-					 syspara_t.PS_save_numbers=0; //maximum number is 40
-					 run_t.Confirm_newPassword =0; //WT.EDIT 2022.12.02
-					  run_t.gTimer_8s >10;
-
-				 }
-
-			  }
-
+		    
             //-------------------------------------------//
 		      if(run_t.led_blank	==1 && syspara_t.PS_exit_login_flag==0){ //EDIT.WT.2022.09.28
                  if(run_t.clearEeeprom_count >2){
