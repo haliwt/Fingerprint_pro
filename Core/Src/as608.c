@@ -837,35 +837,38 @@ void Fingerprint_NewClinet_Login_Fun(void)
 {
    static uint8_t fp_times=0xff,ps_regmodel=0xff,ps_genChar=0xff,ps_storechar=0xff;
    uint8_t ps_getImage;
-
-			
-		   do{
-				syspara_t.PS_read_template=0;
-			   ps_getImage=PS_GetImage();
+   run_t.gTimer_8s=0;
+    
+      //  if(syspara_t.PS_login_times>4)syspara_t.PS_login_times=0;
+    
+       if(syspara_t.PS_login_times <5){
+	   do{
+				
+		   syspara_t.PS_read_template=0;
+		   ps_getImage=PS_GetImage();
 			  
-			  if(ps_getImage==0){
+			if(ps_getImage==0){
 		   
 				 ps_genChar =PS_GenChar(CharBuffer1);//生成特征
 				
 				if(ps_genChar==0 ){
-					 BUZZER_KeySound();
-					 if(fp_times != syspara_t.fp_login_key){
-					 	  fp_times = syspara_t.fp_login_key;
-					   	syspara_t.PS_login_times++;
-				   }
-                   syspara_t.PS_login_times++;
-               }
-             }
-		   }while(syspara_t.PS_login_times==0);
-
-		if(syspara_t.PS_login_times >3 ){
-			    syspara_t.PS_login_times=0;
+                     if(fp_times != syspara_t.fp_login_key){
+                         fp_times = syspara_t.fp_login_key;
+				          syspara_t.PS_login_times++;	
+					    BUZZER_KeySound();
+                        HAL_Delay(200);
+					 }
+				   
+                   
+               
+           if( syspara_t.PS_login_times==4){
+           syspara_t.PS_login_times=0;
 		     syspara_t.PS_read_template=0;
 			   ps_regmodel=PS_RegModel();
 
 			   if(ps_regmodel==0){
 		  
-				      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+				 syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	            if(syspara_t.ps_readEeprom_data ==0){
 				     ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
 	              }
@@ -924,11 +927,17 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		    }
 		
 			}
-		   
+        }
 		}
+    }
+    }
+    
 
-     }
+    }while(syspara_t.PS_login_times==6);
 
+}  
+
+       
 }
 
 
