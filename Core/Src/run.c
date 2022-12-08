@@ -151,7 +151,7 @@ void SavePassword_To_EEPROM(void)
 	
              value =CompareValue(pwd1, pwd2);
 			
-			 if(value ==1){
+			 if(value ==1){//login success
 		       EEPROM_Write_Byte(run_t.userId ,&initvalue,1);
 				 HAL_Delay(5);
 				 EEPROM_Write_Byte((run_t.userId + 0x01),pwd1,6);
@@ -161,7 +161,6 @@ void SavePassword_To_EEPROM(void)
 	
 	    		
 	   		run_t.inputNewPasswordTimes =0;
-				run_t.open_lock_success=0;//accomplish by save task//WT.EIDT 2022.09.12
 				run_t.open_lock_fail =0;//WT.EDIT 2022.12.07
 			//	run_t.BackLight =2; //success is new password be save to eeprom
 				run_t.Numbers_counter =0;
