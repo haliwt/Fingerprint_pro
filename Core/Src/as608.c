@@ -848,7 +848,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
       //  if(syspara_t.PS_login_times>4)syspara_t.PS_login_times=0;
     
      
-	   do{
+	
 			
 			 switch(syspara_t.PS_login_times){
 
@@ -894,10 +894,10 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
                      }
         break;  
-
-        case 2: //input 3  times 
-
-         syspara_t.PS_read_template=0;
+                     
+                     
+         case 2: //input 3 times
+	        syspara_t.PS_read_template=0;
 			   ps_getImage=PS_GetImage();
 				  
 				if(ps_getImage==0){
@@ -905,27 +905,28 @@ void Fingerprint_NewClinet_Login_Fun(void)
 					 ps_genChar =PS_GenChar(CharBuffer1);//生成特征
 					
 					if(ps_genChar==0 ){
-                 ps_regmodel=PS_RegModel();
+	                     if(fp_times != syspara_t.fp_login_key){
+	                         fp_times = syspara_t.fp_login_key;
+					          				syspara_t.PS_login_times++;	
+	                       
+						      					BUZZER_KeySound();
+	                          HAL_Delay(200);
+	                        }
+						 }
+
+
+                     }
+        break;  
+
+        case 3: //input 4  times 
+
+            ps_regmodel=PS_RegModel();
                 if(ps_regmodel==0){
 	                     if(fp_times != syspara_t.fp_login_key){
 	                         fp_times = syspara_t.fp_login_key;
 					          				syspara_t.PS_login_times++;	
 	                          
-						      					BUZZER_KeySound();
-	                          HAL_Delay(1000);
-	                          syspara_t.PS_wakeup_flag=0;
-	                        }
 
-                     }
-
-
-						 }
-         }
-
-        break;   
-
-        case 3://input 4 times 
-             if(syspara_t.PS_wakeup_flag==1){
              syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	            if(syspara_t.ps_readEeprom_data ==0){
 				         ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
@@ -935,7 +936,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				  	      ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????
 				        }
 				  if(ps_storechar==0){
-	            if(syspara_t.ps_readEeprom_data < 41){
+//	            if(syspara_t.ps_readEeprom_data < 41){
 				 
 					
 					   run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
@@ -966,30 +967,33 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				 
 		 
 		    }
-		    else{//over times 40 is error
-		    	 run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-		    	run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-					run_t.BackLight =1;
-					OK_LED_OFF(); //WT.EDIT 2022.10.28
-					ERR_LED_ON();
-					run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
-          run_t.open_lock_success=0;
-				  run_t.open_lock_fail=1;
-				  run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
-				  run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
-					run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-					run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
-		    }
+//		    else{//over times 40 is error
+//		    	 run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+//		    	run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+//					run_t.BackLight =1;
+//					OK_LED_OFF(); //WT.EDIT 2022.10.28
+//					ERR_LED_ON();
+//					run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
+//          run_t.open_lock_success=0;
+//				  run_t.open_lock_fail=1;
+//				  run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
+//				  run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
+//					run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
+//					run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
+//		    }
 		
 			}
-      syspara_t.PS_login_times=0;	
-      }
-        break; 
-               
-         
-
+                    syspara_t.PS_login_times=0xA0;	
+                    }
+                
+                break;
+       
    }
 
-             
- }while(syspara_t.PS_login_times==6);
- }
+               
+         
+}
+   
+
+
+ 
