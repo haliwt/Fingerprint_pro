@@ -937,12 +937,14 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		   break;
 		   
 		   case 4:
-				
+				  syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	              if(syspara_t.ps_readEeprom_data ==0){
 				     ps_storechar=PS_StoreChar(CharBuffer2,1);//administrator of fingerprint
 	              }
-				  else
+				  else{
+				  	syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+0X01);
 				  	ps_storechar=PS_StoreChar(CharBuffer2,(syspara_t.ps_readEeprom_data+1));//????
+				  }
 				  	
 	              if(syspara_t.ps_readEeprom_data < 41){
 				  if(ps_storechar==0){
@@ -978,12 +980,12 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				   }
 	              }
 				  else{
-                     state= 5;
+                     state= 0;
 					run_t.open_lock_success=0;
                     run_t.open_lock_fail = 1;
 					ERR_LED_ON();
 					OK_LED_OFF(); //WT.EDIT 2022.10.28
-					syspara_t.PS_save_NewFP =0;
+					
 				  }
 			break;
 				   
