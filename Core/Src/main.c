@@ -83,8 +83,7 @@
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-    static uint8_t poweron_flag=0;
-    static uint8_t genImage=0,i=0;
+   
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

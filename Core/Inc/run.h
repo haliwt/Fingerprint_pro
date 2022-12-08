@@ -112,6 +112,7 @@ typedef struct __RUN_T{
 	unsigned char factory_test;
 	uint8_t lowPower_flag;
 	uint8_t oneself_copy_behavior;
+	uint8_t detection_input_flag;
   
 	
 	uint8_t NumbersKey_pressedNumbers;
@@ -124,7 +125,7 @@ typedef struct __RUN_T{
 
 
 	uint8_t readEepromData;
-    uint8_t turn_off_sound;
+   
 	
 
 	uint8_t gTimer_200ms;

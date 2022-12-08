@@ -80,8 +80,8 @@ void CheckPassword_Lock_Handler(void)
 			run_t.oneself_copy_behavior =1;
 
 		 }
-         Lock_Open_Order();
-
+        
+        run_t.detection_input_flag=1;
 	 }
 
 
@@ -91,10 +91,10 @@ void CheckPassword_Lock_Handler(void)
 		  if(run_t.login_in_success ==0) //WT.EDIT 2022.10.31
              run_t.gTimer_8s=0;
           RunCommand_Unlock_Keyboard();
-		  Lock_Open_Order();
+		 
     }
     
-    
+     Lock_Open_Order();
     
     UnLock_Aand_SaveData_Handler();
 

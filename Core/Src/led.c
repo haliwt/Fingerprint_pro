@@ -187,7 +187,7 @@ static void BackLight_Fun(void)
 		  run_t.open_lock_fail=0;//run_t.lock_fail=0;
 		  run_t.gTimer_8s=0;
 		  run_t.gTimer_200ms=0;//WT.EDIT 2022.10.19
-          run_t.turn_off_sound++;
+     
 		   Panel_LED_Off();
 		  HAL_ADC_Stop(&hadc1);
 		
@@ -260,7 +260,7 @@ static void BackLight_Fun(void)
 	      run_t.led_blank	=0;
 		  run_t.password_unlock_model=0;
 		  run_t.open_lock_success=0;
-          run_t.turn_off_sound++;
+         
 		  if(syspara_t.PS_wakeup_flag==0)
 		     run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
 		  run_t.inputNewPasswordTimes =0;//WT.EDIT .2022.10.07
@@ -341,7 +341,7 @@ static void BackLight_Fun(void)
 				   
 				     OK_LED_OFF();
 					 run_t.stop_gTimer_8s =1;
-                    run_t.turn_off_sound++;
+              
 					
 					 
 				 }

@@ -301,7 +301,7 @@ void  SideKey_Fun(uint8_t keyvalue)
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
 		syspara_t.ps_thefist_input_fp =0;//clear fingerprint flag
-		run_t.turn_off_sound++;
+	
         BACKLIGHT_2_ON();        
 		
 		POWER_ON();//WT.EDIT .2022.10.06
