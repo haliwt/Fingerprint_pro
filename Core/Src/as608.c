@@ -634,6 +634,8 @@ void Press_ReadFingerprint_Data(void)
 {
 	SearchResult seach;
 
+	static uint8_t error_flag=0xff;
+
 	if(run_t.Confirm_newPassword==1){
 	  run_t.gTimer_8s=0;
 	  syspara_t.PS_wakeup_flag=1;
@@ -706,7 +708,10 @@ void Press_ReadFingerprint_Data(void)
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						  syspara_t.PS_wakeup_flag=0;
-						  run_t.error_times ++ ;
+						  if(error_flag != run_t.error_times){
+						  	  error_flag = run_t.error_times;
+						     run_t.error_times ++ ;
+						  }
 	                    
 						return ;
 					}		
@@ -737,7 +742,7 @@ void Press_ReadFingerprint_Data(void)
 				run_t.Led_OK_flag =1;
 				run_t.Led_ERR_flag=0;
 				 syspara_t.PS_wakeup_flag=0;
-                return ;
+              return ;
 
 			}
 			
@@ -746,6 +751,7 @@ void Press_ReadFingerprint_Data(void)
 
     //judge input fingerprint error times
 	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
+        
         run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
         run_t.gTimer_input_error_times_60s =0;
         run_t.panel_lock=1;
@@ -846,7 +852,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			
 			 switch(syspara_t.PS_login_times){
 
-			 	case 0:
+			 	case 0: //input 1 times 
 
 		   syspara_t.PS_read_template=0;
 		   ps_getImage=PS_GetImage();
@@ -904,9 +910,10 @@ void Fingerprint_NewClinet_Login_Fun(void)
 	                     if(fp_times != syspara_t.fp_login_key){
 	                         fp_times = syspara_t.fp_login_key;
 					          				syspara_t.PS_login_times++;	
-	                       
+	                          
 						      					BUZZER_KeySound();
-	                          HAL_Delay(200);
+	                          HAL_Delay(1000);
+	                          syspara_t.PS_wakeup_flag=0;
 	                        }
 
                      }
@@ -918,7 +925,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
         break;   
 
         case 3://input 4 times 
-
+             if(syspara_t.PS_wakeup_flag==1){
              syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	            if(syspara_t.ps_readEeprom_data ==0){
 				         ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
@@ -939,20 +946,18 @@ void Fingerprint_NewClinet_Login_Fun(void)
 						run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 						  
 					
-            OK_LED_ON(); //WT.EDIT 2022.10.28
-						ERR_LED_OFF();
-            run_t.gTimer_8s=7;
+                        run_t.gTimer_8s=7;
 						run_t.login_in_success=1; //WT.EDIT 2022.10.31
 						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
-						syspara_t.PS_save_NewFP =0;
+			
 					   if(syspara_t.ps_readEeprom_data ==0){
 				  	     AT24CXX_WriteOneByte(EEPROM_AS608Addr,0x01);
 					   	}
 					   else
 				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
 				       
-				  run_t.open_lock_success=0;
-          run_t.open_lock_fail = 0;
+                    run_t.open_lock_success=0;
+                    run_t.open_lock_fail = 0;
 					ERR_LED_ON();
 					OK_LED_OFF(); //WT.EDIT 2022.10.28
 		      run_t.led_blank	=1;//OK led blank three times
@@ -978,7 +983,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		
 			}
       syspara_t.PS_login_times=0;	
-
+      }
         break; 
                
          

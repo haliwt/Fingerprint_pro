@@ -125,6 +125,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	 syspara_t.ps_serach_result=0xff;
      syspara_t.ps_judeg_read_templete_flag=0XFF;
      syspara_t.PS_wakeup_flag=0;
+     syspara_t.PS_login_times=0;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)

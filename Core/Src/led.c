@@ -187,7 +187,7 @@ static void BackLight_Fun(void)
 		  run_t.open_lock_fail=0;//run_t.lock_fail=0;
 		  run_t.gTimer_8s=0;
 		  run_t.gTimer_200ms=0;//WT.EDIT 2022.10.19
-     
+          syspara_t.PS_login_times=0;	//fingerprint input times 
 		   Panel_LED_Off();
 		  HAL_ADC_Stop(&hadc1);
 		
