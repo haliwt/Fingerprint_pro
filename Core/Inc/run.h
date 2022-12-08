@@ -135,13 +135,13 @@ typedef struct __RUN_T{
 	unsigned char gTimer_60s;
 	unsigned char gTimer_ADC;
 	
-	uint8_t  gTimer_input_error_times_60s;
-	uint8_t gTimes_s;
-	uint8_t gTimer_10s_start;
+	uint8_t  	gTimer_input_error_times_60s;
+	uint8_t 	gTimes_s;
+	uint8_t 	gTimer_10s_start;
 
 
-	uint16_t motorRunCount;
-	uint16_t   returnHomePosition_Count;
+	uint16_t 	motorRunCount;
+	uint16_t   	returnHomePosition_Count;
 
 	uint32_t userId;
    

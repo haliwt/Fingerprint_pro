@@ -126,7 +126,6 @@ void SavePassword_To_EEPROM(void)
 				run_t.open_lock_success=0;
 				run_t.inputNewPasswordTimes =0;
 				run_t.open_lock_fail=1;//WT.EDIT 2022.12.07
-				run_t.lock_fail =1;
 				run_t.Numbers_counter =0;
 				run_t.passwordsMatch =0 ;
 				run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
@@ -153,67 +152,65 @@ void SavePassword_To_EEPROM(void)
              value =CompareValue(pwd1, pwd2);
 			
 			 if(value ==1){
-			         EEPROM_Write_Byte(run_t.userId ,&initvalue,1);
-					 HAL_Delay(5);
-					 EEPROM_Write_Byte((run_t.userId + 0x01),pwd1,6);
-					 HAL_Delay(5);
+		       EEPROM_Write_Byte(run_t.userId ,&initvalue,1);
+				 HAL_Delay(5);
+				 EEPROM_Write_Byte((run_t.userId + 0x01),pwd1,6);
+				 HAL_Delay(5);
 
-                        run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+            run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+	
+	    		
+	   		run_t.inputNewPasswordTimes =0;
+				run_t.open_lock_success=0;//accomplish by save task//WT.EIDT 2022.09.12
+				run_t.open_lock_fail =0;//WT.EDIT 2022.12.07
+			//	run_t.BackLight =2; //success is new password be save to eeprom
+				run_t.Numbers_counter =0;
+				 run_t.motor_return_homePosition=0;
+		
 			
-			    		
-			   			run_t.inputNewPasswordTimes =0;
-						run_t.open_lock_success=0;//accomplish by save task//WT.EIDT 2022.09.12
-						run_t.lock_fail =0;
-						run_t.open_lock_fail =1;//WT.EDIT 2022.12.07
-					//	run_t.BackLight =2; //success is new password be save to eeprom
-						run_t.Numbers_counter =0;
-						 run_t.motor_return_homePosition=0;
-				
-					
-						run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-						run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
-						run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
-					
-						run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
-				        run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.10.14
-				        OK_LED_ON(); //WT.EDIT 2022.10.28
-						ERR_LED_OFF();
-                        run_t.gTimer_8s=7;
-						run_t.login_in_success=1; //WT.EDIT 2022.10.31
-						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
+				run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+				run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
+				run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+			
+				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
+		        run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.10.14
+		        OK_LED_ON(); //WT.EDIT 2022.10.28
+				ERR_LED_OFF();
+                  run_t.gTimer_8s=7;
+				run_t.login_in_success=1; //WT.EDIT 2022.10.31
+				run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
 		
 						
-						return ;
+				return ;
 					
 			
 
 			 }
 			 else{
 			 	        
-                        //error
-                        run_t.inputNewPasswordTimes =0;
-				  	    run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
-			    	
-						run_t.open_lock_success=0;
-						run_t.open_lock_fail=1;
-						run_t.lock_fail =1;
-						run_t.led_blank  =0;
-						 run_t.motor_return_homePosition=0;
-						run_t.Numbers_counter =0;
-						run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
-                        run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-                        run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
-                        run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
-					      run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-                         run_t.buzzer_two_short = 0;//WT.EDIT 2022.10.19
-						run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
-				
-				        run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-				        run_t.BackLight =1;
-				         OK_LED_OFF(); //WT.EDIT 2022.10.28
-						ERR_LED_ON();
-						 run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
-			          return ;
+				run_t.inputNewPasswordTimes =0;
+				run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
+
+				run_t.open_lock_success=0;
+				run_t.open_lock_fail=1;
+
+				run_t.led_blank  =0;
+				run_t.motor_return_homePosition=0;
+				run_t.Numbers_counter =0;
+				run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
+				run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
+				run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
+				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
+				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+				run_t.buzzer_two_short = 0;//WT.EDIT 2022.10.19
+				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
+
+				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+				run_t.BackLight =1;
+				OK_LED_OFF(); //WT.EDIT 2022.10.28
+				ERR_LED_ON();
+				run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
+				return ;
 				
 				}
               
@@ -256,7 +253,7 @@ void RunCheck_Mode(uint16_t dat)
 	 
 		  run_t.buzzer_key_sound_flag =1;
 		  run_t.open_lock_fail =0;
-		   run_t.lock_fail=0;//WT.EDIT 2022.09.13
+		
 		  run_t.gTimer_8s=0;  //LED turn on holde times
 		  
 		   POWER_ON();
@@ -309,7 +306,7 @@ void RunCheck_Mode(uint16_t dat)
 	     ERR_LED_OFF();
 		 run_t.gTimer_8s=0;
 		 spec=1;
-		    run_t.lock_fail =0;
+		   
 			run_t.open_lock_fail =0 ;
 		   run_t.Numbers_counter =0 ;
 		   run_t.passwordsMatch = 0;
@@ -354,7 +351,7 @@ void RunCheck_Mode(uint16_t dat)
                 run_t.Numbers_counter=0;
                 run_t.passwordsMatch = 0;
                 run_t.error_times ++ ;
-                run_t.lock_fail=1;
+             
 				run_t.open_lock_fail=1;
                 run_t.buzzer_fail_sound_flag=1;
 				run_t.buzzer_key_sound_flag =0;
@@ -660,7 +657,7 @@ void Lock_Open_Order(void)
 		}
         run_t.Confirm_newPassword =0;
 	    run_t.inputNewPassword_Enable =0;
-		 run_t.lock_fail=1;
+		 run_t.open_lock_fail=1;//run_t.lock_fail=1;
 	    run_t.buzzer_fail_sound_flag=1;
 		run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.19
 		run_t.buzzer_two_short=0;//WT.EDIT 2022.10.19
@@ -695,7 +692,7 @@ void Lock_Open_Order(void)
 				
 				run_t.inputDeepSleep_times =0;
 				run_t.error_times=0;
-				run_t.lock_fail=0;
+			
 				run_t.open_lock_fail = 0;
 				run_t.gTimer_8s =0;
 				run_t.inputNewPwd_OK_led_blank_times=0;

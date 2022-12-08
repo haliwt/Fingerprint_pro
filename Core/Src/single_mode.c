@@ -72,7 +72,7 @@ void CheckPassword_Lock_Handler(void)
     if(run_t.passwordsMatch==0 && run_t.panel_lock==0){ //&& run_t.readI2C_data ==1 && run_t.factory_test ==0){
 	  	TouchKey_Handler();
      }
-    //fingerprint lock
+    //fingerprint lock input 
 	 if(syspara_t.PS_wakeup_flag ==1 && syspara_t.PS_save_NewFP==0){
            syspara_t.PS_wakeup_flag=0;
          RunCommand_Unlock_Fingerprint();
@@ -84,7 +84,7 @@ void CheckPassword_Lock_Handler(void)
         run_t.detection_input_flag=1;
 	 }
 
-
+  //keyboard password input 
    if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0){
 		  
 		  run_t.passwordsMatch=0;
@@ -115,9 +115,8 @@ static void UnLock_Aand_SaveData_Handler(void)
 	case STORE_MODEL: //SaveData to EEPROM //new password for the first input 
 	    if(syspara_t.PS_wakeup_flag==1 || syspara_t.PS_save_NewFP==1){ //new fingerprint input and be save data
 			 syspara_t.PS_save_NewFP=1;
-			 syspara_t.PS_wakeup_flag=0; 
-			 run_t.inputNewPassword_Enable=0;
 			 Fingerprint_NewClinet_Login_Fun();
+			 syspara_t.PS_wakeup_flag=0;
         }
 		else{
         	run_t.passwordsMatch=0  ;

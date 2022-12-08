@@ -641,10 +641,18 @@ void Press_ReadFingerprint_Data(void)
 	  if(syspara_t.ps_readEeprom_data ==0){ //the first new fingerprint must be is administrator password "1234"
          syspara_t.ps_thefist_input_fp =1; //the first input fingerprint administrator password
          run_t.open_lock_success =0;
-		 run_t.open_lock_fail = 1;
+		 run_t.open_lock_fail = 0;
 		 run_t.Led_OK_flag =0;
-		  run_t.Led_ERR_flag=1;
+		  run_t.Led_ERR_flag=0;
 	  }
+	  else{
+	    syspara_t.ps_thefist_input_fp =0; //has been an administrator of passsword
+	     run_t.open_lock_success =0;
+		 run_t.open_lock_fail = 0;
+		 run_t.Led_OK_flag =0;
+		  run_t.Led_ERR_flag=0;
+
+	 }
 	}
 	else{
 	   syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
@@ -652,7 +660,7 @@ void Press_ReadFingerprint_Data(void)
 
 	}
 	
-    
+    //fingerprint open lock doing 
     if(run_t.Confirm_newPassword==0 && run_t.panel_lock==0){
 		syspara_t.ps_thefist_input_fp =0;
 		syspara_t.PS_read_template=0;
@@ -736,8 +744,8 @@ void Press_ReadFingerprint_Data(void)
 		}
     }
 
-	//To save new fingerprint data statement
-    if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefist_input_fp ==0){//don't the first input FP.and to store has FP data
+	//New fingerprint intpu by save new fingerprint data statement
+    if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefist_input_fp ==0 && run_t.inputNewPassword_Enable==0){//don't the first input FP.and to store has FP data
 
 		syspara_t.ps_serch_getimage=PS_GetImage();
 		while(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//获取图像成功 
@@ -940,8 +948,13 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				  if(ps_storechar==0){
 						STEP_CNT=5;
 					    run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+					     run_t.motor_return_homePosition=0;
+						  run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
 						run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
 						run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+
+						  run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
+						  
 					
 					    OK_LED_ON(); //WT.EDIT 2022.10.28
 						ERR_LED_OFF();
@@ -959,7 +972,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				   }
 				   else{
 					state= 0;
-				   syspara_t.PS_wakeup_flag = 0;
+				   	syspara_t.PS_wakeup_flag = 0;
 					 STEP_CNT=0;
 					 syspara_t.PS_save_NewFP =0;
 				   }
@@ -975,6 +988,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			break;
 				   
 		   case 5:
+		   	  syspara_t.PS_save_NewFP =0;
 			  syspara_t.PS_read_template=1;
 			  syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//¶Á¿âÖ¸ÎÆ¸öÊý
 				 
