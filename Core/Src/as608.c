@@ -855,8 +855,10 @@ void Fingerprint_NewClinet_Login_Fun(void)
                      if(fp_times != syspara_t.fp_login_key){
                          fp_times = syspara_t.fp_login_key;
 				          syspara_t.PS_login_times++;	
-					    BUZZER_KeySound();
-                        HAL_Delay(200);
+                        if(syspara_t.PS_login_times<4){
+					      BUZZER_KeySound();
+                          HAL_Delay(200);
+                        }
 					 }
 				   
                    
