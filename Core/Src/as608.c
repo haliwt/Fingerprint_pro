@@ -841,9 +841,13 @@ void Fingerprint_NewClinet_Login_Fun(void)
     
       //  if(syspara_t.PS_login_times>4)syspara_t.PS_login_times=0;
     
-       if(syspara_t.PS_login_times <5){
+     
 	   do{
-				
+			
+			 switch(syspara_t.PS_login_times){
+
+			 	case 0:
+
 		   syspara_t.PS_read_template=0;
 		   ps_getImage=PS_GetImage();
 			  
@@ -854,30 +858,75 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				if(ps_genChar==0 ){
                      if(fp_times != syspara_t.fp_login_key){
                          fp_times = syspara_t.fp_login_key;
-				          syspara_t.PS_login_times++;	
-                        if(syspara_t.PS_login_times<4){
-					      BUZZER_KeySound();
+				          				syspara_t.PS_login_times++;	
+                       
+					      					BUZZER_KeySound();
                           HAL_Delay(200);
                         }
 					 }
-				   
-                   
-               
-           if( syspara_t.PS_login_times==4){
-           syspara_t.PS_login_times=0;
-		     syspara_t.PS_read_template=0;
-			   ps_regmodel=PS_RegModel();
+                 }	   
+        break; 
 
-			   if(ps_regmodel==0){
-		  
-				 syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+        case 1: //input 2 times
+	        syspara_t.PS_read_template=0;
+			   ps_getImage=PS_GetImage();
+				  
+				if(ps_getImage==0){
+			   
+					 ps_genChar =PS_GenChar(CharBuffer1);//生成特征
+					
+					if(ps_genChar==0 ){
+	                     if(fp_times != syspara_t.fp_login_key){
+	                         fp_times = syspara_t.fp_login_key;
+					          				syspara_t.PS_login_times++;	
+	                       
+						      					BUZZER_KeySound();
+	                          HAL_Delay(200);
+	                        }
+						 }
+
+
+                     }
+        break;  
+
+        case 2: //input 3  times 
+
+         syspara_t.PS_read_template=0;
+			   ps_getImage=PS_GetImage();
+				  
+				if(ps_getImage==0){
+			   
+					 ps_genChar =PS_GenChar(CharBuffer1);//生成特征
+					
+					if(ps_genChar==0 ){
+                 ps_regmodel=PS_RegModel();
+                if(ps_regmodel==0){
+	                     if(fp_times != syspara_t.fp_login_key){
+	                         fp_times = syspara_t.fp_login_key;
+					          				syspara_t.PS_login_times++;	
+	                       
+						      					BUZZER_KeySound();
+	                          HAL_Delay(200);
+	                        }
+
+                     }
+
+
+						 }
+         }
+
+        break;   
+
+        case 3://input 4 times 
+
+             syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	            if(syspara_t.ps_readEeprom_data ==0){
-				     ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
+				         ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
 	              }
-				  else{
-				  	syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+0X01);
-				  	ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????
-				  }
+				        else{
+				  	       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+0X01);
+				  	      ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????
+				        }
 				  if(ps_storechar==0){
 	            if(syspara_t.ps_readEeprom_data < 41){
 				 
@@ -890,13 +939,12 @@ void Fingerprint_NewClinet_Login_Fun(void)
 						run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 						  
 					
-                        OK_LED_ON(); //WT.EDIT 2022.10.28
+            OK_LED_ON(); //WT.EDIT 2022.10.28
 						ERR_LED_OFF();
-                        run_t.gTimer_8s=7;
+            run_t.gTimer_8s=7;
 						run_t.login_in_success=1; //WT.EDIT 2022.10.31
 						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
 						syspara_t.PS_save_NewFP =0;
-					   state= 5;
 					   if(syspara_t.ps_readEeprom_data ==0){
 				  	     AT24CXX_WriteOneByte(EEPROM_AS608Addr,0x01);
 					   	}
@@ -929,18 +977,14 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		    }
 		
 			}
-        }
-		}
-    }
-    }
-    
+      syspara_t.PS_login_times=0;	
 
-    }while(syspara_t.PS_login_times==6);
+        break; 
+               
+         
 
-}  
+   }
 
-       
-}
-
-
-
+             
+ }while(syspara_t.PS_login_times==6);
+ }
