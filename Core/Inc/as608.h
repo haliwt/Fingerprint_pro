@@ -31,10 +31,10 @@ typedef struct _syspara
 	uint8_t  PS_quit_input_ps_flag;
 	uint8_t  PS_finish_input_ps_flag;
 
-	uint8_t  PS_check_fp_success;
-	uint8_t  PS_check_fp_fail;
-	uint8_t PS_clear_ps_success;
-	uint8_t PS_clear_ps_fail;
+	uint8_t  	PS_check_fp_success;
+	uint8_t  	PS_check_fp_fail;
+	uint8_t 	PS_clear_ps_success;
+	uint8_t 	PS_clear_ps_fail;
 
 	uint8_t PS_login_flag;
 	uint8_t PS_wakeup_flag;
@@ -57,6 +57,8 @@ typedef struct _syspara
 	uint8_t ps_serach_result;
 
 	uint8_t PS_login_times;
+    uint8_t fp_login_key;
+
 	uint8_t PS_save_numbers;
     uint8_t PS_exit_login_flag;
     uint8_t PS_exit_times;

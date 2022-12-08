@@ -744,6 +744,14 @@ void Press_ReadFingerprint_Data(void)
 		}
     }
 
+    //judge input fingerprint error times
+	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
+        run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
+        run_t.gTimer_input_error_times_60s =0;
+        run_t.panel_lock=1;
+		run_t.gTimer_8s=0;
+		}
+
 	//New fingerprint intpu by save new fingerprint data statement
     if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefist_input_fp ==0 && run_t.inputNewPassword_Enable==0){//don't the first input FP.and to store has FP data
 
@@ -788,14 +796,7 @@ void Press_ReadFingerprint_Data(void)
 	
     }
 
-	//judge input fingerprint error times
-	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
-        run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
-        run_t.gTimer_input_error_times_60s =0;
-        run_t.panel_lock=1;
-		run_t.gTimer_8s=0;
-
-       }
+	
 }
 
 /**********************************************************************
@@ -834,15 +835,11 @@ void Del_FR(void)
 ***********************************************************************/
 void Fingerprint_NewClinet_Login_Fun(void)
 {
-   
- uint8_t ps_getImage=0xff,ps_genChar=0xff,ps_match=0xff,ps_getImage_2=0xff;
- uint8_t ps_genChar_2=0xff,ps_storechar=0xff,ps_regmodel=0xff;
+   static uint8_t fp_times=0xff,ps_regmodel=0xff,ps_genChar=0xff,ps_storechar=0xff;
+   uint8_t ps_getImage;
 
-
- 
-	switch(state){
 			
-		   case 0:
+		   do{
 				syspara_t.PS_read_template=0;
 			   ps_getImage=PS_GetImage();
 			  
@@ -851,114 +848,44 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				 ps_genChar =PS_GenChar(CharBuffer1);//生成特征
 				
 				if(ps_genChar==0 ){
-					 state=1;
-					 STEP_CNT=1;
 					 BUZZER_KeySound();
-				}
-				else {
-				   state=0;
-					 syspara_t.PS_wakeup_flag = 0;
-				
-				}
-			  }
-			 else{
-			   state=0;
-			   syspara_t.PS_wakeup_flag = 0;
-			 }
-		  break;
-			 
-		   case 1:
-					   BACKLIGHT_2_OFF() ;
-					  HAL_Delay(100);
-					  BACKLIGHT_2_ON() ;
-					  HAL_Delay(100);
-					   BACKLIGHT_2_OFF() ;
-					  HAL_Delay(100);
-					  BACKLIGHT_2_ON() ;
-					  HAL_Delay(100);
-			   
-				syspara_t.PS_read_template=0;
-			   ps_getImage_2=PS_GetImage();
-			 
-			 if(ps_getImage_2==0){
-	   
-				 ps_genChar_2=PS_GenChar(CharBuffer2);//????
-				 if(ps_genChar_2==0){
-					  state=2;
-					   STEP_CNT=2;
-				  BUZZER_KeySound();
-				 }
-				 else{
-				   state=0;
-				  syspara_t.PS_wakeup_flag = 0;
-				  
-				 }
-			 }
-			 else{
-			   state=0;
-			  syspara_t.PS_wakeup_flag = 0;
-			 }
-		   break;
-			 
-			 
-		   case 2:
-				 syspara_t.PS_read_template=1;
-				 ps_match=PS_Match();
-				if(ps_match ==0){
-				 state=3;
-					  STEP_CNT=3;
-				 BUZZER_KeySound();
-				}
-				else{
-					   //state=0;
-					syspara_t.PS_wakeup_flag = 0;
-					 state=3;
-				
-				}
-		   
-		   break;
-		 
-	
-		   case 3:
-				syspara_t.PS_read_template=0;
+					 if(fp_times != syspara_t.fp_login_key){
+					 	  fp_times = syspara_t.fp_login_key;
+					   	syspara_t.PS_login_times++;
+				   }
+                   syspara_t.PS_login_times++;
+               }
+             }
+		   }while(syspara_t.PS_login_times==0);
+
+		if(syspara_t.PS_login_times >3 ){
+			    syspara_t.PS_login_times=0;
+		     syspara_t.PS_read_template=0;
 			   ps_regmodel=PS_RegModel();
+
+			   if(ps_regmodel==0){
 		  
-			if(ps_regmodel==0){
-				state=4;
-				  STEP_CNT=4;
-				 BUZZER_KeySound();
-			}
-			 else{
-			   state=0;
-			   syspara_t.PS_wakeup_flag = 0;
-				 
-			  
-			 }
-		   break;
-		   
-		   case 4:
-				  syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-	              if(syspara_t.ps_readEeprom_data ==0){
-				     ps_storechar=PS_StoreChar(CharBuffer2,1);//administrator of fingerprint
+				      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+	            if(syspara_t.ps_readEeprom_data ==0){
+				     ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
 	              }
 				  else{
 				  	syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+0X01);
-				  	ps_storechar=PS_StoreChar(CharBuffer2,(syspara_t.ps_readEeprom_data+1));//????
+				  	ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????
 				  }
-				  	
-	              if(syspara_t.ps_readEeprom_data < 41){
 				  if(ps_storechar==0){
-						STEP_CNT=5;
-					    run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-					     run_t.motor_return_homePosition=0;
-						  run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+	            if(syspara_t.ps_readEeprom_data < 41){
+				 
+					
+					   run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+					   run_t.motor_return_homePosition=0;
+						 run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
 						run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
 						run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
-
-						  run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
+						run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 						  
 					
-					    OK_LED_ON(); //WT.EDIT 2022.10.28
+                        OK_LED_ON(); //WT.EDIT 2022.10.28
 						ERR_LED_OFF();
                         run_t.gTimer_8s=7;
 						run_t.login_in_success=1; //WT.EDIT 2022.10.31
@@ -971,42 +898,38 @@ void Fingerprint_NewClinet_Login_Fun(void)
 					   else
 				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
 				       
-				   }
-				   else{
-					state= 0;
-				   	syspara_t.PS_wakeup_flag = 0;
-					 STEP_CNT=0;
-					 syspara_t.PS_save_NewFP =0;
-				   }
-	              }
-				  else{
-                     state= 0;
-					run_t.open_lock_success=0;
-                    run_t.open_lock_fail = 1;
+				  run_t.open_lock_success=0;
+          run_t.open_lock_fail = 0;
 					ERR_LED_ON();
 					OK_LED_OFF(); //WT.EDIT 2022.10.28
-					
-				  }
-			break;
-				   
-		   case 5:
-		   	  syspara_t.PS_save_NewFP =0;
+		      run_t.led_blank	=1;//OK led blank three times
 			  syspara_t.PS_read_template=1;
 			  syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//¶Á¿âÖ¸ÎÆ¸öÊý
 				 
-		   state=0;
-			 STEP_CNT=0;
-			 syspara_t.PS_save_NewFP =0;
-		   
-		   break;
-			   }
-		   
+		 
+		    }
+		    else{//over times 40 is error
+		    	 run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+		    	run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+					run_t.BackLight =1;
+					OK_LED_OFF(); //WT.EDIT 2022.10.28
+					ERR_LED_ON();
+					run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
+          run_t.open_lock_success=0;
+				  run_t.open_lock_fail=1;
+				  run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
+				  run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
+					run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
+					run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
+		    }
 		
- }
+			}
+		   
+		}
 
+     }
 
-
-
+}
 
 
 
