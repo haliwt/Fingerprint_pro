@@ -676,7 +676,7 @@ void Press_ReadFingerprint_Data(void)
 				{	 
 	                syspara_t.PS_read_template=2;//receive data is 16bytes by USART1 port
 	            
-					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,41,&seach);
+					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,128,&seach);
 					
 					
 					if(syspara_t.ps_serach_result==0x00)//À—À˜≥…π¶
@@ -696,8 +696,7 @@ void Press_ReadFingerprint_Data(void)
 						
 						return ;
 					}
-					if(syspara_t.ps_serach_result==0x09) 
-					{
+					else{
 						syspara_t.PS_check_fp_success =0;
 						syspara_t.PS_check_fp_fail =1;//OLED_ShowCH(32,2,"È™åËØÅÂ§±Ë¥•");
 	                     syspara_t.PS_wakeup_flag=0;
@@ -708,10 +707,10 @@ void Press_ReadFingerprint_Data(void)
 						  run_t.Led_OK_flag =0;
 						  run_t.Led_ERR_flag=1;
 						  syspara_t.PS_wakeup_flag=0;
-						  if(error_flag != run_t.error_times){
-						  	  error_flag = run_t.error_times;
-						     run_t.error_times ++ ;
-						  }
+//						  if(error_flag != run_t.error_times){
+//						  	  error_flag = run_t.error_times;
+//						     run_t.error_times ++ ;
+//						  }
 	                    
 						return ;
 					}		
@@ -734,17 +733,7 @@ void Press_ReadFingerprint_Data(void)
 
 			    }
             }
-			else if(syspara_t.ps_readEeprom_data==0 )
-			{
-                  
-				 syspara_t.ps_serch_getimage=0xff;
-				run_t.open_lock_success=1;
-				run_t.Led_OK_flag =1;
-				run_t.Led_ERR_flag=0;
-				 syspara_t.PS_wakeup_flag=0;
-              return ;
-
-			}
+		
 			
 		}
     }
