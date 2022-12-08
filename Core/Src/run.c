@@ -632,7 +632,8 @@ void RunCommand_Unlock_Keyboard(void)
 
 void Lock_Open_Order(void)
 {
-	 uint8_t i; 
+	  static uint8_t input_sound=0xff;
+    uint8_t i; 
     if(run_t.open_lock_fail == 1){//unlock is fail 
 
 		OK_LED_OFF();
@@ -686,7 +687,10 @@ void Lock_Open_Order(void)
 				run_t.passwordsMatch = 0;
 				//run_t.open_lock_success=3; // permit to save new password
 				run_t.buzzer_key_sound_flag =0; 
-				run_t.buzzer_highsound_flag =1; //WT.EDIT 2022.10.28
+				if(input_sound != run_t.turn_off_sound){
+					input_sound = run_t.turn_off_sound;
+				    run_t.buzzer_highsound_flag =1; //WT.EDIT 2022.10.28
+				}
 				run_t.inputDeepSleep_times =0;
 				run_t.error_times=0;
 				run_t.lock_fail=0;

@@ -124,7 +124,7 @@ typedef struct __RUN_T{
 
 
 	uint8_t readEepromData;
-
+    uint8_t turn_off_sound;
 	
 
 	uint8_t gTimer_200ms;
