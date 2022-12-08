@@ -260,8 +260,7 @@ static void BackLight_Fun(void)
 	      run_t.led_blank	=0;
 		  run_t.password_unlock_model=0;
 		  run_t.open_lock_success=0;
-         
-		  if(syspara_t.PS_wakeup_flag==0)
+     
 		     run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
 		  run_t.inputNewPasswordTimes =0;//WT.EDIT .2022.10.07
 		

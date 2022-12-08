@@ -631,7 +631,7 @@ void Lock_Open_Order(void)
 {
 	static uint8_t input_sound=0xff;
     uint8_t i; 
-	if(run_t.detection_input_flag==1){
+	//if(run_t.detection_input_flag==1){
 		run_t.detection_input_flag=0;
     if(run_t.open_lock_fail == 1){//unlock is fail 
 
@@ -742,7 +742,7 @@ void Lock_Open_Order(void)
 
 
  		}
-	}
+	//}
 }
 /****************************************************************************
 	*
