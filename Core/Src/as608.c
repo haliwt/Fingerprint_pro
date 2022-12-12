@@ -245,7 +245,7 @@ uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchRes
 		p->mathscore=(data[12]<<8)+data[13];	
 	}
 	else
-		ensure = 0xff;
+		ensure = data[9];//ensure = 0xff;
 	return ensure;	
 }
 //鍚堝苟鐗瑰緛锛堢敓鎴愭ā鏉匡級PS_RegModel
@@ -303,31 +303,31 @@ uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 //鍔熻兘:  鍒犻櫎flash鏁版嵁搴撲腑鎸囧畾ID鍙峰紑濮嬬殑N涓寚绾规ā鏉�
 //鍙傛暟:  PageID(鎸囩汗搴撴ā鏉垮彿)锛孨鍒犻櫎鐨勬ā鏉夸釜鏁般€�
 //璇存槑:  妯″潡杩斿洖纭瀛�
-//uint8_t PS_DeletChar(uint16_t PageID,uint16_t N)
-//{
-//	uint16_t temp;
-//  uint8_t  ensure;
-//	uint8_t  *data;
-//	SendHead();
-//	SendAddr();
-//	SendFlag(0x01);//命令包标识
-//	SendLength(0x07);
-//	Sendcmd(0x0C);
-//	MYUSART_SendData(PageID>>8);
-//	MYUSART_SendData(PageID);
-//	MYUSART_SendData(N>>8);
-//	MYUSART_SendData(N);
-//	temp = 0x01+0x07+0x0C
-//	+(PageID>>8)+(uint8_t)PageID
-//	+(N>>8)+(uint8_t)N;
-//	SendCheck(temp);
-//	data=JudgeStr(2000);
-//	if(data)
-//		ensure=data[9];
-//	else
-//		ensure=0xff;
-//	return ensure;
-//}
+uint8_t PS_DeletChar(uint16_t PageID,uint16_t N)
+{
+	uint16_t temp;
+  uint8_t  ensure;
+	uint8_t  *data;
+	SendHead();
+	SendAddr();
+	SendFlag(0x01);//命令包标识
+	SendLength(0x07);
+	Sendcmd(0x0C);
+	MYUSART_SendData(PageID>>8);
+	MYUSART_SendData(PageID);
+	MYUSART_SendData(N>>8);
+	MYUSART_SendData(N);
+	temp = 0x01+0x07+0x0C
+	+(PageID>>8)+(uint8_t)PageID
+	+(N>>8)+(uint8_t)N;
+	SendCheck(temp);
+	data=JudgeStr(2000);
+	if(data)
+		ensure=data[9];
+	else
+		ensure=0xff;
+	return ensure;
+}
 //娓呯┖鎸囩汗搴� PS_Empty
 //鍔熻兘:  鍒犻櫎flash鏁版嵁搴撲腑鎵€鏈夋寚绾规ā鏉�
 //鍙傛暟:  鏃�
@@ -633,22 +633,23 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 void Press_ReadFingerprint_Data(void)
 {
 	SearchResult seach;
-
-	static uint8_t error_flag=0xff;
-
-	if(run_t.Confirm_newPassword==1){
+    static uint8_t error_flag=0xff,administrator_fp_flag=0;
+    
+    if(run_t.Confirm_newPassword==1){
 	  run_t.gTimer_8s=0;
-	  syspara_t.PS_wakeup_flag=1;
+	  syspara_t.ps_serch_getimage=PS_GetImage();
+	  syspara_t.PS_wakeup_flag=0;
       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	  if(syspara_t.ps_readEeprom_data ==0){ //the first new fingerprint must be is administrator password "1234"
-         syspara_t.ps_thefist_input_fp =1; //the first input fingerprint administrator password
+         syspara_t.ps_thefirst_input_fp =1; //the first input fingerprint administrator password
          run_t.open_lock_success =0;
-		 run_t.open_lock_fail = 0;
-		 run_t.Led_OK_flag =0;
-		  run_t.Led_ERR_flag=0;
+		 		run_t.open_lock_fail = 0;
+		 		run_t.Led_OK_flag =0;
+		  	run_t.Led_ERR_flag=0;
+			administrator_fp_flag=1;
 	  }
 	  else{
-	    syspara_t.ps_thefist_input_fp =0; //has been an administrator of passsword
+	    syspara_t.ps_thefirst_input_fp =0; //has been an administrator of passsword
 	     run_t.open_lock_success =0;
 		 run_t.open_lock_fail = 0;
 		 run_t.Led_OK_flag =0;
@@ -656,86 +657,93 @@ void Press_ReadFingerprint_Data(void)
 
 	 }
 	}
-	else{
-	   syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-	
+   else{
+   	 syspara_t.PS_wakeup_flag=0;
+   	 syspara_t.ps_thefirst_input_fp =2;
+   	 syspara_t.ps_serch_getimage=PS_GetImage();
+     syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+   }
+    
+    
+	//fingerprint open lock doing 
+    if(run_t.Confirm_newPassword==0 && run_t.panel_lock==0 && syspara_t.ps_readEeprom_data >0 && syspara_t.ps_thefirst_input_fp ==2){
 
-	}
-	
-    //fingerprint open lock doing 
-    if(run_t.Confirm_newPassword==0 && run_t.panel_lock==0){
-		syspara_t.ps_thefist_input_fp =0;
 		syspara_t.PS_read_template=0;
-	    syspara_t.ps_serch_getimage=PS_GetImage();
-		while(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
+     if(syspara_t.ps_serch_getimage!=0)
+	       syspara_t.ps_serch_getimage=PS_GetImage();
+		if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
 		{	
            
 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			if( syspara_t.ps_readEeprom_data >0){
-				if(syspara_t.ps_serch_genchar==0x00)//生成特征成功 
+			
+				if(syspara_t.ps_serch_genchar==0x00)//锟斤拷锟斤拷锟斤拷锟斤拷锟缴癸拷 
 				{	 
-	                syspara_t.PS_read_template=2;//receive data is 16bytes by USART1 port
+	         syspara_t.PS_read_template=2;//receive data is 16bytes by USART1 port
 	            
 					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,128,&seach);
 					
 					
-					if(syspara_t.ps_serach_result==0x00)//搜索成功
+					if(syspara_t.ps_serach_result==0x00)//锟斤拷锟斤拷锟缴癸拷
 					{				
 						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  鎸囩汗楠岃瘉鎴愬姛  ");				
 						syspara_t.PS_check_fp_fail =0;
 						
-	                    syspara_t.PS_wakeup_flag=0;
-	                     syspara_t.ps_serch_getimage=0xff;
+	       
+	            syspara_t.ps_serch_getimage=0xff;
 						 
 						 run_t.open_lock_fail=0;
 					
 						  run_t.open_lock_success=1;
 						 run_t.Led_OK_flag =1;
 						 run_t.Led_ERR_flag=0;
+					    run_t.error_times=0; //clear error input fingerprint of times 
 						  syspara_t.PS_wakeup_flag=0;
 						
-						return ;
 					}
 					else{
-						syspara_t.PS_check_fp_success =0;
-						syspara_t.PS_check_fp_fail =1;//OLED_ShowCH(32,2,"楠岃瘉澶辫触");
-	                     syspara_t.PS_wakeup_flag=0;
-	                    syspara_t.ps_serch_getimage=0xff;
+						if(error_flag !=syspara_t.ps_error_times_key){
+							 error_flag = syspara_t.ps_error_times_key;
+
+							syspara_t.PS_check_fp_success =0;
+							syspara_t.PS_check_fp_fail =1;//OLED_ShowCH(32,2,"楠岃瘉澶辫触");
+		          syspara_t.PS_wakeup_flag=0;
+		          syspara_t.ps_serch_getimage=0xff;
+							
+							run_t.open_lock_success =0;
+							run_t.open_lock_fail = 1;
+							run_t.Led_OK_flag =0;
+							run_t.Led_ERR_flag=1;
+							syspara_t.PS_wakeup_flag=0;
+					
+
+	                    }         
 						
-						run_t.open_lock_success =0;
-						run_t.open_lock_fail = 1;
-						  run_t.Led_OK_flag =0;
-						  run_t.Led_ERR_flag=1;
-						  syspara_t.PS_wakeup_flag=0;
-//						  if(error_flag != run_t.error_times){
-//						  	  error_flag = run_t.error_times;
-//						     run_t.error_times ++ ;
-//						  }
-	                    
-						return ;
 					}		
 			 	}
-				else{
-	                  
-					syspara_t.PS_check_fp_success =0;
-					syspara_t.PS_check_fp_fail =1;//OLED_ShowCH(32,2,"楠岃瘉澶辫触");
-	                 syspara_t.PS_wakeup_flag=0;
-	                 syspara_t.ps_serch_getimage=0xff;
+				
+				}
+       }
+    if(syspara_t.ps_readEeprom_data==0 && run_t.Confirm_newPassword==0  && run_t.inputNewPassword_Enable==0){
+      
+    		syspara_t.PS_read_template=0;
+    	 if(syspara_t.ps_serch_getimage!=0)
+	           syspara_t.ps_serch_getimage=PS_GetImage();
+		   if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
+		   {	
+           
+				syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+   
+			  
+    	  		run_t.open_lock_fail=0;
 					
-					 run_t.open_lock_success =0;
-					 run_t.open_lock_fail = 1;
-						  run_t.Led_OK_flag =0;
-						  run_t.Led_ERR_flag=1;
-						   syspara_t.PS_wakeup_flag=0;
-						   
-					
-	                return ;
+				run_t.open_lock_success=1;
+				run_t.Led_OK_flag =1;
+				run_t.Led_ERR_flag=0;
+				run_t.error_times=0; //clear error input fingerprint of times 
+				syspara_t.PS_wakeup_flag=0;
 
-			    }
-            }
-		
-			
-		}
+        }
+
     }
 
     //judge input fingerprint error times
@@ -744,52 +752,91 @@ void Press_ReadFingerprint_Data(void)
         run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
         run_t.gTimer_input_error_times_60s =0;
         run_t.panel_lock=1;
-		run_t.gTimer_8s=0;
+				run_t.gTimer_8s=0;
 		}
 
 	//New fingerprint intpu by save new fingerprint data statement
-    if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefist_input_fp ==0 && run_t.inputNewPassword_Enable==0){//don't the first input FP.and to store has FP data
+    
 
-		syspara_t.ps_serch_getimage=PS_GetImage();
-		while(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
+
+	 
+    if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefirst_input_fp ==0 && run_t.inputNewPassword_Enable==0){//don't the first input FP.and to store has FP data
+      syspara_t.PS_wakeup_flag=0;
+	      if(syspara_t.ps_serch_getimage!=0)
+		        syspara_t.ps_serch_getimage=PS_GetImage();
+		if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
 		{	
            
 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			if(syspara_t.ps_readEeprom_data ==1){
-				if(syspara_t.ps_serch_genchar==0x00)//生成特征成功 
+			
+				if(syspara_t.ps_serch_genchar==0x00)//锟斤拷锟斤拷锟斤拷锟斤拷锟缴癸拷 
 				{	 
-	                syspara_t.PS_read_template=2;//receive data is 16bytes.
+	            syspara_t.PS_read_template=2;//receive data is 16bytes.
 	            
-					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,1,&seach);
+					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
 					
 					
-					if(syspara_t.ps_serach_result==0x00)//搜索成功
+					if(syspara_t.ps_serach_result==0x00)//锟斤拷锟斤拷锟缴癸拷
 					{				
 						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  鎸囩汗楠岃瘉鎴愬姛  ");	
-                        run_t.open_lock_success=1;
+             run_t.open_lock_success=1;
 						run_t.open_lock_fail = 0;
-						 syspara_t.ps_serch_getimage=0xff;
-						return ;
+						run_t.inputNewPassword_Enable=1;
+						administrator_fp_flag=0;
+						syspara_t.PS_wakeup_flag=0;
 						
-					}
-					else{
-						run_t.open_lock_success=0;
-						run_t.open_lock_fail = 1;
-						syspara_t.ps_serch_getimage=0xff;
-						return ;
-					}
-				}
-		        else{
-                    run_t.open_lock_success=0;
-                    run_t.open_lock_fail = 1;
-                    syspara_t.ps_serch_getimage=0xff;
-                    return ;
-                }
+				 }
+				 else{
 
-		}
+				 	administrator_fp_flag=1;
+				 	syspara_t.PS_wakeup_flag=0;
+				 }
+					
+
+		  }
+		  else{
+
+		  	administrator_fp_flag=1;
+		  	syspara_t.PS_wakeup_flag=0;
+		  }
+    }
+    else{
+       administrator_fp_flag=1;
+       syspara_t.PS_wakeup_flag=0;
+
     }
 	
     }
+    if(administrator_fp_flag==1){
+    	   administrator_fp_flag=0;
+           syspara_t.ps_thefirst_input_fp =0xff; 
+    			run_t.inputNewPasswordTimes =0;
+				run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
+        
+				run_t.open_lock_success=0;
+				run_t.open_lock_fail=1;
+
+				run_t.led_blank  =0;
+				run_t.motor_return_homePosition=0;
+				run_t.Numbers_counter =0;
+				run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
+				run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
+				run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
+				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
+				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+				run_t.buzzer_two_short = 0;//WT.EDIT 2022.10.19
+				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
+
+				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+				run_t.BackLight =1;
+				OK_LED_OFF(); //WT.EDIT 2022.10.28
+				ERR_LED_ON();
+				run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
+				syspara_t.PS_wakeup_flag=0;
+			
+
+	}
+	
 
 	
 }
@@ -805,8 +852,9 @@ void Press_ReadFingerprint_Data(void)
 void Del_FR(void)
 {
 	uint8_t  ensure;
-	ensure=PS_Empty();//娓呯┖鎸囩汗搴�
-	if(ensure==0)
+	//ensure=PS_Empty();//娓呯┖鎸囩汗搴�
+	ensure=PS_DeletChar(0,42);
+    if(ensure==0)
 	{
 			//OLED_Clear();
 			//OLED_ShowCH(0,2," 娓呯┖鎸囩汗搴撴垚鍔� ");		
@@ -816,7 +864,7 @@ void Del_FR(void)
 	else{
 
         syspara_t.PS_clear_ps_fail=1;
-		syspara_t.PS_clear_ps_success=0;
+		syspara_t.PS_clear_ps_success=0xff;
 	}
 				
 }
@@ -830,104 +878,128 @@ void Del_FR(void)
 ***********************************************************************/
 void Fingerprint_NewClinet_Login_Fun(void)
 {
-   static uint8_t fp_times=0xff,ps_regmodel=0xff,ps_genChar=0xff,ps_storechar=0xff;
+    static uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
    uint8_t ps_getImage;
    run_t.gTimer_8s=0;
     
       //  if(syspara_t.PS_login_times>4)syspara_t.PS_login_times=0;
-    
-     
-	
-			
-			 switch(syspara_t.PS_login_times){
+    switch(syspara_t.PS_login_times){
 
-			 	case 0: //input 1 times 
+			case 0: //input 1 times 
 
 		   syspara_t.PS_read_template=0;
-		   ps_getImage=PS_GetImage();
-			  
-			if(ps_getImage==0){
-		   
-				 ps_genChar =PS_GenChar(CharBuffer1);//鐢熸垚鐗瑰緛
-				
-				if(ps_genChar==0 ){
-                     if(fp_times != syspara_t.fp_login_key){
-                         fp_times = syspara_t.fp_login_key;
-				          				syspara_t.PS_login_times++;	
-                       
-					      					BUZZER_KeySound();
-                          HAL_Delay(200);
-                        }
+			   ps_getImage=PS_GetImage();
+				  
+				if(ps_getImage==0){
+			   
+					 ps_genChar =PS_GenChar(CharBuffer1);//鐢熸垚鐗瑰緛
+					
+					if(ps_genChar==0 ){
+	             
+						     BUZZER_KeySound();
+	               HAL_Delay(300);
+	               syspara_t.PS_login_times=1;
+	               syspara_t.PS_wakeup_flag=0;	
 					 }
-                 }	   
+					 else{
+             
+	           
+						  syspara_t.PS_login_times=0;	
+						  syspara_t.PS_wakeup_flag=0;	
+					 }
+
+					}
+					else{
+              
+	         
+						  syspara_t.PS_login_times=0;	
+						  syspara_t.PS_wakeup_flag=0;	
+					}
+				 
         break; 
 
         case 1: //input 2 times
-	        syspara_t.PS_read_template=0;
-			   ps_getImage=PS_GetImage();
-				  
-				if(ps_getImage==0){
-			   
-					 ps_genChar =PS_GenChar(CharBuffer1);//鐢熸垚鐗瑰緛
-					
-					if(ps_genChar==0 ){
-	                     if(fp_times != syspara_t.fp_login_key){
-	                         fp_times = syspara_t.fp_login_key;
-					          				syspara_t.PS_login_times++;	
-	                       
-						      					BUZZER_KeySound();
-	                          HAL_Delay(200);
-	                        }
+          if(syspara_t.PS_wakeup_flag==1){
+				  syspara_t.PS_read_template=0;
+				   ps_getImage=PS_GetImage();
+					  
+					if(ps_getImage==0){
+				   
+						 ps_genChar =PS_GenChar(CharBuffer1);//鐢熸垚鐗瑰緛
+						
+						if(ps_genChar==0 ){
+		             
+							  BUZZER_KeySound();
+	               HAL_Delay(300);
+	               syspara_t.PS_login_times=2;
+	               syspara_t.PS_wakeup_flag=0;	
+						 }
+						 else{
+						 
+	              
+						  syspara_t.PS_login_times=1;	
+						  syspara_t.PS_wakeup_flag=0;	
 						 }
 
-
-                     }
-        break;  
+						}
+						else{
+						
+						  syspara_t.PS_login_times=1;	
+						  syspara_t.PS_wakeup_flag=0;	
+						}
+					}
+        break; 
                      
                      
          case 2: //input 3 times
-	        syspara_t.PS_read_template=0;
-			   ps_getImage=PS_GetImage();
-				  
-				if(ps_getImage==0){
-			   
-					 ps_genChar =PS_GenChar(CharBuffer1);//鐢熸垚鐗瑰緛
-					
-					if(ps_genChar==0 ){
-	                     if(fp_times != syspara_t.fp_login_key){
-	                         fp_times = syspara_t.fp_login_key;
-					          				syspara_t.PS_login_times++;	
-	                       
-						      					BUZZER_KeySound();
-	                          HAL_Delay(200);
-	                        }
+           if(syspara_t.PS_wakeup_flag==1){
+	         syspara_t.PS_read_template=0;
+				   ps_getImage=PS_GetImage();
+					  
+					if(ps_getImage==0){
+				   
+						 ps_genChar =PS_GenChar(CharBuffer1);//鐢熸垚鐗瑰緛
+						
+						if(ps_genChar==0 ){
+		            
+							  BUZZER_KeySound();
+	               HAL_Delay(300);
+	                syspara_t.PS_login_times=3;
+	               syspara_t.PS_wakeup_flag=0;	
+						 }
+						 else{
+						 	
+	             // HAL_Delay(100);
+						  syspara_t.PS_login_times=2;	
+						  syspara_t.PS_wakeup_flag=0;	
 						 }
 
-
-                     }
+						}
+						else{
+						
+	             // HAL_Delay(100);
+						  syspara_t.PS_login_times=2;	
+						  syspara_t.PS_wakeup_flag=0;	
+						}
+					}
         break;  
 
         case 3: //input 4  times 
-
+         if(syspara_t.PS_wakeup_flag==1){
+        		syspara_t.PS_read_template=0;
             ps_regmodel=PS_RegModel();
-                if(ps_regmodel==0){
-	                     if(fp_times != syspara_t.fp_login_key){
-	                         fp_times = syspara_t.fp_login_key;
-					          				syspara_t.PS_login_times++;	
-	                          
+           if(ps_regmodel==0){
 
-             syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-	            if(syspara_t.ps_readEeprom_data ==0){
-				         ps_storechar=PS_StoreChar(CharBuffer1,1);//administrator of fingerprint
-	              }
-				        else{
-				  	       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+0X01);
-				  	      ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????
-				        }
+                      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+                      if(syspara_t.ps_readEeprom_data !=0)
+                            syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+1);
+				  	 }
+          
+				   ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????     
 				  if(ps_storechar==0){
 //	            if(syspara_t.ps_readEeprom_data < 41){
-				 
-					
+				   
+					   syspara_t.PS_login_times=5;
 					   run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
 					   run_t.motor_return_homePosition=0;
 						 run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
@@ -935,53 +1007,43 @@ void Fingerprint_NewClinet_Login_Fun(void)
 						run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
 						run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 						  
-					
-                        run_t.gTimer_8s=7;
+						run_t.gTimer_8s=7;
 						run_t.login_in_success=1; //WT.EDIT 2022.10.31
 						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
-			
+						run_t.open_lock_success=0;
+            			run_t.open_lock_fail = 0;
+			          
 					   if(syspara_t.ps_readEeprom_data ==0){
 				  	     AT24CXX_WriteOneByte(EEPROM_AS608Addr,0x01);
 					   	}
 					   else
 				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
 				       
-                    run_t.open_lock_success=0;
-                    run_t.open_lock_fail = 0;
-					ERR_LED_ON();
-					OK_LED_OFF(); //WT.EDIT 2022.10.28
+                  
+					
 		      run_t.led_blank	=1;//OK led blank three times
-			  syspara_t.PS_read_template=1;
-			  syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕驴芒脰赂脦脝赂枚脢媒
+	
 				 
 		 
 		    }
-//		    else{//over times 40 is error
-//		    	 run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-//		    	run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-//					run_t.BackLight =1;
-//					OK_LED_OFF(); //WT.EDIT 2022.10.28
-//					ERR_LED_ON();
-//					run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
-//          run_t.open_lock_success=0;
-//				  run_t.open_lock_fail=1;
-//				  run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
-//				  run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
-//					run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-//					run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
-//		    }
-		
-			}
-                    syspara_t.PS_login_times=0xA0;	
-                    }
-                
-                break;
+		 
+
+         case 5:
+     
+         	syspara_t.PS_read_template=1;
+			  	syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
+           syspara_t.PS_wakeup_flag = 0;
+         syspara_t.PS_login_times=0;
+        }
+        break;
        
-   }
+}
+
+}
 
                
          
-}
+
    
 
 

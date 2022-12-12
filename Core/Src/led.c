@@ -73,6 +73,7 @@ void DisplayLed_Handler(void)
 			  run_t.buzzer_longsound_flag =1 ;
 			   run_t.buzzer_fail_sound_flag =0;
 			   run_t. clearEeeprom_count=0;
+                Del_FR();//fingerprint be deteleted
 			 
 		  }
 
@@ -195,7 +196,7 @@ static void BackLight_Fun(void)
 		 run_t.led_blank =0;
          run_t.passwordsMatch =0 ;
 	     run_t.powerOn =3;
-         syspara_t.PS_save_NewFP =0;
+         
 		 
 	
 	  
@@ -253,7 +254,7 @@ static void BackLight_Fun(void)
 	  }
 	  /*____________________error led blank _________________________*/
 	 //LED error bank function .
-	  if(run_t.open_lock_fail==1 || run_t.input_newPassword_over_number==1){
+	  if(run_t.open_lock_fail_led==1 || run_t.input_newPassword_over_number==1){
 		   cnt ++ ;
 		//  run_t.BackLight =0;//WT.EDIT .2022.10.19
 		  run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
@@ -284,7 +285,7 @@ static void BackLight_Fun(void)
 		  	cntrecoder =0;
 		 
 		      run_t.saveEEPROM_fail_flag =0;
-			  run_t.open_lock_fail=0;//run_t.lock_fail=0;
+			  run_t.open_lock_fail_led=0;//run_t.lock_fail=0;
 			  run_t.input_newPassword_over_number=0;
 
 			  ERR_LED_OFF();
@@ -300,7 +301,7 @@ static void BackLight_Fun(void)
 	    
 		 cnt0 ++ ;
 		  ERR_LED_OFF();
-		 run_t.open_lock_fail=0;//run_t.lock_fail=0;
+		 run_t.open_lock_fail_led=0;//run_t.lock_fail=0;
 		 run_t.input_newPassword_over_number=0;
 	     run_t.readI2C_data =1;
 	     run_t.gTimer_8s=0; //WT.EDIT 2022.10.14

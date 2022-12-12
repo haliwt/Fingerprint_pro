@@ -75,12 +75,11 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
     
 
 
-   if(GPIO_Pin == SC12B_INT_INPUT_Pin || GPIO_Pin == GPIO_PIN_5){
+   if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
       run_t.input_lowpower_stopmodel_flag=0;
         POWER_ON();
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-       __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_5);//WT.EDIT 2022.09.09
       if(run_t.lowPower_flag==0){
       do{
 	 	    run_t.lowPower_flag++;
@@ -128,7 +127,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			HAL_TIM_Base_Start_IT(&htim14);//
 			//MX_USART1_UART_Init();
            //  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
-		   
+		   POWER_ON();
+		  FP_POWER_ON()  ;
 		  	run_t.inputDeepSleep_times =0;
 	       	}while(run_t.lowPower_flag==0);
        }
@@ -303,7 +303,7 @@ void  SideKey_Fun(uint8_t keyvalue)
 		run_t.open_lock_success=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
-		syspara_t.ps_thefist_input_fp =0;//clear fingerprint flag
+		syspara_t.ps_thefirst_input_fp =0;//clear fingerprint flag
 	
         BACKLIGHT_2_ON();        
 		

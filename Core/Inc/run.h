@@ -84,6 +84,7 @@ typedef struct __RUN_T{
 	uint8_t inputNewPwd_OK_led_blank_times;
 	uint8_t motor_doing_flag;
 	uint8_t motor_returnRun_flag;
+	
 
     
     
@@ -107,7 +108,8 @@ typedef struct __RUN_T{
 	uint8_t       Led_OK_flag;
 	uint8_t 	  Led_ERR_flag ;
 	
-    
+    //LED
+    uint8_t open_lock_fail_led;
 
 	unsigned char factory_test;
 	uint8_t lowPower_flag;

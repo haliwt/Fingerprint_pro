@@ -629,11 +629,12 @@ void RunCommand_Unlock_Keyboard(void)
 
 void Lock_Open_Order(void)
 {
-	static uint8_t input_sound=0xff;
+	
     uint8_t i; 
 	if(run_t.detection_input_flag==1){
 		run_t.detection_input_flag=0;
     if(run_t.open_lock_fail == 1){//unlock is fail 
+         run_t.open_lock_fail=0;
 
 		OK_LED_OFF();
 		ERR_LED_ON();
@@ -644,7 +645,8 @@ void Lock_Open_Order(void)
 		 run_t.open_lock_success=0;	
 		run_t.eepromAddress=0;
 		run_t.passwordsMatch = 0;
-        run_t.open_lock_fail ++;
+       
+		run_t.open_lock_fail_led=1;
 		run_t.error_times ++ ; //input times 5 ,
 		if(run_t.error_times > 4){
 			run_t.gTimer_10s_start=0;
@@ -656,7 +658,6 @@ void Lock_Open_Order(void)
 		}
         run_t.Confirm_newPassword =0;
 	    run_t.inputNewPassword_Enable =0;
-		 run_t.open_lock_fail=1;//run_t.lock_fail=1;
 	    run_t.buzzer_fail_sound_flag=1;
 		run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.19
 		run_t.buzzer_two_short=0;//WT.EDIT 2022.10.19
@@ -877,9 +878,16 @@ static void Read_Administrator_Password(void)
 					 value =CompareValue(origin_pwd, pwd1);
 
 				   if(value==1){
-									   
-						run_t.open_lock_success=1;	
-						run_t.gTimer_8s =0;//
+
+				   		syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+						if(syspara_t.ps_readEeprom_data==0){//WT.EDIT 2022.12.12			   
+                            run_t.open_lock_success=1;	
+                            run_t.gTimer_8s =0;//
+                        }
+                        else{
+                            run_t.open_lock_fail=1;	
+                            run_t.gTimer_8s =0;//
+                        }
 						  for(i=0;i<6;i++){
                         pwd1[i]=0;
                         pwd2[i]=0;
