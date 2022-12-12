@@ -25,8 +25,8 @@ uint8_t ps_buffer[50];
 uint16_t ArraypageID ;
 uint16_t Arraymathscore;
 
-uint8_t STEP_CNT;
-uint8_t state;
+uint8_t  fp_read_cnt;
+
   
 uint8_t ensure_getImage,ensure_regModel, ensure_storeChar;
 
@@ -682,26 +682,42 @@ void Press_ReadFingerprint_Data(void)
 	//fingerprint open lock doing 
     if(run_t.Confirm_newPassword==0 && run_t.panel_lock==0 && syspara_t.ps_readEeprom_data >0 && syspara_t.ps_thefirst_input_fp ==2){
 
+		 run_t.gTimer_8s=0;
+
 		syspara_t.PS_read_template=0;
-     if(syspara_t.ps_serch_getimage!=0)
-	       syspara_t.ps_serch_getimage=PS_GetImage();
+		
+       while(syspara_t.ps_serch_getimage){
+	   	   syspara_t.ps_serch_getimage=PS_GetImage();
+	   	   syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+	       syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
+
+		   if(syspara_t.ps_serach_result==0) goto FP_SEARCH;
+		    fp_read_cnt++;
+	        if(fp_read_cnt>4){
+                fp_read_cnt=0;
+				return;
+
+			}
+		   
+       	}
 		if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//获取图像成功 
 		{	
            
+             fp_read_cnt=0;
 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
 			
 				if(syspara_t.ps_serch_genchar==0x00)//���������ɹ� 
 				{	 
 	         syspara_t.PS_read_template=2;//receive data is 16bytes by USART1 port
 	            
-					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,128,&seach);
+					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
 					
 					
 					if(syspara_t.ps_serach_result==0x00)//�����ɹ�
 					{				
-						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  指纹验证成功  ");				
+		FP_SEARCH:		syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  指纹验证成功  ");				
 						syspara_t.PS_check_fp_fail =0;
-						
+						fp_read_cnt=0;
 	       
 	            syspara_t.ps_serch_getimage=0xff;
 						 
@@ -737,28 +753,7 @@ void Press_ReadFingerprint_Data(void)
 				
 				}
        }
-    if(syspara_t.ps_readEeprom_data==0 && run_t.Confirm_newPassword==0  && run_t.inputNewPassword_Enable==0){
-      
-    		syspara_t.PS_read_template=0;
-    	 if(syspara_t.ps_serch_getimage!=0)
-	           syspara_t.ps_serch_getimage=PS_GetImage();
-		   if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//获取图像成功 
-		   {	
-           
-				syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
    
-			  
-    	  		run_t.open_lock_fail=0;
-					
-				run_t.open_lock_success=1;
-				run_t.Led_OK_flag =1;
-				run_t.Led_ERR_flag=0;
-				run_t.error_times=0; //clear error input fingerprint of times 
-				syspara_t.PS_wakeup_flag=0;
-
-        }
-
-    }
 
     //judge input fingerprint error times
 	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
