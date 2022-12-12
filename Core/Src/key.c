@@ -76,12 +76,17 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
     
 
 
-   if(GPIO_Pin == SC12B_INT_INPUT_Pin){
+   if(GPIO_Pin == SC12B_INT_INPUT_Pin ||GPIO_Pin==FP_INT_INPUT_Pin){
    
       run_t.input_lowpower_stopmodel_flag=0;
         POWER_ON();
      FP_POWER_ON()  ;
+	   if(GPIO_Pin == SC12B_INT_INPUT_Pin )
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+       if(GPIO_Pin==FP_INT_INPUT_Pin){
+	   	 	syspara_t.PS_wakeup_flag=1;
+	       __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);
+       	}
       if(run_t.lowPower_flag==0){
       
 	 	    run_t.lowPower_flag++;
@@ -94,7 +99,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			  HAL_TIM_Base_Start_IT(&htim14);//
 			//  MX_USART1_UART_Init();
 			     POWER_ON();
-     FP_POWER_ON()  ;
+     			FP_POWER_ON()  ;
            
     		run_t.readI2C_data =1;
 		  	 run_t.inputDeepSleep_times =0;
@@ -114,30 +119,30 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
   
    //fingerprint 
-   if(GPIO_Pin==FP_INT_INPUT_Pin){
-         syspara_t.PS_wakeup_flag=1;
-		  POWER_ON();
-		  FP_POWER_ON()  ;
-		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-      if(run_t.lowPower_flag==0){
-
-	      
-
-            run_t.ADC_times=0;
-			run_t.lowPower_flag++;
-	      	run_t.input_lowpower_stopmodel_flag=0;
-		    SystemClock_Config();
-	        HAL_ResumeTick();
-			HAL_TIM_Base_Start_IT(&htim14);//
-			//MX_USART1_UART_Init();
-           //  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
-		   POWER_ON();
-		  FP_POWER_ON()  ;
-		  syspara_t.ps_serch_getimage=PS_GetImage();
-		  	run_t.inputDeepSleep_times =0;
-	      
-       }
-	}
+//   if(GPIO_Pin==FP_INT_INPUT_Pin){
+//         syspara_t.PS_wakeup_flag=1;
+//		  POWER_ON();
+//		  FP_POWER_ON()  ;
+//		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+//      if(run_t.lowPower_flag==0){
+//
+//	      
+//
+//            run_t.ADC_times=0;
+//			run_t.lowPower_flag++;
+//	      	run_t.input_lowpower_stopmodel_flag=0;
+//		    SystemClock_Config();
+//	        HAL_ResumeTick();
+//			HAL_TIM_Base_Start_IT(&htim14);//
+//			//MX_USART1_UART_Init();
+//           //  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
+//		   POWER_ON();
+//		  FP_POWER_ON()  ;
+//		//  syspara_t.ps_serch_getimage=PS_GetImage();
+//		  	run_t.inputDeepSleep_times =0;
+//	      
+//       }
+//	}
 
 }
 

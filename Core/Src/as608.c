@@ -367,31 +367,31 @@ uint8_t PS_Empty(void)
 //功能:  写模块寄存器
 //参数:  寄存器序号RegNum:4\5\6
 //说明:  模块返回确认字
-//uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA)
-//{
-//	uint16_t temp;
-//  uint8_t  ensure;
-//	uint8_t  *data;
-//	SendHead();
-//	SendAddr();
-//	SendFlag(0x01);//命令包标识
-//	SendLength(0x05);
-//	Sendcmd(0x0E);
-//	MYUSART_SendData(RegNum);
-//	MYUSART_SendData(DATA);
-//	temp = RegNum+DATA+0x01+0x05+0x0E;
-//	SendCheck(temp);
-//	data=JudgeStr(2000);
-//	if(data)
-//		ensure=data[9];
-//	else
-//		ensure=0xff;
+uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA)
+{
+	uint16_t temp;
+    uint8_t  ensure;
+	uint8_t  *data;
+	SendHead();
+	SendAddr();
+	SendFlag(0x01);//命令包标识
+	SendLength(0x05);
+	Sendcmd(0x0E);
+	MYUSART_SendData(RegNum);
+	MYUSART_SendData(DATA);
+	temp = RegNum+DATA+0x01+0x05+0x0E;
+	SendCheck(temp);
+	data=JudgeStr(2000);
+	if(data)
+		ensure=data[9];
+	else
+		ensure=0xff;
 //	if(ensure==0)
-//		printf("\r\n设置参数成功！");
+//		ensure=0xAA;//printf("\r\n设置参数成功！");
 //	else
 //		//printf("\r\n%s",EnsureMessage(ensure));
-//	return ensure;
-//}
+	return ensure;
+}
 //读系统基本参数 PS_ReadSysPara
 //功能:  读取模块的基本参数（波特率，包大小等)
 //参数:  无
