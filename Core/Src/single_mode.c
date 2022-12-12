@@ -114,14 +114,9 @@ static void UnLock_Aand_SaveData_Handler(void)
 
 	case STORE_MODEL: //SaveData to EEPROM //new password for the first input 
 	    if(syspara_t.PS_wakeup_flag==1 && run_t.inputNewPassword_Enable==1){ //new fingerprint input and be save data
-			 // syspara_t.PS_wakeup_flag=0;
-          //  syspara_t.fp_login_key++;
-	    	 if(syspara_t.PS_login_times==0xA0){
-	    	 	HAL_Delay(500);
-	    	 	syspara_t.PS_login_times=0;
-	    	 }
+		
 			 Fingerprint_NewClinet_Login_Fun();
-			
+			 run_t.motor_return_homePosition=0;
         }
 		else{
         	run_t.passwordsMatch=0  ;

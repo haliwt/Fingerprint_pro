@@ -117,7 +117,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
        __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       if(run_t.lowPower_flag==0){
 
-	       do{
+	      
 
             run_t.ADC_times=0;
 			run_t.lowPower_flag++;
@@ -130,7 +130,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		   POWER_ON();
 		  FP_POWER_ON()  ;
 		  	run_t.inputDeepSleep_times =0;
-	       	}while(run_t.lowPower_flag==0);
+	      
        }
 	}
 
