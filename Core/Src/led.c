@@ -18,6 +18,7 @@ static void Panle_InputTimesError_LED_Off(void);
 uint16_t adcVale;
 uint16_t adcx;
 float temp;  
+uint8_t ps_sleep=0xff;
 
 void Panel_LED_Off(void)
 {
@@ -230,7 +231,7 @@ static void BackLight_Fun(void)
 	          		/*close tick timer low power Mode */
 				    run_t.gTimer_10s=0;
 				    run_t.lowPower_flag=0;
-                    PS_Sleep();
+                    ps_sleep=PS_Sleep();
                     FP_POWER_OFF();
              
                   __HAL_RCC_PWR_CLK_ENABLE();

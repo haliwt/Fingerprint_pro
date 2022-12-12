@@ -702,6 +702,7 @@ void Press_ReadFingerprint_Data(void)
    	 syspara_t.PS_wakeup_flag=0;
    	 syspara_t.ps_thefirst_input_fp =2;
    //  if(syspara_t.ps_serch_getimage !=0)
+       	syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//¶Á
    	      syspara_t.ps_serch_getimage=PS_GetImage();
      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
    }
@@ -781,8 +782,32 @@ void Press_ReadFingerprint_Data(void)
 				
 				}
        }
+   //don't new administrator of FP
+   /*************************************************************/
+	if(syspara_t.ps_readEeprom_data==0 && run_t.Confirm_newPassword==0  && run_t.inputNewPassword_Enable==0){
+      
+    		syspara_t.PS_read_template=0;
+    	 if(syspara_t.ps_serch_getimage!=0)
+	           syspara_t.ps_serch_getimage=PS_GetImage();
+		   if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
+		   {	
+           
+				syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
    
+			  
+    	  run_t.open_lock_fail=0;
+					
+				run_t.open_lock_success=1;
+				run_t.Led_OK_flag =1;
+				run_t.Led_ERR_flag=0;
+				run_t.error_times=0; //clear error input fingerprint of times 
+				syspara_t.PS_wakeup_flag=0;
 
+        }
+
+    }
+
+	
     //judge input fingerprint error times
 	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
         
@@ -890,7 +915,7 @@ void Del_FR(void)
 {
 	uint8_t  ensure;
 	//ensure=PS_Empty();//清空指纹庄1�7
-	ensure=PS_DeletChar(0,42);
+	ensure=PS_DeletChar(0,128);
     if(ensure==0)
 	{
 			//OLED_Clear();
