@@ -263,7 +263,7 @@ uint8_t PS_RegModel(void)
 	Sendcmd(0x05);
 	temp = 0x01+0x03+0x05;
 	SendCheck(temp);
-	data=JudgeStr(200);
+	data=JudgeStr(2000);
 	if(data)
 		ensure=data[9];
 	else
