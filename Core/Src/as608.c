@@ -637,7 +637,8 @@ void Press_ReadFingerprint_Data(void)
     
     if(run_t.Confirm_newPassword==1){
 	  run_t.gTimer_8s=0;
-	  syspara_t.ps_serch_getimage=PS_GetImage();
+	  if(syspara_t.ps_serch_getimage !=0)
+	        syspara_t.ps_serch_getimage=PS_GetImage();
 	  syspara_t.PS_wakeup_flag=0;
       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	  if(syspara_t.ps_readEeprom_data ==0){ //the first new fingerprint must be is administrator password "1234"
@@ -660,7 +661,8 @@ void Press_ReadFingerprint_Data(void)
    else{
    	 syspara_t.PS_wakeup_flag=0;
    	 syspara_t.ps_thefirst_input_fp =2;
-   	 syspara_t.ps_serch_getimage=PS_GetImage();
+     if(syspara_t.ps_serch_getimage !=0)
+   	      syspara_t.ps_serch_getimage=PS_GetImage();
      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
    }
     

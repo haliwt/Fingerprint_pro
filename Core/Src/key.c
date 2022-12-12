@@ -118,7 +118,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
          syspara_t.PS_wakeup_flag=1;
 		  POWER_ON();
 		  FP_POWER_ON()  ;
-       __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       if(run_t.lowPower_flag==0){
 
 	      
@@ -133,6 +133,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
            //  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
 		   POWER_ON();
 		  FP_POWER_ON()  ;
+		  syspara_t.ps_serch_getimage=PS_GetImage();
 		  	run_t.inputDeepSleep_times =0;
 	      
        }
