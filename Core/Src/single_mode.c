@@ -9,6 +9,7 @@
 #include "funpointer.h"
 #include "as608.h"
  uint16_t KeyValue;
+uint8_t  fp_read_cnt;
 
 static void Save_To_EeepromNewPwd(void);
 static void UnLock_Aand_SaveData_Handler(void);
@@ -74,7 +75,8 @@ void CheckPassword_Lock_Handler(void)
      }
     //fingerprint lock input 
 	 if(syspara_t.PS_wakeup_flag ==1 &&  run_t.inputNewPassword_Enable ==0 && run_t.passwordsMatch ==0){
-           syspara_t.PS_wakeup_flag=0;
+         syspara_t.PS_wakeup_flag=0;
+		 fp_read_cnt++;
          RunCommand_Unlock_Fingerprint();
 	     if(run_t.motor_return_homePosition==1){
 				run_t.oneself_copy_behavior =1;

@@ -2,6 +2,7 @@
 #include "usart.h"
 #include "as608.h"
 #include "usart.h"
+#include "led.h"
 
 
 
@@ -36,12 +37,12 @@ volatile static uint8_t transOngoingFlag;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
    
-    static uint8_t temp;
+  
 
 	if(huart->Instance==USART1)
     {	      
 	     
-        //  if(syspara_t.PS_wakeup_flag==1){
+       // if(syspara_t.PS_wakeup_flag==1){
 		  if(syspara_t.uart1_rx_data==0){
               
        
@@ -52,7 +53,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
-				   temp=0;
+				 
                 
 		    } 
             if(USART1_RX_STA ==14  && syspara_t.PS_read_template==1){
@@ -60,7 +61,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
-				   temp=0;
+				 
                 
             }
             if(USART1_RX_STA ==16  && syspara_t.PS_read_template==2){
@@ -68,11 +69,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
-				   temp=0;
+				 
                 
             }
         }
-       // }
+      //  }
          HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf)); 
 	}
                

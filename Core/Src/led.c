@@ -412,6 +412,7 @@ void Buzzer_RunSound(void)
 	 	  run_t.buzzer_fail_sound_flag=0; //WT.EDIT 2022.10.06
 		   Fail_Buzzer_Sound();
 	       run_t.buzzer_key_sound_flag=0;//WT.EDIT 2022.10.19
+	       syspara_t.ps_error_times_key++;
 		}
 		else if(run_t.buzzer_key_sound_flag==1){
 			run_t.buzzer_key_sound_flag=0;//WT.EDIT 2022.10.06

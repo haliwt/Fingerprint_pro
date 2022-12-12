@@ -22,6 +22,7 @@
 #define  FP_POWER_ON()          HAL_GPIO_WritePin(FP_POWER_GPIO_Port ,FP_POWER_Pin,GPIO_PIN_SET)//  (PORTAbits.RA0 =0)
 #define  FP_POWER_OFF()         HAL_GPIO_WritePin(FP_POWER_GPIO_Port ,FP_POWER_Pin,GPIO_PIN_RESET)//  (PORTAbits.RA0 =0)
 
+#define FP_INPUT_KEY()         HAL_GPIO_ReadPin(FP_INT_INPUT_GPIO_Port  ,FP_INT_INPUT_Pin)// 
 
 
 

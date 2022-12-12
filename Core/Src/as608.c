@@ -116,8 +116,12 @@ void PS_Rx_InputInfo_Handler(void)
 //返回值：数据包首地址
 static uint8_t *JudgeStr(uint16_t waittime)
 {
+
+    static uint16_t temp_waitime;
 	char *data;
 	uint8_t str[8];
+
+	temp_waitime = waittime;
 	str[0]=0xef;
     str[1]=0x01;
     str[2]=AS608Addr>>24;
@@ -128,14 +132,22 @@ static uint8_t *JudgeStr(uint16_t waittime)
     str[7]='\0';
 	USART1_RX_STA=0;
     syspara_t.uart1_rx_data= 0;
-    while(--waittime)
+    while(--temp_waitime)
 	{
 		delay_ms(1);
 		if(USART1_RX_STA&0X8000 || syspara_t.uart1_rx_data==1)//½ÓÊÕµ½Ò»´ÎÊý¾Ý
 		{
+          
 			USART1_RX_STA=0;
 			syspara_t.uart1_rx_data= 0;
 			data=strstr((const char*)USART1_RX_BUF,(const char*)str);
+			if(syspara_t.PS_wakeup_flag==1){
+              
+               if(USART1_RX_BUF[9]==0x02){
+
+                 temp_waitime = waittime;
+			   }  
+			}
 			if(data)
 				return (uint8_t*)data;	
 		}
@@ -637,7 +649,7 @@ void Press_ReadFingerprint_Data(void)
     
     if(run_t.Confirm_newPassword==1){
 	  run_t.gTimer_8s=0;
-	  if(syspara_t.ps_serch_getimage !=0)
+	 // if(syspara_t.ps_serch_getimage !=0)
 	        syspara_t.ps_serch_getimage=PS_GetImage();
 	  syspara_t.PS_wakeup_flag=0;
       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
@@ -661,7 +673,7 @@ void Press_ReadFingerprint_Data(void)
    else{
    	 syspara_t.PS_wakeup_flag=0;
    	 syspara_t.ps_thefirst_input_fp =2;
-     if(syspara_t.ps_serch_getimage !=0)
+   //  if(syspara_t.ps_serch_getimage !=0)
    	      syspara_t.ps_serch_getimage=PS_GetImage();
      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
    }
@@ -781,7 +793,7 @@ void Press_ReadFingerprint_Data(void)
 					if(syspara_t.ps_serach_result==0x00)//�����ɹ�
 					{				
 						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  指纹验证成功  ");	
-             run_t.open_lock_success=1;
+             			run_t.open_lock_success=1;
 						run_t.open_lock_fail = 0;
 						run_t.inputNewPassword_Enable=1;
 						administrator_fp_flag=0;
@@ -796,13 +808,13 @@ void Press_ReadFingerprint_Data(void)
 					
 
 		  }
-		  else{
+		  else if(administrator_fp_flag==0){
 
 		  	administrator_fp_flag=1;
 		  	syspara_t.PS_wakeup_flag=0;
 		  }
     }
-    else{
+    else if(administrator_fp_flag==0){
        administrator_fp_flag=1;
        syspara_t.PS_wakeup_flag=0;
 
