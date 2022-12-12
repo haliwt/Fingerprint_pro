@@ -633,7 +633,33 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 //{
 //	EnsureMessage(ensure);
 //}
-
+/**********************************************************************
+	*
+	*Function Name:uint8_t PS_Sleep(void)
+	*Function : sensor input sleep state
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t PS_Sleep(void)
+{
+	uint16_t temp;
+    uint8_t  ensure;
+	uint8_t  *data;
+	SendHead();
+	SendAddr();
+	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendLength(0x03);
+	Sendcmd(0x33);
+	temp = 0x01+0x03+0x33;
+	SendCheck(temp);
+	data=JudgeStr(2000);
+	if(data)
+		ensure=data[9];
+	else
+		ensure=0xff;
+	return ensure;
+}
 /**********************************************************************
 	*
 	*Function Name:void press_FR(void)
@@ -667,6 +693,8 @@ void Press_ReadFingerprint_Data(void)
 		 run_t.open_lock_fail = 0;
 		 run_t.Led_OK_flag =0;
 		  run_t.Led_ERR_flag=0;
+		  run_t.buzzer_key_sound_flag = 1;
+		  run_t.buzzer_fail_sound_flag=0;
 
 	 }
 	}

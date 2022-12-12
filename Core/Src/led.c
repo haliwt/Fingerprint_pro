@@ -220,8 +220,9 @@ static void BackLight_Fun(void)
 				*(pwd1+i)=0;//pwd1[i]=0;
 
 		 }
+        //PS_Sleep(void);
 		POWER_OFF();
-		FP_POWER_OFF(); //WT.EDIT 2022.11.26 fingerprint
+		//FP_POWER_OFF(); //WT.EDIT 2022.11.26 fingerprint
 	     if(run_t.inputDeepSleep_times > 2){  //wait 20s  
 				   run_t.inputDeepSleep_times =0;
 				   run_t.normal_works_state =0;
@@ -229,6 +230,9 @@ static void BackLight_Fun(void)
 	          		/*close tick timer low power Mode */
 				    run_t.gTimer_10s=0;
 				    run_t.lowPower_flag=0;
+                    PS_Sleep();
+                    FP_POWER_OFF();
+             
                   __HAL_RCC_PWR_CLK_ENABLE();
                  HAL_TIM_Base_Stop_IT(&htim14);//
                   HAL_SuspendTick();

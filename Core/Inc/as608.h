@@ -108,7 +108,7 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN);//读有效模板个数
 
 uint8_t PS_HandShake(uint32_t *PS_Addr); //与AS608模块握手
 
-
+uint8_t PS_Sleep(void);
 
 void Add_FR(void);
 void Press_ReadFingerprint_Data(void);

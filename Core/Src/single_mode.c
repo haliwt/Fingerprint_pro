@@ -76,12 +76,13 @@ void CheckPassword_Lock_Handler(void)
     //fingerprint lock input 
 	 if(syspara_t.PS_wakeup_flag ==1 &&  run_t.inputNewPassword_Enable ==0 && run_t.passwordsMatch ==0){
          syspara_t.PS_wakeup_flag=0;
-		
-         RunCommand_Unlock_Fingerprint();
-	     if(run_t.motor_return_homePosition==1){
+		if(run_t.motor_return_homePosition==1){
 				run_t.oneself_copy_behavior =1;
 
-		 }
+		}
+
+	    RunCommand_Unlock_Fingerprint();
+	    
         
         run_t.detection_input_flag=1;
        // Lock_Open_Order();
