@@ -722,9 +722,10 @@ void Press_ReadFingerprint_Data(void)
 
 		   if(syspara_t.ps_serach_result==0) goto FP_SEARCH;
 		    fp_read_cnt++;
-	        if(fp_read_cnt>4){
+	        if(fp_read_cnt>2){
                 fp_read_cnt=0;
-				return;
+				
+				goto FP_FAIL;
 
 			}
 		   
@@ -760,13 +761,13 @@ void Press_ReadFingerprint_Data(void)
 						
 					}
 					else{
-						if(error_flag !=syspara_t.ps_error_times_key){
+			FP_FAIL:	if(error_flag !=syspara_t.ps_error_times_key){
 							 error_flag = syspara_t.ps_error_times_key;
-
+								fp_read_cnt=0;
 							syspara_t.PS_check_fp_success =0;
 							syspara_t.PS_check_fp_fail =1;//OLED_ShowCH(32,2,"验证失败");
-		          syspara_t.PS_wakeup_flag=0;
-		          syspara_t.ps_serch_getimage=0xff;
+		          			syspara_t.PS_wakeup_flag=0;
+		          			syspara_t.ps_serch_getimage=0xff;
 							
 							run_t.open_lock_success =0;
 							run_t.open_lock_fail = 1;

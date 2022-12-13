@@ -37,7 +37,7 @@ volatile static uint8_t transOngoingFlag;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
    
-    
+    static uint8_t temp=0;
 
 	if(huart->Instance==USART1)
     {	      
@@ -46,7 +46,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
           
             if(syspara_t.uart1_rx_data==0){
               
-            if(UART1_RX_DataBuf[0]==0x55)USART1_RX_STA=0;
+            if(UART1_RX_DataBuf[0]==0x55) temp=0;
+		
+            
+			if(UART1_RX_DataBuf[0]==0xEF) temp= 1;
+			if(temp==1){
           
 			USART1_RX_BUF[USART1_RX_STA]=UART1_RX_DataBuf[0];	//¼ÇÂ¼½ÓÊÕµ½µÄÖµ	
 		    USART1_RX_STA++;
@@ -55,7 +59,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
-				  
+				  temp= 0;
                       
                 
 		    } 
@@ -65,16 +69,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
 				 
-                
+                 temp= 0;
             }
             if(USART1_RX_STA ==15  && syspara_t.PS_read_template==2){
                 USART1_RX_STA |=(1<<15);
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
-				 
+				  temp= 0;
                 
             }
+			}
         }
         
          HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf)); 
