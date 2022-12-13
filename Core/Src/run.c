@@ -397,7 +397,7 @@ void RunCheck_Mode(uint16_t dat)
 
 				        run_t.buzzer_key_sound_flag =1; 
 					   run_t.passwordsMatch=1;
-				       run_t.oneself_copy_behavior=1;
+				       run_t.oneself_copy_behavior=1; //prejudge statement
 					   run_t.inputDeepSleep_times =0;
 					   run_t.eepromAddress=0;
 
@@ -640,7 +640,7 @@ void Lock_Open_Order(void)
 		ERR_LED_ON();
 	    run_t.Led_OK_flag=0;
 		run_t.Led_ERR_flag =1;
-		run_t.oneself_copy_behavior =0;//WT.EDIT 2022.10.28
+		//run_t.oneself_copy_behavior =0;//WT.EDIT 2022.10.28
 		run_t.Numbers_counter = 0;
 		 run_t.open_lock_success=0;	
 		run_t.eepromAddress=0;
@@ -708,7 +708,6 @@ void Lock_Open_Order(void)
 					run_t.Led_OK_flag =1;
 					run_t.Led_ERR_flag=0;
 					run_t.buzzer_key_sound_flag=0;
-					//run_t.oneself_copy_behavior=0;
 					run_t.open_lock_success=0;
 					run_t.open_lock_fail=0;
 					 run_t.Numbers_counter =0 ;
@@ -723,6 +722,7 @@ void Lock_Open_Order(void)
 
 			   }
                else{
+			   	   
                    run_t.motor_doing_flag=1;
 				   run_t.open_lock_success=0;
 			    	run_t.Numbers_counter =0 ; //WT.EDIT 2022.10.28

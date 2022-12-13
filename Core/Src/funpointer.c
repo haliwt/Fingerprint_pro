@@ -55,6 +55,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 			     //MOTOR open run ->stop Position 
 				 if(run_t.motorRunCount>1600 && run_t.motorRunCount <2101){
 					 Motor_Stop();
+					 run_t.gTimer_8s =0;//WT.EDIT 2022.10.06
 					 if(led==0){
 					 	led++;
 				         run_t.Led_OK_flag =0;

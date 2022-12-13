@@ -745,11 +745,14 @@ void Press_ReadFingerprint_Data(void)
 					
 					if(syspara_t.ps_serach_result==0x00)//�����ɹ�
 					{				
-		FP_SEARCH:		syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  指纹验证成功  ");				
+		FP_SEARCH:		 if(run_t.motor_return_homePosition==1)
+								run_t.oneself_copy_behavior=1; //prejudge statement
+
+						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  指纹验证成功  ");				
 						syspara_t.PS_check_fp_fail =0;
 						fp_read_cnt=0;
 	       
-	            syspara_t.ps_serch_getimage=0xff;
+	           			 syspara_t.ps_serch_getimage=0xff;
 						 
 						 run_t.open_lock_fail=0;
 					
@@ -783,7 +786,7 @@ void Press_ReadFingerprint_Data(void)
 				
 				}
        }
-   //don't new administrator of FP
+   //don't new administrator of intialize start 
    /*************************************************************/
 	if(syspara_t.ps_readEeprom_data==0 && run_t.Confirm_newPassword==0  && run_t.inputNewPassword_Enable==0){
       
@@ -809,14 +812,14 @@ void Press_ReadFingerprint_Data(void)
     }
 
 	
-    //judge input fingerprint error times
-	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
-        
-        run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
-        run_t.gTimer_input_error_times_60s =0;
-        run_t.panel_lock=1;
-				run_t.gTimer_8s=0;
-		}
+//    //judge input fingerprint error times
+//	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
+//        
+//        run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
+//        run_t.gTimer_input_error_times_60s =0;
+//        run_t.panel_lock=1;
+//				run_t.gTimer_8s=0;
+//		}
 
 	//New fingerprint intpu by save new fingerprint data statement
     
