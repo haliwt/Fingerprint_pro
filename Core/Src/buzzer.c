@@ -14,7 +14,7 @@
 static void Buzzer_High_Sound(void);
 
 static void Buzzer_ErrorSound(void);
-static void Fail_Buzzer_Sound(void);
+//static void Buzzer_Fail_Sound(void);
 static void Buzzer_High_Sound_2(void);
 /*****************************************************************
   *
@@ -209,7 +209,7 @@ static void Buzzer_High_Sound_2(void)
 *Retrun Ref:NO
 *
 ****************************************************************************/
-static void Fail_Buzzer_Sound(void)
+void Buzzer_Fail_Sound(void)
 {
 
 	Buzzer_ErrorSound();//Buzzer_ShortSound();//Buzzer_ReSound();//fail sound has two sound //WT.EDIT 2022.09.13
@@ -243,7 +243,7 @@ void Buzzer_Sound_Handler(void)
       break;
 
       case sound_fail:
-          Fail_Buzzer_Sound();
+          Buzzer_Fail_Sound();
 		  syspara_t.handler_read_data_flag++;
           run_t.buzzer_sound_lable=sound_over;
       break;

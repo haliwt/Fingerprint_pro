@@ -805,31 +805,46 @@ void Fingerprint_NewClinet_Login_Fun(void)
 	        	syspara_t.PS_read_template=0;
 	            ps_regmodel=PS_RegModel();
 	           if(ps_regmodel==0){
+					syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+					ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????     
+					if(ps_storechar==0){ //login new fingerprint success
+						if(syspara_t.ps_readEeprom_data < 41){
+							OK_LED_ON() ;
+					        ERR_LED_OFF();
+							syspara_t.PS_login_times=5;
+							run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+							run_t.motor_return_homePosition=0;
+							run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+							Buzzer_LongSound();
+							run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+							run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 
-		
-				syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-				ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????     
-				if(ps_storechar==0){ //login new fingerprint success
-				//	            if(syspara_t.ps_readEeprom_data < 41){
+							
+							run_t.login_in_success=1; //WT.EDIT 2022.10.31
 
-				syspara_t.PS_login_times=5;
-				run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-				run_t.motor_return_homePosition=0;
-				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-				Buzzer_LongSound();
-				run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
-				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
-
-				
-				run_t.login_in_success=1; //WT.EDIT 2022.10.31
-
-				AT24CXX_WriteOneByte((EEPROM_AS608Addr),(syspara_t.ps_readEeprom_data+1));
-				run_t.works_led_lable =works_ok_blink;  //run_t.led_blank	=1;//OK led blank three times
-
-				}
+							AT24CXX_WriteOneByte((EEPROM_AS608Addr),(syspara_t.ps_readEeprom_data+1));
+							run_t.works_led_lable =works_ok_blink;  //run_t.led_blank	=1;//OK led blank three times
+						
+						}
+						else{
+							Buzzer_Fail_Sound();
+							 OK_LED_OFF() ;
+					         ERR_LED_ON();
+						}
+					}
+					else{
+						Buzzer_LongSound();
+						OK_LED_ON() ;
+					    ERR_LED_OFF();
+					}
+			    }	
 				else{
-					Buzzer_LongSound();
+					  Buzzer_Fail_Sound();//Buzzer_LongSound();
+					  OK_LED_OFF() ;
+					  ERR_LED_ON();
 				}
+				
+				
             }
             
          case 5:
@@ -841,12 +856,13 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			run_t.gTimer_8s=5; 
 			run_t.password_unlock_model = EXIT_STORE_MODEL;     
             return;
-		}
+		
         break;
+     }
        
-    	}
-
 }
+
+
 
 
                
