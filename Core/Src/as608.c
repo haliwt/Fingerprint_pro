@@ -614,7 +614,7 @@ void RunCommand_Unlock_Fingerprint(void)
 				     syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
 				}
 				else
-				    syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
+				    syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,45,&seach);
 
 				if(syspara_t.ps_serach_result==0x00){
 
@@ -726,7 +726,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				syspara_t.PS_wakeup_flag=0;	
 			}
         }	 
-        break; 
+      //  break; 
 
         case 1: //input 2 times
               if(FP_INPUT_KEY()==1){
@@ -759,7 +759,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				}
 		    }
 		    
-        break; 
+        //break; 
                      
                      
          case 2: //input 3 times
@@ -793,7 +793,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			syspara_t.PS_wakeup_flag=0;	
 			}
             	}
-        break;  
+       // break;  
 
         case 3: //input 4  times 
             if(FP_INPUT_KEY()==1){
