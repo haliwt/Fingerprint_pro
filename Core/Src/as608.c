@@ -41,18 +41,7 @@ uint16_t EEPROM_AS608Addr = 0x60;
 uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
 uint8_t ps_getImage=0xff;
 
-//��ʼ��PA6Ϊ��������		    
-//��������Ӧ״̬(������Ӧʱ����ߵ�ƽ�ź�)
-void PS_StaGPIO_Init(void)
-{   
-//  GPIO_InitTypeDef  GPIO_InitStructure;
-//  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);//ʹ��GPIOAʱ��
-//  //��ʼ����״̬����GPIOA
-//  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;//��������ģʽ
-//  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//50MHz
-//  GPIO_Init(GPIOA, &GPIO_InitStructure);//��ʼ��GPIO	
-}
+
 //send data one byte
 static void MYUSART_SendData(uint8_t data)
 {
@@ -544,7 +533,7 @@ uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_
 	MYUSART_SendData(endcolor);
 	MYUSART_SendData(cycletimes);
 	
-	temp = 0x01+0x03+0x3C+fundata+startcolor+endcolor+cycletimes;
+	temp = 0x01+0x07+0x3C+fundata+startcolor+endcolor+cycletimes;
 	SendCheck(temp);
 	data=JudgeStr(2000);
 	if(data)

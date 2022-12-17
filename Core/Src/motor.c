@@ -12,7 +12,7 @@
 
 static void MotorStart_CW_Step(void);//Up 
 static void MotorStart_CCW_Step(void);
-
+uint8_t ps_color=0xff;
 
 /**********************************************************
  *
@@ -174,7 +174,8 @@ void RunMotor_Definite_Handler(void) //definite motor
                 ERR_LED_OFF();
                 OK_LED_OFF();
                 run_t.motorRunCount=0;
-                //syspara_t.handler_read_data_flag++;
+                syspara_t.PS_read_template=0;
+                ps_color=PS_ControlBLN(0x01,0x01,0x01,0);
             }
            
         break;
