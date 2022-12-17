@@ -634,14 +634,14 @@ void RunCommand_Unlock_Fingerprint(void)
 				return ;
 				}
 				else if(USART1_RX_BUF[9]==0X15){
-                       HAL_Delay(1000);
+                      // HAL_Delay(1000);
 					   return ;
 			    }
 				else 
 					syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
 			}
 			else if(USART1_RX_BUF[9]==0X15){
-				 HAL_Delay(1000);
+				// HAL_Delay(1000);
 				 return;
        
 			}
