@@ -584,7 +584,7 @@ void RunCommand_Unlock_Fingerprint(void)
 	}
    else{
    	
-   	 syspara_t.PS_wakeup_flag=0;
+
       syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
    	  syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
      if(syspara_t.ps_readEeprom_data >0) syspara_t.FP_RunCmd_Lable = FP_SEARCH;//syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
@@ -604,7 +604,7 @@ void RunCommand_Unlock_Fingerprint(void)
 			if(syspara_t.ps_serch_getimage==0x00)  syspara_t.ps_serch_lable=FP_GEN_CHAR;
             else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
 	 
-     // break;
+   
 	  case FP_GEN_CHAR:
             syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
 			if(syspara_t.ps_serch_genchar==0x00){  
@@ -614,7 +614,7 @@ void RunCommand_Unlock_Fingerprint(void)
 					syspara_t.ps_serch_getimage=0xff;
 					run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
 					run_t.error_times=0; //clear error input fingerprint of times 
-					syspara_t.PS_wakeup_flag=0;
+				    syspara_t.FP_RunCmd_Lable = 0xff;
 					return ;
 				}
 				else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
@@ -626,7 +626,7 @@ void RunCommand_Unlock_Fingerprint(void)
 			}
 		   
 		  
-		//break;
+		
 
 
 
@@ -636,7 +636,7 @@ void RunCommand_Unlock_Fingerprint(void)
             syspara_t.ps_serch_getimage=0xff;
 			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
             syspara_t.PS_wakeup_flag=0;
-               
+            syspara_t.FP_RunCmd_Lable = 0xff;   
             return ;
 
 			break;
@@ -647,6 +647,12 @@ void RunCommand_Unlock_Fingerprint(void)
 
    	}
 }
+
+
+
+                 
+
+         
 //      case FP_SEARCH_INIT://don't new administrator of intialize start 
 //          syspara_t.PS_read_template=0;
 //     	 if(syspara_t.ps_serch_getimage!=0)
