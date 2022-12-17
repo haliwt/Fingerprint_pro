@@ -573,13 +573,14 @@ void RunCommand_Unlock_Fingerprint(void)
       syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
        syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	  if(syspara_t.ps_readEeprom_data >0){ //the first new fingerprint must be is administrator password "1234"
-          syspara_t.FP_RunCmd_Lable = FP_SET_NEW_FP; //3//add new fingerprint
-		
+          syspara_t.FP_RunCmd_Lable = FP_SEARCH;
 	  }
 	  else{
-	  
-         syspara_t.FP_RunCmd_Lable = FP_SET_INIT; //has a been adminsitrator fingerprint data
-		
+	     
+            syspara_t.ps_serch_getimage=0xff;
+			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
+            syspara_t.PS_wakeup_flag=0;
+            syspara_t.FP_RunCmd_Lable = 0xff;   
 	 }
 	}
    else{
@@ -593,6 +594,7 @@ void RunCommand_Unlock_Fingerprint(void)
     
 
 	//fingerprint open lock doing 
+  
    switch(syspara_t.FP_RunCmd_Lable){
 
    	  case FP_SEARCH:
@@ -607,15 +609,22 @@ void RunCommand_Unlock_Fingerprint(void)
    
 	  case FP_GEN_CHAR:
             syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			if(syspara_t.ps_serch_genchar==0x00){  
-				syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
+			if(syspara_t.ps_serch_genchar==0x00){ 
+				if(run_t.Confirm_newPassword==1){
+				     syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
+				}
+				else
+				    syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
+
 				if(syspara_t.ps_serach_result==0x00){
-					syspara_t.PS_login_success=1;
-					syspara_t.ps_serch_getimage=0xff;
-					run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
-					run_t.error_times=0; //clear error input fingerprint of times 
-				    syspara_t.FP_RunCmd_Lable = 0xff;
-					return ;
+
+				syspara_t.PS_login_success=1;
+				syspara_t.ps_serch_getimage=0xff;
+				run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
+				run_t.error_times=0; //clear error input fingerprint of times 
+				syspara_t.FP_RunCmd_Lable = 0xff;
+					
+				return ;
 				}
 				else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
 			}
@@ -625,12 +634,7 @@ void RunCommand_Unlock_Fingerprint(void)
 		         syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
 			}
 		   
-		  
-		
-
-
-
-	    case FP_SEARCH_FAIL:
+		  case FP_SEARCH_FAIL:
 			    			
             syspara_t.PS_wakeup_flag=0;
             syspara_t.ps_serch_getimage=0xff;
@@ -647,119 +651,9 @@ void RunCommand_Unlock_Fingerprint(void)
 
    	}
 }
+  
+   
 
-
-
-                 
-
-         
-//      case FP_SEARCH_INIT://don't new administrator of intialize start 
-//          syspara_t.PS_read_template=0;
-//     	 if(syspara_t.ps_serch_getimage!=0)
-// 	           syspara_t.ps_serch_getimage=PS_GetImage();
-
-// 		   if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//鑾峰彇鍥惧儚鎴愬姛 
-// 		   {	
-           
-// 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-// 			run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
-// 			run_t.error_times=0; //clear error input fingerprint of times 
-// 			syspara_t.PS_wakeup_flag=0;
-
-//         	}
-
-    
-//     break;
-//    }
-//     //set login new fingerprint data
-//     case FP_SET_NEW_FP: //=3 has a administrator fingerprint
-	
-// 		syspara_t.PS_wakeup_flag=0;
-	
-		
-
-// 		switch(syspara_t.ps_serch_lable){
-
-// 		case 0: 
-
-// 		if(FP_INPUT_KEY()==1){
-// 			syspara_t.ps_serch_getimage=PS_GetImage();
-// 			if(syspara_t.ps_serch_getimage==0x00){  // syspara_t.ps_serch_lable=0;
-			
-		
-// 			//if(FP_INPUT_KEY()==1){    
-// 				syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-// 				if(syspara_t.ps_serch_genchar==0)syspara_t.ps_serch_lable=1;
-// 				else
-// 					syspara_t.ps_serch_lable=3;
-			
-// 			//break;
-
-// 			case 1:
-// 				syspara_t.PS_read_template=2;//receive data is 16bytes.
-
-// 				syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
-// 				if(syspara_t.ps_serach_result==0)syspara_t.ps_serch_lable=2;
-// 				else
-// 				syspara_t.ps_serch_lable=3;
-// 			//}
-// 			break;
-
-// 			case 2:
-			
-// 				run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
-// 				syspara_t.fp_administrator_flag =1;
-// 				syspara_t.PS_wakeup_flag=0;
-// 				syspara_t.PS_login_times=0;
-// 				syspara_t.ps_serch_lable=0;
-// 			    return ;
-// 			//	ps_led=PS_ControlBLN(open_led,0,0,0);
-// 		    }
-// 			break;
-
-// 			case 3:
-// 				run_t.inputNewPasswordTimes =0;
-// 				run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
-
-// 				run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail=1;
-// 				syspara_t.PS_login_times=0;
-			
-// 				run_t.motor_return_homePosition=0;
-// 				run_t.Numbers_counter =0;
-		
-// 				run_t.buzzer_sound_lable = sound_fail;//run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-			
-// 				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
-// 				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-				
-// 				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
-
-// 				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-// 				run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
-// 				syspara_t.PS_wakeup_flag=0;
-// 				syspara_t.PS_login_times=0;
-// 				syspara_t.ps_serch_lable=0;
-// 			//	ps_led=PS_ControlBLN(open_led,0,0,0);
-// 		    return ;
-
-// 			break;
-
-// 		}
-// 		}		
-// 	break;
-
-//     case FP_SET_INIT:
-// 		 run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_success=1;
-// 		syspara_t.PS_wakeup_flag=0;
-// 		syspara_t.ps_serch_lable=0;
-//         return;
-// 	break;
-
-// 	default:
-
-// 	break;
-//    	}
-// }
 
 
 

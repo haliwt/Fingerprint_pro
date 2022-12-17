@@ -149,7 +149,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	    
 	 	CheckPassword_Lock_Handler();
 		Buzzer_Sound_Handler();
- 	//	DisplayLed_Handler();
+ 		DisplayLed_Handler();
  		RunMotor_Definite_Handler(); //definite motor
  		Standby_Model_Handler();
 	 

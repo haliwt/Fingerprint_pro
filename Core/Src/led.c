@@ -247,54 +247,54 @@ static void Works_IndicateLed(void)
 		break;
 
 		case works_ok_blink:
-		    run_t.gTimer_8s=0;
-			cnt0++;
-			ERR_LED_OFF();
+		    // run_t.gTimer_8s=0;
+			// cnt0++;
+			// ERR_LED_OFF();
 		
-			run_t.input_newPassword_over_number=0;
-			run_t.readI2C_data =1;
-			run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
-			if(cnt0 < 501 ){
+			// run_t.input_newPassword_over_number=0;
+			// run_t.readI2C_data =1;
+			// run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
+			// if(cnt0 < 501 ){
 
-			OK_LED_OFF();
+			// OK_LED_OFF();
 
-			}
-			else if(cnt0>499 && cnt0 < 1001){//500.WT.EDIT 2022.10.31
-			OK_LED_ON();
-			}
+			// }
+			// else if(cnt0>499 && cnt0 < 1001){//500.WT.EDIT 2022.10.31
+			// OK_LED_ON();
+			// }
 
-			if(cnt0>999){ //1000.WT.EDIT 2022.10.31
-				cnt0 = 0;
-				run_t.clearEeeprom_count++;
-				if(run_t.inputNewPassword_Enable ==1)
-					run_t.inputNewPwd_OK_led_blank_times++;
-			}
+			// if(cnt0>999){ //1000.WT.EDIT 2022.10.31
+			// 	cnt0 = 0;
+			// 	run_t.clearEeeprom_count++;
+			// 	if(run_t.inputNewPassword_Enable ==1)
+			// 		run_t.inputNewPwd_OK_led_blank_times++;
+			// }
 
-			if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0)){//WT.EDIT 2022.10.08
+			// if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0)){//WT.EDIT 2022.10.08
 
-				if(run_t.inputNewPwd_OK_led_blank_times >9){
-				run_t.inputNewPwd_OK_led_blank_times=0;
+			// 	if(run_t.inputNewPwd_OK_led_blank_times >9){
+			// 	run_t.inputNewPwd_OK_led_blank_times=0;
 				
-				run_t.inputNewPassword_Enable =0;
+			// 	run_t.inputNewPassword_Enable =0;
 
-				OK_LED_OFF();
-				run_t.works_led_lable=works_null;
+			// 	OK_LED_OFF();
+			// 	run_t.works_led_lable=works_null;
 			
-				}
+			// 	}
 
-			}
+			// }
 			
-			if(run_t.clearEeeprom_count >2 &&  run_t.inputNewPassword_Enable ==0){
-				run_t.clearEeeprom_count=0;
+			// if(run_t.clearEeeprom_count >2 &&  run_t.inputNewPassword_Enable ==0){
+			// 	run_t.clearEeeprom_count=0;
 				
-				OK_LED_OFF();
+			// 	OK_LED_OFF();
 			
-				if(run_t.eeprom_Reset_flag ==1)
-				run_t.eeprom_Reset_flag =0;//WT.EDIT 2022.10.26
-                run_t.works_led_lable= works_null;
-			}
+			// 	if(run_t.eeprom_Reset_flag ==1)
+			// 	run_t.eeprom_Reset_flag =0;//WT.EDIT 2022.10.26
+            //     run_t.works_led_lable= works_null;
+			// }
 			
-
+			 run_t.works_led_lable= 0xff;
 		break;
 
 		case works_ok_led_off:
