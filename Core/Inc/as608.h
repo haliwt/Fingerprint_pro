@@ -50,7 +50,7 @@ typedef struct _syspara
 {
 
 	//image 
-	uint8_t ps_image_key;
+
 
 	uint8_t 	PS_clear_ps_success;
 	uint8_t 	PS_clear_ps_fail;

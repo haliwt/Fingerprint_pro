@@ -624,7 +624,7 @@ void Lock_Open_Order(void)
 				run_t.buzzer_sound_lable =sound_excute;//Buzzer_LongSound(); //WT.EDIT 2022.10.06
 				ERR_LED_OFF();
 				OK_LED_ON();
-				syspara_t.ps_image_key++;
+				
 
 				run_t.Numbers_counter =0 ;
 				run_t.passwordsMatch = 0;
@@ -638,6 +638,7 @@ void Lock_Open_Order(void)
 				syspara_t.ps_serch_getimage=0xff;
 				syspara_t.ps_serch_genchar =0xff;
 				syspara_t.ps_serach_result=0xff;
+				syspara_t.handler_read_data_flag++;
 
 			}
             else{
@@ -676,7 +677,7 @@ void Lock_Open_Order(void)
 			OK_LED_OFF();
 			ERR_LED_ON();
 
-
+            syspara_t.handler_read_data_flag++;
 			run_t.Numbers_counter = 0;
 			run_t.eepromAddress=0;
 			run_t.passwordsMatch = 0;
@@ -698,7 +699,7 @@ void Lock_Open_Order(void)
 			run_t.clear_inputNumbers_newpassword=0; //WT.EDIT 2022.10.14
 
 			run_t.Numbers_counter =0; //WT.EDIT 2022.10.14
-			//syspara_t.ps_image_key++;
+			
 			for(i=0;i<6;i++){
 			pwd1[i]=0;
 			Readpwd[i]=0;

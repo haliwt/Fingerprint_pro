@@ -680,7 +680,7 @@ void Del_FR(void)
 {
 	uint8_t  ensure;
 	//ensure=PS_Empty();//清空指纹庄1�7
-	ensure=PS_DeletChar(0,128);
+	ensure=PS_DeletChar(0,45);
     if(ensure==0)
 	{
 			//OLED_Clear();
