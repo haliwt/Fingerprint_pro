@@ -238,19 +238,19 @@ void Buzzer_Sound_Handler(void)
 
       case sound_key:
           Buzzer_KeySound();
-          syspara_t.handler_read_data_flag++;
+        
           run_t.buzzer_sound_lable=sound_over;
       break;
 
       case sound_fail:
           Buzzer_Fail_Sound();
-		  syspara_t.handler_read_data_flag++;
+		
           run_t.buzzer_sound_lable=sound_over;
       break;
 
       case sound_new_pwd_the_first:
            Buzzer_High_Sound();
-		   syspara_t.handler_read_data_flag++;
+	
             run_t.buzzer_sound_lable=sound_over;
       break;
 
@@ -258,7 +258,7 @@ void Buzzer_Sound_Handler(void)
         Buzzer_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.09.13
         HAL_Delay(50);
         Buzzer_KeySound();
-		syspara_t.handler_read_data_flag++;
+	
         run_t.buzzer_sound_lable=sound_over;
       break;
 
@@ -266,14 +266,14 @@ void Buzzer_Sound_Handler(void)
          Buzzer_High_Sound();
           HAL_Delay(50);
         Buzzer_High_Sound_2();
-		syspara_t.handler_read_data_flag++;
+	
          run_t.buzzer_sound_lable=sound_over;
 
       break;
 
       case sound_excute:
         Buzzer_LongSound();
-		syspara_t.handler_read_data_flag++;
+		
         run_t.buzzer_sound_lable=sound_over;
 
       break;

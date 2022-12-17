@@ -590,11 +590,12 @@ void Lock_Open_Order(void)
     switch(run_t.open_lock_lable){
 
     	 case open_lock_success:
+            ERR_LED_OFF();
+		    OK_LED_ON();
 
     	  if(run_t.Confirm_newPassword ==1){ //prepare new password 
 			
-			ERR_LED_OFF();
-		    OK_LED_ON();
+			
 				run_t.inputNewPassword_Enable =1; //Input Administrator password is OK
 				run_t.motor_return_homePosition= 0;
 				run_t.Numbers_counter =0 ;
@@ -660,7 +661,7 @@ void Lock_Open_Order(void)
 					   pwd2[i]=0;
 				
 				  	}
-			   	
+			   	// syspara_t.handler_read_data_flag++;
 
                }
 
@@ -697,7 +698,7 @@ void Lock_Open_Order(void)
 			run_t.clear_inputNumbers_newpassword=0; //WT.EDIT 2022.10.14
 
 			run_t.Numbers_counter =0; //WT.EDIT 2022.10.14
-			syspara_t.ps_image_key++;
+			//syspara_t.ps_image_key++;
 			for(i=0;i<6;i++){
 			pwd1[i]=0;
 			Readpwd[i]=0;

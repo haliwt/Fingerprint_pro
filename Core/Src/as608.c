@@ -595,8 +595,12 @@ void RunCommand_Unlock_Fingerprint(void)
     
 
 	//fingerprint open lock doing 
+	
   
    switch(syspara_t.FP_RunCmd_Lable){
+
+      if(getImage != syspara_t.handler_read_data_flag){
+	  	  getImage = syspara_t.handler_read_data_flag;
 
    	  case FP_SEARCH:
 	    if(FP_INPUT_KEY()==1 || syspara_t.PS_wakeup_flag==1){
@@ -611,6 +615,7 @@ void RunCommand_Unlock_Fingerprint(void)
    
 	  case FP_GEN_CHAR:
             syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+	
 			if(syspara_t.ps_serch_genchar==0x00){ 
 				if(run_t.Confirm_newPassword==1){
 				     syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
@@ -628,11 +633,19 @@ void RunCommand_Unlock_Fingerprint(void)
 					
 				return ;
 				}
-				else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
+				else if(USART1_RX_BUF[9]==0X15){
+                       HAL_Delay(1000);
+					   return ;
+			    }
+				else 
+					syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
+			}
+			else if(USART1_RX_BUF[9]==0X15){
+				 HAL_Delay(1000);
+				 return;
+       
 			}
 			else{
-       
-			   
 		         syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
 			}
 		   
@@ -640,7 +653,8 @@ void RunCommand_Unlock_Fingerprint(void)
 			    			
             syspara_t.PS_wakeup_flag=0;
             syspara_t.ps_serch_getimage=0xff;
-			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
+		    if(syspara_t.PS_login_success==1)
+					run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
             syspara_t.PS_wakeup_flag=0;
             syspara_t.FP_RunCmd_Lable = 0xff;   
             return ;
@@ -651,6 +665,7 @@ void RunCommand_Unlock_Fingerprint(void)
        
      break;
 
+   	}
    	}
 }
 /**********************************************************************

@@ -116,9 +116,7 @@ static void UnLock_Aand_SaveData_Handler(void)
 {
    switch(run_t.password_unlock_model){
 
-
-
-	case STORE_MODEL_EEPROM:
+    case STORE_MODEL_EEPROM:
         run_t.inputDeepSleep_times=0;
 		run_t.passwordsMatch=0  ;
 	   run_t.gTimer_8s=0;

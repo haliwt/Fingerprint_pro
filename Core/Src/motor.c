@@ -173,6 +173,7 @@ void RunMotor_Definite_Handler(void) //definite motor
                 ERR_LED_OFF();
                 OK_LED_OFF();
                 run_t.motorRunCount=0;
+                syspara_t.handler_read_data_flag++;
             }
            
         break;
