@@ -600,7 +600,7 @@ void Lock_Open_Order(void)
 				run_t.Numbers_counter =0 ;
 				run_t.eepromAddress=0;
 				run_t.passwordsMatch = 0;
-			
+			    syspara_t.PS_login_times=0;
 				
 				
 				run_t.inputDeepSleep_times =0;
@@ -679,7 +679,7 @@ void Lock_Open_Order(void)
 			run_t.Numbers_counter = 0;
 			run_t.eepromAddress=0;
 			run_t.passwordsMatch = 0;
-			syspara_t.PS_login_times=0; //WT.EDIT 2022.12.17
+			syspara_t.PS_login_times=0xff; //WT.EDIT 2022.12.17
 		
 			run_t.error_times ++ ; //input times 5 ,
 			if(run_t.error_times > 4){

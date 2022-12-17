@@ -19,6 +19,7 @@
 #include "run.h"
 #include "led.h"
 #include "buzzer.h"
+#include "single_mode.h"
 SysPara syspara_t;
 
 uint8_t ps_buffer[50];
@@ -703,7 +704,8 @@ void Fingerprint_NewClinet_Login_Fun(void)
     switch(syspara_t.PS_login_times){
 
 		case 0: //input 1 times syspara_t.PS_read_template=0;
-		    if(FP_INPUT_KEY()==1){
+		run_t.gTimer_8s=0;
+		    if(syspara_t.PS_wakeup_flag==1){
 			ps_getImage=PS_GetImage();
 			if(ps_getImage==0){
 
@@ -726,10 +728,11 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				syspara_t.PS_wakeup_flag=0;	
 			}
         }	 
-      //  break; 
+        break; 
 
         case 1: //input 2 times
-              if(FP_INPUT_KEY()==1){
+		run_t.gTimer_8s=0;
+              if(syspara_t.PS_wakeup_flag==1){
 				syspara_t.PS_read_template=0;
 				ps_getImage=PS_GetImage();
 
@@ -759,11 +762,12 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				}
 		    }
 		    
-        //break; 
+        break; 
                      
                      
          case 2: //input 3 times
-            if(FP_INPUT_KEY()==1){
+		 run_t.gTimer_8s=0;
+            if(syspara_t.PS_wakeup_flag==1){
 			syspara_t.PS_read_template=0;
 			ps_getImage=PS_GetImage();
 
@@ -774,13 +778,13 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			if(ps_genChar==0 ){
 
 			Buzzer_KeySound();
-			HAL_Delay(300);
+			HAL_Delay(600);
 			syspara_t.PS_login_times=3;
 			syspara_t.PS_wakeup_flag=0;	
 			}
 			else{
 
-			// HAL_Delay(100);
+			
 			syspara_t.PS_login_times=2;	
 			syspara_t.PS_wakeup_flag=0;	
 			}
@@ -788,15 +792,16 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			}
 			else{
 
-			// HAL_Delay(100);
+			
 			syspara_t.PS_login_times=2;	
 			syspara_t.PS_wakeup_flag=0;	
 			}
-            	}
-       // break;  
+          }
+        break;  
 
         case 3: //input 4  times 
-            if(FP_INPUT_KEY()==1){
+		run_t.gTimer_8s=0;
+            if(syspara_t.PS_wakeup_flag==1){
 	        	syspara_t.PS_read_template=0;
 	            ps_regmodel=PS_RegModel();
 	           if(ps_regmodel==0){
@@ -824,15 +829,17 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				}
 				syspara_t.PS_login_times=5;
             }
-            }
+            
          case 5:
-     
+         run_t.gTimer_8s=0;
 	      	  syspara_t.PS_read_template=1;
 			syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
 	        syspara_t.PS_wakeup_flag = 0;
-	        syspara_t.PS_login_times=0XFF;
-			run_t.gTimer_8s=5;      
-       
+	        syspara_t.PS_login_times=0xff;
+			run_t.gTimer_8s=5; 
+			run_t.password_unlock_model = EXIT_STORE_MODEL;     
+            return;
+		}
         break;
        
     	}

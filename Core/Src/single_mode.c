@@ -122,11 +122,12 @@ static void UnLock_Aand_SaveData_Handler(void)
         run_t.inputDeepSleep_times=0;
 		run_t.passwordsMatch=0  ;
 	   run_t.gTimer_8s=0;
-	     if(FP_INPUT_KEY()==0)
+	     if(syspara_t.PS_wakeup_flag==0)
 		     Save_To_EeepromNewPwd();
 	     else
 		     Fingerprint_NewClinet_Login_Fun();
 		run_t.motor_return_homePosition=0;
+		// run_t.password_unlock_model = EEXIT_STORE_MODEL;
         
     break;
 
@@ -141,6 +142,10 @@ static void UnLock_Aand_SaveData_Handler(void)
 		 Panel_LED_Off();
 	
 
+	break;
+
+	case EXIT_STORE_MODEL :
+           run_t.password_unlock_model = 0xff;
 	break;
 
 	default :
