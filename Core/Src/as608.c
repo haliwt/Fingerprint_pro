@@ -827,7 +827,9 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				run_t.works_led_lable =works_ok_blink;  //run_t.led_blank	=1;//OK led blank three times
 
 				}
-				syspara_t.PS_login_times=5;
+				else{
+					Buzzer_LongSound();
+				}
             }
             
          case 5:
