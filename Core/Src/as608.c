@@ -599,8 +599,9 @@ void RunCommand_Unlock_Fingerprint(void)
    switch(syspara_t.FP_RunCmd_Lable){
 
    	  case FP_SEARCH:
-	    if(FP_INPUT_KEY()==1){
+	    if(FP_INPUT_KEY()==1 || syspara_t.PS_wakeup_flag==1){
         run_t.gTimer_8s=0;
+		syspara_t.PS_wakeup_flag=0;
         syspara_t.PS_read_template=0;
       
 			syspara_t.ps_serch_getimage=PS_GetImage();
@@ -652,13 +653,6 @@ void RunCommand_Unlock_Fingerprint(void)
 
    	}
 }
-  
-   
-
-
-
-
-
 /**********************************************************************
 	*
 	*Function Name:void Del_FR(void)

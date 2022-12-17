@@ -619,26 +619,26 @@ void Lock_Open_Order(void)
 			
 		}
 		else{ //runing open lock 
-		       if(run_t.motor_return_homePosition==1){//WT.EDIT 2022.10.28
-                 run_t.buzzer_sound_lable =sound_excute;//Buzzer_LongSound(); //WT.EDIT 2022.10.06
-			        ERR_LED_OFF();
-			        OK_LED_ON();
-			        syspara_t.ps_image_key++;
-				
-					 run_t.Numbers_counter =0 ;
-					   run_t.passwordsMatch = 0;
-					   run_t.inputDeepSleep_times =0;
-					  for(i=0;i<6;i++){
-					  	   pwd1[i]=0;
-						   Readpwd[i]=0;
-						   pwd2[i]=0;
-					
-					  	}
-                syspara_t.ps_serch_getimage=0xff;
-                syspara_t.ps_serch_genchar =0xff;
-                syspara_t.ps_serach_result=0xff;
+		    if(run_t.motor_return_homePosition==1){//WT.EDIT 2022.10.28
+				run_t.buzzer_sound_lable =sound_excute;//Buzzer_LongSound(); //WT.EDIT 2022.10.06
+				ERR_LED_OFF();
+				OK_LED_ON();
+				syspara_t.ps_image_key++;
 
-			   }
+				run_t.Numbers_counter =0 ;
+				run_t.passwordsMatch = 0;
+				run_t.inputDeepSleep_times =0;
+				for(i=0;i<6;i++){
+					pwd1[i]=0;
+					Readpwd[i]=0;
+					pwd2[i]=0;
+
+				}
+				syspara_t.ps_serch_getimage=0xff;
+				syspara_t.ps_serch_genchar =0xff;
+				syspara_t.ps_serach_result=0xff;
+
+			}
             else{
 		   	    
                 syspara_t.ps_serch_getimage=0xff;
