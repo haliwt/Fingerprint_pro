@@ -3,6 +3,16 @@
 #include "main.h"
 
 
+typedef enum _motor_run_state{
+	motor_run_start=0x01,
+	motor_run_underway,
+	motor_run_half_stop,
+    motor_interval_stop_times,
+    morot_reverse,
+    motor_stop
+}motor_state;
+
+
 #define MOTOR_CW_GPIO_PIN    		GPIO_PIN_6
 #define MOTOR_CW_GPIO				GPIOA
 
@@ -25,7 +35,7 @@ void Motor_CCW_Run(void);
 void Motor_CW_Run(void);
 void Motor_Stop(void);
 
-
+void RunMotor_Definite_Handler(void); 
 
 
 

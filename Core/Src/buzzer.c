@@ -3,11 +3,19 @@
 #include "run.h"
 #include "delay.h"
 #include "tim.h"
+#include "as608.h"
 #define  STM32L010F4P6_IC
 
 #define CPU_FREQUENCY_MHZ 24 // STM32时钟主频
 
 
+
+
+static void Buzzer_High_Sound(void);
+
+static void Buzzer_ErrorSound(void);
+static void Fail_Buzzer_Sound(void);
+static void Buzzer_High_Sound_2(void);
 /*****************************************************************
   *
   *Function Name: void BUZZER_KeySound(void)
@@ -16,7 +24,7 @@
   *Return Ref:NO
   *
 *****************************************************************/
-void BUZZER_KeySound(void)
+void Buzzer_KeySound(void)
 {
   //unsigned int m=300;//80
 
@@ -108,7 +116,7 @@ void Buzzer_ShortSound(void)
   *Return Ref:NO
   *
 *****************************************************************/
-void Buzzer_ErrorSound(void)
+static void Buzzer_ErrorSound(void)
 {
 
    #ifdef STM32L010F4P6_IC
@@ -143,7 +151,7 @@ void Buzzer_ErrorSound(void)
   *Return Ref:NO
   *
 *****************************************************************/
-void Buzzer_High_Sound(void)
+static void Buzzer_High_Sound(void)
 {
       #ifdef STM32L010F4P6_IC
 
@@ -165,17 +173,24 @@ void Buzzer_High_Sound(void)
 
 	 #endif 
 }
-
-void Buzzer_High_Sound_2(void)
+/****************************************************************************
+*
+*Function Name:void  Buzzer_InputNewPassword_two_short(void)
+*Function : run is main 
+*Input Ref: NO
+*Retrun Ref:NO
+*
+****************************************************************************/
+static void Buzzer_High_Sound_2(void)
 {
 
-     #ifdef STM32L010F4P6_IC
+    #ifdef STM32L010F4P6_IC
 	 unsigned int m=100;
 
-      while(m--){
-          HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
-          delay_us(480);//__delay_us(500);//delayUS(99);
-       }
+     while(m--){
+         HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
+         delay_us(480);//__delay_us(500);//delayUS(99);
+      }
 	 #else 
 	    
 	    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3); //
@@ -186,8 +201,15 @@ void Buzzer_High_Sound_2(void)
 	 #endif 
 }
 
-
-void Fail_Buzzer_Sound(void)
+/****************************************************************************
+*
+*Function Name:void  Buzzer_InputNewPassword_two_short(void)
+*Function : run is main 
+*Input Ref: NO
+*Retrun Ref:NO
+*
+****************************************************************************/
+static void Fail_Buzzer_Sound(void)
 {
 
 	Buzzer_ErrorSound();//Buzzer_ShortSound();//Buzzer_ReSound();//fail sound has two sound //WT.EDIT 2022.09.13
@@ -201,7 +223,75 @@ void Fail_Buzzer_Sound(void)
 	//HAL_Delay(50);
 
 }
+/****************************************************************************
+  *
+  *Function Name:void  Buzzer_InputNewPassword_two_short(void)
+  *Function : run is main 
+  *Input Ref: NO
+  *Retrun Ref:NO
+  *
+****************************************************************************/
+void Buzzer_Sound_Handler(void)
+{
+    
+   switch(run_t.buzzer_sound_lable){
+
+      case sound_key:
+          Buzzer_KeySound();
+          syspara_t.handler_read_data_flag++;
+          run_t.buzzer_sound_lable=sound_over;
+      break;
+
+      case sound_fail:
+          Fail_Buzzer_Sound();
+		  syspara_t.handler_read_data_flag++;
+          run_t.buzzer_sound_lable=sound_over;
+      break;
+
+      case sound_new_pwd_the_first:
+           Buzzer_High_Sound();
+		   syspara_t.handler_read_data_flag++;
+            run_t.buzzer_sound_lable=sound_over;
+      break;
+
+      case sound_new_pwd_the_second:
+        Buzzer_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.09.13
+        HAL_Delay(50);
+        Buzzer_KeySound();
+		syspara_t.handler_read_data_flag++;
+        run_t.buzzer_sound_lable=sound_over;
+      break;
+
+      case sound_high:
+         Buzzer_High_Sound();
+          HAL_Delay(50);
+        Buzzer_High_Sound_2();
+		syspara_t.handler_read_data_flag++;
+         run_t.buzzer_sound_lable=sound_over;
+
+      break;
+
+      case sound_excute:
+        Buzzer_LongSound();
+		syspara_t.handler_read_data_flag++;
+        run_t.buzzer_sound_lable=sound_over;
+
+      break;
+
+      case sound_over:
+
+        BUZZER_OFF();
+        run_t.buzzer_sound_lable=0xff;
+        
+      break;
+
+      default:
+          
+      break;
 
 
+    }
 
+
+}
 

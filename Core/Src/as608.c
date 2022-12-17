@@ -1,13 +1,13 @@
 //////////////////////////////////////////////////////////////////////////////////	 
-//±¾³ÌĞòÖ»¹©Ñ§Ï°Ê¹ÓÃ£¬Î´¾­×÷ÕßĞí¿É£¬²»µÃÓÃÓÚÆäËüÈÎºÎÓÃÍ¾
-//ALIENTEK Õ½½¢V3 STM32¿ª·¢°å
-//ATK-AS608Ö¸ÎÆÊ¶±ğÄ£¿éÇı¶¯´úÂë	   
-//ÕıµãÔ­×Ó@ALIENTEK
-//¼¼ÊõÂÛÌ³:www.openedv.com
-//´´½¨ÈÕÆÚ:2016/3/29
-//°æ±¾£ºV1.0
-//°æÈ¨ËùÓĞ£¬µÁ°æ±Ø¾¿¡£
-//Copyright(C) ¹ãÖİÊĞĞÇÒíµç×Ó¿Æ¼¼ÓĞÏŞ¹«Ë¾ 2014-2024
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½Ñ§Ï°Ê¹ï¿½Ã£ï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½Í¾
+//ALIENTEK Õ½ï¿½ï¿½V3 STM32ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//ATK-AS608Ö¸ï¿½ï¿½Ê¶ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½	   
+//ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½@ALIENTEK
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì³:www.openedv.com
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:2016/3/29
+//ï¿½æ±¾ï¿½ï¿½V1.0
+//ï¿½ï¿½È¨ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
+//Copyright(C) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿Æ¼ï¿½ï¿½ï¿½ï¿½Ş¹ï¿½Ë¾ 2014-2024
 //All rights dataerved									  
 ////////////////////////////////////////////////////////////////////////////////// 	
 #include <string.h>
@@ -25,29 +25,32 @@ uint8_t ps_buffer[50];
 uint16_t ArraypageID ;
 uint16_t Arraymathscore;
 
-uint8_t  fp_read_cnt;
 
-  
+uint8_t ps_led=0xff;
+
 uint8_t ensure_getImage,ensure_regModel, ensure_storeChar;
 
 SysPara AS608Para;//æŒ‡çº¹æ¨¡å—AS608å‚æ•°
 
 
-uint32_t AS608Addr = 0XFFFFFFFF; //Ä¬ÈÏ
+uint32_t AS608Addr = 0XFFFFFFFF; //Ä¬ï¿½ï¿½
 
 uint16_t EEPROM_AS608Addr = 0x60;
 
-//³õÊ¼»¯PA6ÎªÏÂÀ­ÊäÈë		    
-//¶ÁÃş³ö¸ĞÓ¦×´Ì¬(´¥Ãş¸ĞÓ¦Ê±Êä³ö¸ßµçÆ½ĞÅºÅ)
+uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
+uint8_t ps_getImage=0xff;
+
+//ï¿½ï¿½Ê¼ï¿½ï¿½PA6Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½		    
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦×´Ì¬(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦Ê±ï¿½ï¿½ï¿½ï¿½ßµï¿½Æ½ï¿½Åºï¿½)
 void PS_StaGPIO_Init(void)
 {   
 //  GPIO_InitTypeDef  GPIO_InitStructure;
-//  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);//Ê¹ÄÜGPIOAÊ±ÖÓ
-//  //³õÊ¼»¯¶Á×´Ì¬Òı½ÅGPIOA
+//  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);//Ê¹ï¿½ï¿½GPIOAÊ±ï¿½ï¿½
+//  //ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½GPIOA
 //  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;//ÊäÈëÏÂÀ­Ä£Ê½
+//  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 //  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;//50MHz
-//  GPIO_Init(GPIOA, &GPIO_InitStructure);//³õÊ¼»¯GPIO	
+//  GPIO_Init(GPIOA, &GPIO_InitStructure);//ï¿½ï¿½Ê¼ï¿½ï¿½GPIO	
 }
 //send data one byte
 static void MYUSART_SendData(uint8_t data)
@@ -55,13 +58,13 @@ static void MYUSART_SendData(uint8_t data)
 	while((USART1->ISR&0X40)==0); 
 	USART1->TDR = data;
 }
-//·¢ËÍ°üÍ·
+//ï¿½ï¿½ï¿½Í°ï¿½Í·
 static void SendHead(void)
 {
 	MYUSART_SendData(0xEF);
 	MYUSART_SendData(0x01);
 }
-//·¢ËÍµØÖ·
+//ï¿½ï¿½ï¿½Íµï¿½Ö·
 static void SendAddr(void)
 {
 	MYUSART_SendData(AS608Addr>>24);
@@ -69,23 +72,23 @@ static void SendAddr(void)
 	MYUSART_SendData(AS608Addr>>8);
 	MYUSART_SendData(AS608Addr);
 }
-//·¢ËÍ°ü±êÊ¶,
+//ï¿½ï¿½ï¿½Í°ï¿½ï¿½ï¿½Ê¶,
 static void SendFlag(uint8_t flag)
 {
 	MYUSART_SendData(flag);
 }
-//·¢ËÍ°ü³¤¶È
+//ï¿½ï¿½ï¿½Í°ï¿½ï¿½ï¿½ï¿½ï¿½
 static void SendLength(int length)
 {
 	MYUSART_SendData(length>>8);
 	MYUSART_SendData(length);
 }
-//·¢ËÍÖ¸ÁîÂë
+//ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½
 static void Sendcmd(uint8_t cmd)
 {
 	MYUSART_SendData(cmd);
 }
-//·¢ËÍĞ£ÑéºÍ
+//ï¿½ï¿½ï¿½ï¿½Ğ£ï¿½ï¿½ï¿½
 static void SendCheck(uint16_t check)
 {
 	MYUSART_SendData(check>>8);
@@ -102,17 +105,11 @@ static void SendCheck(uint16_t check)
 void PS_Rx_InputInfo_Handler(void)
 {
     
-    
-          strcpy((char *)ps_buffer, (const char *)USART1_RX_BUF);
-         // USART1_RX_STA=0;
-        
-         
-         
-        
-		   	
+    strcpy((char *)ps_buffer, (const char *)USART1_RX_BUF);
+   // USART1_RX_STA=0;
 }
-//åˆ¤æ–­ä¸­æ–­æ¥æ”¶çš„æ•°ç»„æœ‰æ²¡æœ‰åº”ç­”åŒ„1¤7
-//waittimeä¸ºç­‰å¾…ä¸­æ–­æ¥æ”¶æ•°æ®çš„æ—¶é—´ï¼ˆå•ä½„1¤71msï¼„1¤7
+//åˆ¤æ–­ä¸­æ–­æ¥æ”¶çš„æ•°ç»„æœ‰æ²¡æœ‰åº”ç­”åŒ„1ï¿½7
+//waittimeä¸ºç­‰å¾…ä¸­æ–­æ¥æ”¶æ•°æ®çš„æ—¶é—´ï¼ˆå•ä½„1ï¿½71msï¼„1ï¿½7
 //è¿”å›å€¼ï¼šæ•°æ®åŒ…é¦–åœ°å€
 static uint8_t *JudgeStr(uint16_t waittime)
 {
@@ -130,7 +127,7 @@ static uint8_t *JudgeStr(uint16_t waittime)
 	str[5]=AS608Addr;
     str[6]=0x07;
     str[7]='\0';
-	USART1_RX_STA=0;
+		USART1_RX_STA=0;
     syspara_t.uart1_rx_data= 0;
     while(--temp_waitime)
 	{
@@ -141,13 +138,6 @@ static uint8_t *JudgeStr(uint16_t waittime)
 			USART1_RX_STA=0;
 			syspara_t.uart1_rx_data= 0;
 			data=strstr((const char*)USART1_RX_BUF,(const char*)str);
-			if(syspara_t.PS_wakeup_flag==1){
-              
-               if(USART1_RX_BUF[9]==0x02){
-
-                 temp_waitime = waittime;
-			   }  
-			}
 			if(data)
 				return (uint8_t*)data;	
 		}
@@ -156,8 +146,8 @@ static uint8_t *JudgeStr(uint16_t waittime)
    
 }
 //å½•å…¥å›¾åƒ PS_GetImage
-//åŠŸèƒ½:æ¢æµ‹æ‰‹æŒ‡ï¼Œæ¢æµ‹åˆ°åå½•å…¥æŒ‡çº¹å›¾åƒå­˜äºImageBufferã€„1¤7 
-//æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//åŠŸèƒ½:æ¢æµ‹æ‰‹æŒ‡ï¼Œæ¢æµ‹åˆ°åå½•å…¥æŒ‡çº¹å›¾åƒå­˜äºImageBufferã€„1ï¿½7 
+//æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 uint8_t PS_GetImage(void)
 {
   uint16_t temp;
@@ -165,7 +155,7 @@ uint8_t PS_GetImage(void)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//å‘½ä»¤åŒ…æ ‡è¯„1¤7
+	SendFlag(0x01);//å‘½ä»¤åŒ…æ ‡è¯„1ï¿½7
 	SendLength(0x03);
 	Sendcmd(0x01);
      temp =  0x01+0x03+0x01;
@@ -175,7 +165,7 @@ uint8_t PS_GetImage(void)
 		ensure=data[9]; //PS_GetImage confirmation Code
     }
 	else{
-		ensure=0xFF;//
+		ensure=data[9];//ensure=0xFF;//
 
     }
 	return ensure;
@@ -183,7 +173,7 @@ uint8_t PS_GetImage(void)
 //ç”Ÿæˆç‰¹å¾ PS_GenChar
 //åŠŸèƒ½:å°†ImageBufferä¸­çš„åŸå§‹å›¾åƒç”ŸæˆæŒ‡çº¹ç‰¹å¾æ–‡ä»¶å­˜äºCharBuffer1æˆ–CharBuffer2			 
 //å‚æ•°:BufferID --> charBuffer1:0x01	charBuffer1:0x02												
-//æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 uint8_t PS_GenChar(uint8_t BufferID)
 {
 	uint16_t temp;
@@ -191,7 +181,7 @@ uint8_t PS_GenChar(uint8_t BufferID)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x04);
 	Sendcmd(0x02);
 	MYUSART_SendData(BufferID);
@@ -201,12 +191,12 @@ uint8_t PS_GenChar(uint8_t BufferID)
 	if(data)
 		ensure=data[9];
 	else
-		ensure=0xff;
+		ensure=data[9];//ensure=0xff;
 	return ensure;
 }
 //ç²¾ç¡®æ¯”å¯¹ä¸¤æšæŒ‡çº¹ç‰¹å¾ PS_Match
 //åŠŸèƒ½:ç²¾ç¡®æ¯”å¯¹CharBuffer1 ä¸CharBuffer2 ä¸­çš„ç‰¹å¾æ–‡ä»¶ 
-//æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 uint8_t PS_Match(void)
 {
 	uint16_t temp;
@@ -214,7 +204,7 @@ uint8_t PS_Match(void)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x03);
 	Sendcmd(0x03);
 	temp = 0x01+0x03+0x03;
@@ -227,7 +217,7 @@ uint8_t PS_Match(void)
 	return ensure;
 }
 //æœç´¢æŒ‡çº¹ PS_Search
-//åŠŸèƒ½:ä»¥CharBuffer1æˆ–CharBuffer2ä¸­çš„ç‰¹å¾æ–‡ä»¶æœç´¢æ•´ä¸ªæˆ–éƒ¨åˆ†æŒ‡çº¹åº“.è‹¥æœç´¢åˆ°ï¼Œåˆ™è¿”å›é¡µç ã€„1¤7			
+//åŠŸèƒ½:ä»¥CharBuffer1æˆ–CharBuffer2ä¸­çš„ç‰¹å¾æ–‡ä»¶æœç´¢æ•´ä¸ªæˆ–éƒ¨åˆ†æŒ‡çº¹åº“.è‹¥æœç´¢åˆ°ï¼Œåˆ™è¿”å›é¡µç ã€„1ï¿½7			
 //å‚æ•°:  BufferID @ref CharBuffer1	CharBuffer2
 //è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­—ï¼Œé¡µç ï¼ˆç›¸é…æŒ‡çº¹æ¨¡æ¿ï¼‰
 uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p)
@@ -237,7 +227,7 @@ uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchRes
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x08);
 	Sendcmd(0x04);
 	MYUSART_SendData(BufferID);
@@ -262,7 +252,7 @@ uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchRes
 }
 //åˆå¹¶ç‰¹å¾ï¼ˆç”Ÿæˆæ¨¡æ¿ï¼‰PS_RegModel
 //åŠŸèƒ½:å°†CharBuffer1ä¸CharBuffer2ä¸­çš„ç‰¹å¾æ–‡ä»¶åˆå¹¶ç”Ÿæˆ æ¨¡æ¿,ç»“æœå­˜äºCharBuffer1ä¸CharBuffer2	
-//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 uint8_t PS_RegModel(void)
 {
 	uint16_t temp;
@@ -270,7 +260,7 @@ uint8_t PS_RegModel(void)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x03);
 	Sendcmd(0x05);
 	temp = 0x01+0x03+0x05;
@@ -283,10 +273,10 @@ uint8_t PS_RegModel(void)
 	return ensure;		
 }
 //å‚¨å­˜æ¨¡æ¿ PS_StoreChar
-//åŠŸèƒ½:å°„1¤7 CharBuffer1 æˆ„1¤7 CharBuffer2 ä¸­çš„æ¨¡æ¿æ–‡ä»¶å­˜åˆ° PageID å·flashæ•°æ®åº“ä½ç½®ã¢ã„1¤7			
+//åŠŸèƒ½:å°„1ï¿½7 CharBuffer1 æˆ„1ï¿½7 CharBuffer2 ä¸­çš„æ¨¡æ¿æ–‡ä»¶å­˜åˆ° PageID å·flashæ•°æ®åº“ä½ç½®ï¿½ï¿½1ï¿½7			
 //å‚æ•°:  BufferID @ref charBuffer1:0x01	charBuffer1:0x02
 //       PageIDï¼ˆæŒ‡çº¹åº“ä½ç½®å·ï¼‰
-//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 
 uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 {
@@ -295,7 +285,7 @@ uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x06);
 	Sendcmd(0x06);
 	MYUSART_SendData(BufferID);
@@ -312,9 +302,9 @@ uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID)
 	return ensure;	
 }
 //åˆ é™¤æ¨¡æ¿ PS_DeletChar
-//åŠŸèƒ½:  åˆ é™¤flashæ•°æ®åº“ä¸­æŒ‡å®šIDå·å¼€å§‹çš„Nä¸ªæŒ‡çº¹æ¨¡æ„1¤7
-//å‚æ•°:  PageID(æŒ‡çº¹åº“æ¨¡æ¿å·)ï¼ŒNåˆ é™¤çš„æ¨¡æ¿ä¸ªæ•°ã¢ã„1¤7
-//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//åŠŸèƒ½:  åˆ é™¤flashæ•°æ®åº“ä¸­æŒ‡å®šIDå·å¼€å§‹çš„Nä¸ªæŒ‡çº¹æ¨¡æ„1ï¿½7
+//å‚æ•°:  PageID(æŒ‡çº¹åº“æ¨¡æ¿å·)ï¼ŒNåˆ é™¤çš„æ¨¡æ¿ä¸ªæ•°ï¿½ï¿½1ï¿½7
+//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 uint8_t PS_DeletChar(uint16_t PageID,uint16_t N)
 {
 	uint16_t temp;
@@ -322,7 +312,7 @@ uint8_t PS_DeletChar(uint16_t PageID,uint16_t N)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x07);
 	Sendcmd(0x0C);
 	MYUSART_SendData(PageID>>8);
@@ -340,10 +330,10 @@ uint8_t PS_DeletChar(uint16_t PageID,uint16_t N)
 		ensure=0xff;
 	return ensure;
 }
-//æ¸…ç©ºæŒ‡çº¹åº„1¤7 PS_Empty
-//åŠŸèƒ½:  åˆ é™¤flashæ•°æ®åº“ä¸­æ‰¢ãæœ‰æŒ‡çº¹æ¨¡æ„1¤7
-//å‚æ•°:  æ—„1¤7
-//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7
+//æ¸…ç©ºæŒ‡çº¹åº„1ï¿½7 PS_Empty
+//åŠŸèƒ½:  åˆ é™¤flashæ•°æ®åº“ä¸­æ‰¢ï¿½æœ‰æŒ‡çº¹æ¨¡æ„1ï¿½7
+//å‚æ•°:  æ—„1ï¿½7
+//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7
 uint8_t PS_Empty(void)
 {
 	uint16_t temp;
@@ -351,7 +341,7 @@ uint8_t PS_Empty(void)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x03);
 	Sendcmd(0x0D);
 	temp = 0x01+0x03+0x0D;
@@ -363,10 +353,10 @@ uint8_t PS_Empty(void)
 		ensure=0xff;
 	return ensure;
 }
-//Ğ´ÏµÍ³¼Ä´æÆ÷ PS_WriteReg
-//¹¦ÄÜ:  Ğ´Ä£¿é¼Ä´æÆ÷
-//²ÎÊı:  ¼Ä´æÆ÷ĞòºÅRegNum:4\5\6
-//ËµÃ÷:  Ä£¿é·µ»ØÈ·ÈÏ×Ö
+//Ğ´ÏµÍ³ï¿½Ä´ï¿½ï¿½ï¿½ PS_WriteReg
+//ï¿½ï¿½ï¿½ï¿½:  Ğ´Ä£ï¿½ï¿½Ä´ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½:  ï¿½Ä´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½RegNum:4\5\6
+//Ëµï¿½ï¿½:  Ä£ï¿½é·µï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½
 uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA)
 {
 	uint16_t temp;
@@ -374,7 +364,7 @@ uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x05);
 	Sendcmd(0x0E);
 	MYUSART_SendData(RegNum);
@@ -387,150 +377,18 @@ uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA)
 	else
 		ensure=0xff;
 //	if(ensure==0)
-//		ensure=0xAA;//printf("\r\nÉèÖÃ²ÎÊı³É¹¦£¡");
+//		ensure=0xAA;//printf("\r\nï¿½ï¿½ï¿½Ã²ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½");
 //	else
 //		//printf("\r\n%s",EnsureMessage(ensure));
 	return ensure;
 }
-//¶ÁÏµÍ³»ù±¾²ÎÊı PS_ReadSysPara
-//¹¦ÄÜ:  ¶ÁÈ¡Ä£¿éµÄ»ù±¾²ÎÊı£¨²¨ÌØÂÊ£¬°ü´óĞ¡µÈ)
-//²ÎÊı:  ÎŞ
-//ËµÃ÷:  Ä£¿é·µ»ØÈ·ÈÏ×Ö + »ù±¾²ÎÊı£¨16bytes£©
-//uint8_t PS_ReadSysPara(SysPara *p)
-//{
-//	uint16_t temp;
-//  uint8_t  ensure;
-//	uint8_t  *data;
-//	SendHead();
-//	SendAddr();
-//	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
-//	SendLength(0x03);
-//	Sendcmd(0x0F);
-//	temp = 0x01+0x03+0x0F;
-//	SendCheck(temp);
-//	data=JudgeStr(1000);
-//	if(data)
-//	{
-//		ensure = data[9];
-//		p->PS_max = (data[14]<<8)+data[15];
-//		p->PS_level = data[17];
-//		p->PS_addr=(data[18]<<24)+(data[19]<<16)+(data[20]<<8)+data[21];
-//		p->PS_size = data[23];
-//		p->PS_N = data[25];
-//	}		
-//	else
-//		ensure=0xff;
-//	if(ensure==0x00)
-//	{
-//		printf("\r\nÄ£¿é×î´óÖ¸ÎÆÈİÁ¿=%d",p->PS_max);
-//		printf("\r\n¶Ô±ÈµÈ¼¶=%d",p->PS_level);
-//		printf("\r\nµØÖ·=%x",p->PS_addr);
-//		printf("\r\n²¨ÌØÂÊ=%d",p->PS_N*9600);
-//	}
-//	else 
-//			printf("\r\n%s",EnsureMessage(ensure));
-//	return ensure;
-//}
-//ÉèÖÃÄ£¿éµØÖ· PS_SetAddr
-//¹¦ÄÜ:  ÉèÖÃÄ£¿éµØÖ·
-//²ÎÊı:  PS_addr
-//ËµÃ÷:  Ä£¿é·µ»ØÈ·ÈÏ×Ö
-//uint8_t PS_SetAddr(uint32_t PS_addr)
-//{
-//	uint16_t temp;
-//  uint8_t  ensure;
-//	uint8_t  *data;
-//	SendHead();
-//	SendAddr();
-//	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
-//	SendLength(0x07);
-//	Sendcmd(0x15);
-//	MYUSART_SendData(PS_addr>>24);
-//	MYUSART_SendData(PS_addr>>16);
-//	MYUSART_SendData(PS_addr>>8);
-//	MYUSART_SendData(PS_addr);
-//	temp = 0x01+0x07+0x15
-//	+(uint8_t)(PS_addr>>24)+(uint8_t)(PS_addr>>16)
-//	+(uint8_t)(PS_addr>>8) +(uint8_t)PS_addr;				
-//	SendCheck(temp);
-//	AS608Addr=PS_addr;//·¢ËÍÍêÖ¸Áî£¬¸ü»»µØÖ·
-//  data=JudgeStr(2000);
-//	if(data)
-//		ensure=data[9];
-//	else
-//		ensure=0xff;	
-//		AS608Addr = PS_addr;
-//	if(ensure==0x00)
-//		//printf("\r\nÉèÖÃµØÖ·³É¹¦£¡");
-//	else
-//		//printf("\r\n%s",EnsureMessage(ensure));
-//	return ensure;
-//}
-//¹¦ÄÜ£º Ä£¿éÄÚ²¿ÎªÓÃ»§¿ª±ÙÁË256bytesµÄFLASH¿Õ¼äÓÃÓÚ´æÓÃ»§¼ÇÊÂ±¾,
-//	¸Ã¼ÇÊÂ±¾Âß¼­ÉÏ±»·Ö³É 16 ¸öÒ³¡£
-//²ÎÊı:  NotePageNum(0~15),Byte32(ÒªĞ´ÈëÄÚÈİ£¬32¸ö×Ö½Ú)
-//ËµÃ÷:  Ä£¿é·µ»ØÈ·ÈÏ×Ö
-//uint8_t PS_WriteNotepad(uint8_t NotePageNum,uint8_t *Byte32)
-//{
-//	uint16_t temp;
-//  uint8_t  ensure,i;
-//	uint8_t  *data;
-//	SendHead();
-//	SendAddr();
-//	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
-//	SendLength(36);
-//	Sendcmd(0x18);
-//	MYUSART_SendData(NotePageNum);
-//	for(i=0;i<32;i++)
-//	 {
-//		 MYUSART_SendData(Byte32[i]);
-//		 temp += Byte32[i];
-//	 }
-//  temp =0x01+36+0x18+NotePageNum+temp;
-//	SendCheck(temp);
-//  data=JudgeStr(2000);
-//	if(data)
-//		ensure=data[9];
-//	else
-//		ensure=0xff;
-//	return ensure;
-//}
-//¶Á¼ÇÊÂPS_ReadNotepad
-//¹¦ÄÜ£º  ¶ÁÈ¡FLASHÓÃ»§ÇøµÄ128bytesÊı¾İ
-//²ÎÊı:  NotePageNum(0~15)
-//ËµÃ÷:  Ä£¿é·µ»ØÈ·ÈÏ×Ö+ÓÃ»§ĞÅÏ¢
-//uint8_t PS_ReadNotepad(uint8_t NotePageNum,uint8_t *Byte32)
-//{
-//	uint16_t temp;
-//  uint8_t  ensure,i;
-//	uint8_t  *data;
-//	SendHead();
-//	SendAddr();
-//	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
-//	SendLength(0x04);
-//	Sendcmd(0x19);
-//	MYUSART_SendData(NotePageNum);
-//	temp = 0x01+0x04+0x19+NotePageNum;
-//	SendCheck(temp);
-//  data=JudgeStr(2000);
-//	if(data)
-//	{
-//		ensure=data[9];
-//		for(i=0;i<32;i++)
-//		{
-//			Byte32[i]=data[10+i];
-//		}
-//	}
-//	else
-//		ensure=0xff;
-//	return ensure;
-//}
-//é«˜é¢ãŸæœç´¢PS_HighSpeedSearch
-//åŠŸèƒ½ï¼šä»¥ CharBuffer1æˆ–CharBuffer2ä¸­çš„ç‰¹å¾æ–‡ä»¶é«˜é¢ãŸæœç´¢æ•´ä¸ªæˆ–éƒ¨åˆ†æŒ‡çº¹åº“ã¢ã„1¤7
-//		  è‹¥æœç´¢åˆ°ï¼Œåˆ™è¿”å›é¡µç ,è¯¥æŒ‡ä»¤å¯¹äºçš„ç¡®å­˜åœ¨äºæŒ‡çº¹åº“ä¸­ ï¼Œä¸”ç™»å½•æ—¶è´¨é‡„1¤7
-//		  å¾ˆå¥½çš„æŒ‡çº¹ï¼Œä¼šå¾ˆå¿«ç»™å‡ºæœç´¢ç»“æœã¢ã„1¤7
-//å‚æ•°:  BufferIDï¼„1¤7 StartPage(èµ·å§‹é¡„1¤7)ï¼ŒPageNumï¼ˆé¡µæ•°ï¼‰
-//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1¤7+é¡µç ï¼ˆç›¸é…æŒ‡çº¹æ¨¡æ¿ï¼‰
+
+//é«˜ï¿½ï¿½æœç´¢PS_HighSpeedSearch
+//åŠŸèƒ½ï¼šä»¥ CharBuffer1æˆ–CharBuffer2ä¸­çš„ç‰¹å¾æ–‡ä»¶é«˜ï¿½ï¿½æœç´¢æ•´ä¸ªæˆ–éƒ¨åˆ†æŒ‡çº¹åº“ï¿½ï¿½1ï¿½7
+//		  è‹¥æœç´¢åˆ°ï¼Œåˆ™è¿”å›é¡µç ,è¯¥æŒ‡ä»¤å¯¹äºçš„ç¡®å­˜åœ¨äºæŒ‡çº¹åº“ä¸­ ï¼Œä¸”ç™»å½•æ—¶è´¨é‡„1ï¿½7
+//		  å¾ˆå¥½çš„æŒ‡çº¹ï¼Œä¼šå¾ˆå¿«ç»™å‡ºæœç´¢ç»“æœï¿½ï¿½1ï¿½7
+//å‚æ•°:  BufferIDï¼„1ï¿½7 StartPage(èµ·å§‹é¡„1ï¿½7)ï¼ŒPageNumï¼ˆé¡µæ•°ï¼‰
+//è¯´æ˜:  æ¨¡å—è¿”å›ç¡®è®¤å­„1ï¿½7+é¡µç ï¼ˆç›¸é…æŒ‡çº¹æ¨¡æ¿ï¼‰
 uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p)
 {
 	uint16_t temp;
@@ -538,7 +396,7 @@ uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x08);
     Sendcmd(0x1b);//AS608_MODEL
    
@@ -565,10 +423,10 @@ uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,
    
 	return ensure;
 }
-//¶ÁÓĞĞ§Ä£°å¸öÊı PS_ValidTempleteNum
-//¹¦ÄÜ£º¶ÁÓĞĞ§Ä£°å¸öÊı
-//²ÎÊı: ÎŞ
-//ËµÃ÷: Ä£¿é·µ»ØÈ·ÈÏ×Ö+ÓĞĞ§Ä£°å¸öÊıValidN
+//ï¿½ï¿½ï¿½ï¿½Ğ§Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ PS_ValidTempleteNum
+//ï¿½ï¿½ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ğ§Ä£ï¿½ï¿½ï¿½ï¿½ï¿½
+//ï¿½ï¿½ï¿½ï¿½: ï¿½ï¿½
+//Ëµï¿½ï¿½: Ä£ï¿½é·µï¿½ï¿½È·ï¿½ï¿½ï¿½ï¿½+ï¿½ï¿½Ğ§Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ValidN
 uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 {
 	uint16_t temp;
@@ -576,7 +434,7 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x03);
 	Sendcmd(0x1d);
 	temp = 0x01+0x03+0x1d;
@@ -592,15 +450,15 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 	
 //	if(ensure==0x00)
 //	{
-//		//printf("\r\nÓĞĞ§Ö¸ÎÆ¸öÊı=%d",(data[10]<<8)+data[11]);
+//		//printf("\r\nï¿½ï¿½Ğ§Ö¸ï¿½Æ¸ï¿½ï¿½ï¿½=%d",(data[10]<<8)+data[11]);
 //	}
 //	else
 //		//printf("\r\n%s",EnsureMessage(ensure));
 	return ensure;
 }
-//ÓëAS608ÎÕÊÖ PS_HandShake
-//²ÎÊı: PS_AddrµØÖ·Ö¸Õë
-//ËµÃ÷: Ä£¿é·µĞÂµØÖ·£¨ÕıÈ·µØÖ·£©	
+//ï¿½ï¿½AS608ï¿½ï¿½ï¿½ï¿½ PS_HandShake
+//ï¿½ï¿½ï¿½ï¿½: PS_Addrï¿½ï¿½Ö·Ö¸ï¿½ï¿½
+//Ëµï¿½ï¿½: Ä£ï¿½é·µï¿½Âµï¿½Ö·ï¿½ï¿½ï¿½ï¿½È·ï¿½ï¿½Ö·ï¿½ï¿½	
 //uint8_t PS_HandShake(uint32_t *PS_Addr)
 //{
 //	SendHead();
@@ -609,9 +467,9 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 //	MYUSART_SendData(0X00);
 //	MYUSART_SendData(0X00);	
 //	delay_ms(200);
-//	if(USART2_RX_STA&0X8000)//½ÓÊÕµ½Êı¾İ
+//	if(USART2_RX_STA&0X8000)//ï¿½ï¿½ï¿½Õµï¿½ï¿½ï¿½ï¿½ï¿½
 //	{		
-//		if(//ÅĞ¶ÏÊÇ²»ÊÇÄ£¿é·µ»ØµÄÓ¦´ğ°ü				
+//		if(//ï¿½Ğ¶ï¿½ï¿½Ç²ï¿½ï¿½ï¿½Ä£ï¿½é·µï¿½Øµï¿½Ó¦ï¿½ï¿½ï¿½				
 //					USART2_RX_BUF[0]==0XEF
 //				&&USART2_RX_BUF[1]==0X01
 //				&&USART2_RX_BUF[6]==0X07
@@ -648,7 +506,7 @@ uint8_t PS_Sleep(void)
 	uint8_t  *data;
 	SendHead();
 	SendAddr();
-	SendFlag(0x01);//ÃüÁî°ü±êÊ¶
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
 	SendLength(0x03);
 	Sendcmd(0x33);
 	temp = 0x01+0x03+0x33;
@@ -657,7 +515,41 @@ uint8_t PS_Sleep(void)
 	if(data)
 		ensure=data[9];
 	else
-		ensure=0xff;
+		ensure=data[9];
+	return ensure;
+}
+
+/**********************************************************************
+	*
+	*Function Name:uint8_t PS_ControlBLN(void)
+	*Function : sensor input sleep state
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes)
+{
+	uint16_t temp;
+    uint8_t  ensure;
+	uint8_t  *data;
+	SendHead();
+	SendAddr();
+	SendFlag(0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¶
+	SendLength(0x07);
+	Sendcmd(0x3C);
+	
+	MYUSART_SendData(fundata);
+	MYUSART_SendData(startcolor);
+	MYUSART_SendData(endcolor);
+	MYUSART_SendData(cycletimes);
+	
+	temp = 0x01+0x03+0x3C+fundata+startcolor+endcolor+cycletimes;
+	SendCheck(temp);
+	data=JudgeStr(2000);
+	if(data)
+		ensure=data[9];
+	else
+		ensure=data[9];
 	return ensure;
 }
 /**********************************************************************
@@ -668,244 +560,203 @@ uint8_t PS_Sleep(void)
 	*Return Ref:NO
 	*
 ***********************************************************************/
-void Press_ReadFingerprint_Data(void)
+void RunCommand_Unlock_Fingerprint(void)
 {
 	SearchResult seach;
-    static uint8_t error_flag=0xff,administrator_fp_flag=0;
-    
+  static uint8_t getImage=0xff;
+
+  
+
     if(run_t.Confirm_newPassword==1){
 	  run_t.gTimer_8s=0;
-	 // if(syspara_t.ps_serch_getimage !=0)
-	        syspara_t.ps_serch_getimage=PS_GetImage();
 	  syspara_t.PS_wakeup_flag=0;
-      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-	  if(syspara_t.ps_readEeprom_data ==0){ //the first new fingerprint must be is administrator password "1234"
-         syspara_t.ps_thefirst_input_fp =1; //the first input fingerprint administrator password
-         run_t.open_lock_success =0;
-		 		run_t.open_lock_fail = 0;
-		 		run_t.Led_OK_flag =0;
-		  	run_t.Led_ERR_flag=0;
-			administrator_fp_flag=1;
+      syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//éœ²è„•
+       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+	  if(syspara_t.ps_readEeprom_data >0){ //the first new fingerprint must be is administrator password "1234"
+          syspara_t.FP_RunCmd_Lable = FP_SET_NEW_FP; //3//add new fingerprint
+		
 	  }
 	  else{
-	    syspara_t.ps_thefirst_input_fp =0; //has been an administrator of passsword
-	     run_t.open_lock_success =0;
-		 run_t.open_lock_fail = 0;
-		 run_t.Led_OK_flag =0;
-		  run_t.Led_ERR_flag=0;
-		  run_t.buzzer_key_sound_flag = 1;
-		  run_t.buzzer_fail_sound_flag=0;
-
+	  
+         syspara_t.FP_RunCmd_Lable = FP_SET_INIT; //has a been adminsitrator fingerprint data
+		
 	 }
 	}
    else{
+   	
    	 syspara_t.PS_wakeup_flag=0;
-   	 syspara_t.ps_thefirst_input_fp =2;
-   //  if(syspara_t.ps_serch_getimage !=0)
-       	syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//Â¶Ã
-   	      syspara_t.ps_serch_getimage=PS_GetImage();
-     syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+      syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//éœ²è„•
+   	  syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+     if(syspara_t.ps_readEeprom_data >0) syspara_t.FP_RunCmd_Lable = FP_SEARCH;//syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
+     else  syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
    }
     
-    
+
 	//fingerprint open lock doing 
-    if(run_t.Confirm_newPassword==0 && run_t.panel_lock==0 && syspara_t.ps_readEeprom_data >0 && syspara_t.ps_thefirst_input_fp ==2){
+   switch(syspara_t.FP_RunCmd_Lable){
 
-		 run_t.gTimer_8s=0;
-
-		syspara_t.PS_read_template=0;
-		
-       while(syspara_t.ps_serch_getimage){
-	   	   syspara_t.ps_serch_getimage=PS_GetImage();
-	   	   syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-	       syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
-
-		   if(syspara_t.ps_serach_result==0) goto FP_SEARCH;
-		    fp_read_cnt++;
-	        if(fp_read_cnt>2){
-                fp_read_cnt=0;
-				
-				goto FP_FAIL;
-
+   	  case FP_SEARCH:
+	    if(FP_INPUT_KEY()==1){
+        run_t.gTimer_8s=0;
+        syspara_t.PS_read_template=0;
+      
+			syspara_t.ps_serch_getimage=PS_GetImage();
+			if(syspara_t.ps_serch_getimage==0x00)  syspara_t.ps_serch_lable=FP_GEN_CHAR;
+            else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
+	 
+     // break;
+	  case FP_GEN_CHAR:
+            syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+			if(syspara_t.ps_serch_genchar==0x00){  
+				syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
+				if(syspara_t.ps_serach_result==0x00){
+					syspara_t.PS_login_success=1;
+					syspara_t.ps_serch_getimage=0xff;
+					run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
+					run_t.error_times=0; //clear error input fingerprint of times 
+					syspara_t.PS_wakeup_flag=0;
+					return ;
+				}
+				else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
+			}
+			else{
+       
+			   
+		         syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
 			}
 		   
-       	}
-		if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//è·å–å›¾åƒæˆåŠŸ 
-		{	
-           
-             fp_read_cnt=0;
-			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			
-				if(syspara_t.ps_serch_genchar==0x00)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ 
-				{	 
-	         syspara_t.PS_read_template=2;//receive data is 16bytes by USART1 port
-	            
-					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,42,&seach);
-					
-					
-					if(syspara_t.ps_serach_result==0x00)//ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½
-					{				
-		FP_SEARCH:		 if(run_t.motor_return_homePosition==1)
-								run_t.oneself_copy_behavior=1; //prejudge statement
-
-						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  æŒ‡çº¹éªŒè¯æˆåŠŸ  ");				
-						syspara_t.PS_check_fp_fail =0;
-						fp_read_cnt=0;
-	       
-	           			 syspara_t.ps_serch_getimage=0xff;
-						 
-						 run_t.open_lock_fail=0;
-					
-						  run_t.open_lock_success=1;
-						 run_t.Led_OK_flag =1;
-						 run_t.Led_ERR_flag=0;
-					    run_t.error_times=0; //clear error input fingerprint of times 
-						  syspara_t.PS_wakeup_flag=0;
-						
-					}
-					else{
-			FP_FAIL:	if(error_flag !=syspara_t.ps_error_times_key){
-							 error_flag = syspara_t.ps_error_times_key;
-								fp_read_cnt=0;
-							syspara_t.PS_check_fp_success =0;
-							syspara_t.PS_check_fp_fail =1;//OLED_ShowCH(32,2,"éªŒè¯å¤±è´¥");
-		          			syspara_t.PS_wakeup_flag=0;
-		          			syspara_t.ps_serch_getimage=0xff;
-							
-							run_t.open_lock_success =0;
-							run_t.open_lock_fail = 1;
-							run_t.Led_OK_flag =0;
-							run_t.Led_ERR_flag=1;
-							syspara_t.PS_wakeup_flag=0;
-					
-
-	                    }         
-						
-					}		
-			 	}
-				
-				}
-       }
-   //don't new administrator of intialize start 
-   /*************************************************************/
-	if(syspara_t.ps_readEeprom_data==0 && run_t.Confirm_newPassword==0  && run_t.inputNewPassword_Enable==0){
-      
-    		syspara_t.PS_read_template=0;
-    	 if(syspara_t.ps_serch_getimage!=0)
-	           syspara_t.ps_serch_getimage=PS_GetImage();
-		   if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//é‘¾å³°å½‡é¥æƒ§å„šé´æ„¬å§› 
-		   {	
-           
-				syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-   
-			  
-    	  run_t.open_lock_fail=0;
-					
-				run_t.open_lock_success=1;
-				run_t.Led_OK_flag =1;
-				run_t.Led_ERR_flag=0;
-				run_t.error_times=0; //clear error input fingerprint of times 
-				syspara_t.PS_wakeup_flag=0;
-
-        }
-
-    }
-
-	
-//    //judge input fingerprint error times
-//	 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
-//        
-//        run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
-//        run_t.gTimer_input_error_times_60s =0;
-//        run_t.panel_lock=1;
-//				run_t.gTimer_8s=0;
-//		}
-
-	//New fingerprint intpu by save new fingerprint data statement
-    
+		  
+		//break;
 
 
-	 
-    if(run_t.Confirm_newPassword==1 &&  syspara_t.ps_thefirst_input_fp ==0 && run_t.inputNewPassword_Enable==0){//don't the first input FP.and to store has FP data
-      syspara_t.PS_wakeup_flag=0;
-	      if(syspara_t.ps_serch_getimage!=0)
-		        syspara_t.ps_serch_getimage=PS_GetImage();
-		if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//è·å–å›¾åƒæˆåŠŸ 
-		{	
-           
-			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-			
-				if(syspara_t.ps_serch_genchar==0x00)//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ 
-				{	 
-	            syspara_t.PS_read_template=2;//receive data is 16bytes.
-	            
-					syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
-					
-					
-					if(syspara_t.ps_serach_result==0x00)//ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½
-					{				
-						syspara_t.PS_check_fp_success =1;//OLED_ShowCH(0,2,"  æŒ‡çº¹éªŒè¯æˆåŠŸ  ");	
-             			run_t.open_lock_success=1;
-						run_t.open_lock_fail = 0;
-						run_t.inputNewPassword_Enable=1;
-						administrator_fp_flag=0;
-						syspara_t.PS_wakeup_flag=0;
-						
-				 }
-				 else{
 
-				 	administrator_fp_flag=1;
-				 	syspara_t.PS_wakeup_flag=0;
-				 }
-					
+	    case FP_SEARCH_FAIL:
+			    			
+            syspara_t.PS_wakeup_flag=0;
+            syspara_t.ps_serch_getimage=0xff;
+			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
+            syspara_t.PS_wakeup_flag=0;
+               
+            return ;
 
-		  }
-		  else if(administrator_fp_flag==0){
-
-		  	administrator_fp_flag=1;
-		  	syspara_t.PS_wakeup_flag=0;
-		  }
-    }
-    else if(administrator_fp_flag==0){
-       administrator_fp_flag=1;
-       syspara_t.PS_wakeup_flag=0;
-
-    }
-	
-    }
-    if(administrator_fp_flag==1){
-    	   administrator_fp_flag=0;
-           syspara_t.ps_thefirst_input_fp =0xff; 
-    			run_t.inputNewPasswordTimes =0;
-				run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
+			break;
         
-				run_t.open_lock_success=0;
-				run_t.open_lock_fail=1;
+		}	
+       
+     break;
 
-				run_t.led_blank  =0;
-				run_t.motor_return_homePosition=0;
-				run_t.Numbers_counter =0;
-				run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
-				run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-				run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
-				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
-				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-				run_t.buzzer_two_short = 0;//WT.EDIT 2022.10.19
-				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
-
-				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-				run_t.BackLight =1;
-				OK_LED_OFF(); //WT.EDIT 2022.10.28
-				ERR_LED_ON();
-				run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
-				syspara_t.PS_wakeup_flag=0;
-			
-
-	}
-	
-
-	
+   	}
 }
+//      case FP_SEARCH_INIT://don't new administrator of intialize start 
+//          syspara_t.PS_read_template=0;
+//     	 if(syspara_t.ps_serch_getimage!=0)
+// 	           syspara_t.ps_serch_getimage=PS_GetImage();
+
+// 		   if(syspara_t.ps_serch_getimage==0x00)//if(ensure==0x00)//é‘¾å³°å½‡é¥æƒ§å„šé´æ„¬å§› 
+// 		   {	
+           
+// 			syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+// 			run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
+// 			run_t.error_times=0; //clear error input fingerprint of times 
+// 			syspara_t.PS_wakeup_flag=0;
+
+//         	}
+
+    
+//     break;
+//    }
+//     //set login new fingerprint data
+//     case FP_SET_NEW_FP: //=3 has a administrator fingerprint
+	
+// 		syspara_t.PS_wakeup_flag=0;
+	
+		
+
+// 		switch(syspara_t.ps_serch_lable){
+
+// 		case 0: 
+
+// 		if(FP_INPUT_KEY()==1){
+// 			syspara_t.ps_serch_getimage=PS_GetImage();
+// 			if(syspara_t.ps_serch_getimage==0x00){  // syspara_t.ps_serch_lable=0;
+			
+		
+// 			//if(FP_INPUT_KEY()==1){    
+// 				syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
+// 				if(syspara_t.ps_serch_genchar==0)syspara_t.ps_serch_lable=1;
+// 				else
+// 					syspara_t.ps_serch_lable=3;
+			
+// 			//break;
+
+// 			case 1:
+// 				syspara_t.PS_read_template=2;//receive data is 16bytes.
+
+// 				syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
+// 				if(syspara_t.ps_serach_result==0)syspara_t.ps_serch_lable=2;
+// 				else
+// 				syspara_t.ps_serch_lable=3;
+// 			//}
+// 			break;
+
+// 			case 2:
+			
+// 				run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
+// 				syspara_t.fp_administrator_flag =1;
+// 				syspara_t.PS_wakeup_flag=0;
+// 				syspara_t.PS_login_times=0;
+// 				syspara_t.ps_serch_lable=0;
+// 			    return ;
+// 			//	ps_led=PS_ControlBLN(open_led,0,0,0);
+// 		    }
+// 			break;
+
+// 			case 3:
+// 				run_t.inputNewPasswordTimes =0;
+// 				run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
+
+// 				run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail=1;
+// 				syspara_t.PS_login_times=0;
+			
+// 				run_t.motor_return_homePosition=0;
+// 				run_t.Numbers_counter =0;
+		
+// 				run_t.buzzer_sound_lable = sound_fail;//run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
+			
+// 				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
+// 				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+				
+// 				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
+
+// 				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+// 				run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
+// 				syspara_t.PS_wakeup_flag=0;
+// 				syspara_t.PS_login_times=0;
+// 				syspara_t.ps_serch_lable=0;
+// 			//	ps_led=PS_ControlBLN(open_led,0,0,0);
+// 		    return ;
+
+// 			break;
+
+// 		}
+// 		}		
+// 	break;
+
+//     case FP_SET_INIT:
+// 		 run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_success=1;
+// 		syspara_t.PS_wakeup_flag=0;
+// 		syspara_t.ps_serch_lable=0;
+//         return;
+// 	break;
+
+// 	default:
+
+// 	break;
+//    	}
+// }
+
+
+
 
 /**********************************************************************
 	*
@@ -918,12 +769,12 @@ void Press_ReadFingerprint_Data(void)
 void Del_FR(void)
 {
 	uint8_t  ensure;
-	//ensure=PS_Empty();//æ¸…ç©ºæŒ‡çº¹åº„1¤7
+	//ensure=PS_Empty();//æ¸…ç©ºæŒ‡çº¹åº„1ï¿½7
 	ensure=PS_DeletChar(0,128);
     if(ensure==0)
 	{
 			//OLED_Clear();
-			//OLED_ShowCH(0,2," æ¸…ç©ºæŒ‡çº¹åº“æˆåŠ„1¤7 ");		
+			//OLED_ShowCH(0,2," æ¸…ç©ºæŒ‡çº¹åº“æˆåŠ„1ï¿½7 ");		
 			syspara_t.PS_clear_ps_success=1;
 			syspara_t.PS_clear_ps_fail=0;
 	}
@@ -944,173 +795,150 @@ void Del_FR(void)
 ***********************************************************************/
 void Fingerprint_NewClinet_Login_Fun(void)
 {
-    static uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
-   uint8_t ps_getImage;
+  //  static uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
+  // uint8_t ps_getImage;
    run_t.gTimer_8s=0;
     
       //  if(syspara_t.PS_login_times>4)syspara_t.PS_login_times=0;
     switch(syspara_t.PS_login_times){
 
-			case 0: //input 1 times 
+		case 0: //input 1 times syspara_t.PS_read_template=0;
+		    if(FP_INPUT_KEY()==1){
+			ps_getImage=PS_GetImage();
+			if(ps_getImage==0){
 
-		   syspara_t.PS_read_template=0;
-			   ps_getImage=PS_GetImage();
-				  
-				if(ps_getImage==0){
-			   
-					 ps_genChar =PS_GenChar(CharBuffer1);//ç”Ÿæˆç‰¹å¾
-					
-					if(ps_genChar==0 ){
-	             
-						     BUZZER_KeySound();
-	               HAL_Delay(300);
-	               syspara_t.PS_login_times=1;
-	               syspara_t.PS_wakeup_flag=0;	
-					 }
-					 else{
-             
-	           
-						  syspara_t.PS_login_times=0;	
-						  syspara_t.PS_wakeup_flag=0;	
-					 }
+			ps_genChar =PS_GenChar(CharBuffer1);//ç”Ÿæˆç‰¹å¾
 
-					}
-					else{
-              
-	         
-						  syspara_t.PS_login_times=0;	
-						  syspara_t.PS_wakeup_flag=0;	
-					}
-				 
+			if(ps_genChar==0 ){
+				Buzzer_KeySound();
+				HAL_Delay(300);
+				syspara_t.PS_login_times=1;
+				syspara_t.PS_wakeup_flag=0;	
+			}
+			else{
+				syspara_t.PS_login_times=0;	
+				syspara_t.PS_wakeup_flag=0;	
+			}
+
+			}
+			else{
+				syspara_t.PS_login_times=0;	
+				syspara_t.PS_wakeup_flag=0;	
+			}
+        }	 
         break; 
 
         case 1: //input 2 times
-          if(syspara_t.PS_wakeup_flag==1){
-				  syspara_t.PS_read_template=0;
-				   ps_getImage=PS_GetImage();
-					  
-					if(ps_getImage==0){
-				   
-						 ps_genChar =PS_GenChar(CharBuffer1);//ç”Ÿæˆç‰¹å¾
-						
-						if(ps_genChar==0 ){
-		             
-							  BUZZER_KeySound();
-	               HAL_Delay(300);
-	               syspara_t.PS_login_times=2;
-	               syspara_t.PS_wakeup_flag=0;	
-						 }
-						 else{
-						 
-	              
-						  syspara_t.PS_login_times=1;	
-						  syspara_t.PS_wakeup_flag=0;	
-						 }
+              if(FP_INPUT_KEY()==1){
+				syspara_t.PS_read_template=0;
+				ps_getImage=PS_GetImage();
 
-						}
-						else{
-						
-						  syspara_t.PS_login_times=1;	
-						  syspara_t.PS_wakeup_flag=0;	
-						}
-					}
+				if(ps_getImage==0){
+
+				ps_genChar =PS_GenChar(CharBuffer1);//ç”Ÿæˆç‰¹å¾
+
+				if(ps_genChar==0 ){
+
+				Buzzer_KeySound();
+				HAL_Delay(300);
+				syspara_t.PS_login_times=2;
+				syspara_t.PS_wakeup_flag=0;	
+				}
+				else{
+
+
+				syspara_t.PS_login_times=1;	
+				syspara_t.PS_wakeup_flag=0;	
+				}
+
+				}
+				else{
+
+				syspara_t.PS_login_times=1;	
+				syspara_t.PS_wakeup_flag=0;	
+				}
+		    }
+		    
         break; 
                      
                      
          case 2: //input 3 times
-           if(syspara_t.PS_wakeup_flag==1){
-	         syspara_t.PS_read_template=0;
-				   ps_getImage=PS_GetImage();
-					  
-					if(ps_getImage==0){
-				   
-						 ps_genChar =PS_GenChar(CharBuffer1);//ç”Ÿæˆç‰¹å¾
-						
-						if(ps_genChar==0 ){
-		            
-							  BUZZER_KeySound();
-	               HAL_Delay(300);
-	                syspara_t.PS_login_times=3;
-	               syspara_t.PS_wakeup_flag=0;	
-						 }
-						 else{
-						 	
-	             // HAL_Delay(100);
-						  syspara_t.PS_login_times=2;	
-						  syspara_t.PS_wakeup_flag=0;	
-						 }
+            if(FP_INPUT_KEY()==1){
+			syspara_t.PS_read_template=0;
+			ps_getImage=PS_GetImage();
 
-						}
-						else{
-						
-	             // HAL_Delay(100);
-						  syspara_t.PS_login_times=2;	
-						  syspara_t.PS_wakeup_flag=0;	
-						}
-					}
+			if(ps_getImage==0){
+
+			ps_genChar =PS_GenChar(CharBuffer1);//ç”Ÿæˆç‰¹å¾
+
+			if(ps_genChar==0 ){
+
+			Buzzer_KeySound();
+			HAL_Delay(300);
+			syspara_t.PS_login_times=3;
+			syspara_t.PS_wakeup_flag=0;	
+			}
+			else{
+
+			// HAL_Delay(100);
+			syspara_t.PS_login_times=2;	
+			syspara_t.PS_wakeup_flag=0;	
+			}
+
+			}
+			else{
+
+			// HAL_Delay(100);
+			syspara_t.PS_login_times=2;	
+			syspara_t.PS_wakeup_flag=0;	
+			}
+            	}
         break;  
 
         case 3: //input 4  times 
-         if(syspara_t.PS_wakeup_flag==1){
-        		syspara_t.PS_read_template=0;
-            ps_regmodel=PS_RegModel();
-           if(ps_regmodel==0){
+            if(FP_INPUT_KEY()==1){
+	        	syspara_t.PS_read_template=0;
+	            ps_regmodel=PS_RegModel();
+	           if(ps_regmodel==0){
 
-                      syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-                      if(syspara_t.ps_readEeprom_data !=0)
-                            syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr+1);
-				  	 }
-          
-				   ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????     
-				  if(ps_storechar==0){
-//	            if(syspara_t.ps_readEeprom_data < 41){
-				   
-					   syspara_t.PS_login_times=5;
-					   run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-					   run_t.motor_return_homePosition=0;
-						 run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-						run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
-						run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
-						run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
-						  
-						run_t.gTimer_8s=7;
-						run_t.login_in_success=1; //WT.EDIT 2022.10.31
-						run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
-						run_t.open_lock_success=0;
-            			run_t.open_lock_fail = 0;
-			          
-					   if(syspara_t.ps_readEeprom_data ==0){
-				  	     AT24CXX_WriteOneByte(EEPROM_AS608Addr,0x01);
-					   	}
-					   else
-				   	      AT24CXX_WriteOneByte((EEPROM_AS608Addr+0x01),(syspara_t.ps_readEeprom_data+1));
-				       
-                  
-					
-		      run_t.led_blank	=1;//OK led blank three times
-	
-				 
-		 
-		    }
-		 
+		
+				syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+				ps_storechar=PS_StoreChar(CharBuffer1,(syspara_t.ps_readEeprom_data+1));//????     
+				if(ps_storechar==0){ //login new fingerprint success
+				//	            if(syspara_t.ps_readEeprom_data < 41){
 
+				syspara_t.PS_login_times=5;
+				run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
+				run_t.motor_return_homePosition=0;
+				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+				Buzzer_LongSound();
+				run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
+
+				
+				run_t.login_in_success=1; //WT.EDIT 2022.10.31
+
+				AT24CXX_WriteOneByte((EEPROM_AS608Addr),(syspara_t.ps_readEeprom_data+1));
+				run_t.works_led_lable =works_ok_blink;  //run_t.led_blank	=1;//OK led blank three times
+
+				}
+				syspara_t.PS_login_times=5;
+            }
+            }
          case 5:
      
-         	syspara_t.PS_read_template=1;
-			  	syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//Â¶Ã
-           syspara_t.PS_wakeup_flag = 0;
-         syspara_t.PS_login_times=0;
-        }
+	      	  syspara_t.PS_read_template=1;
+			syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//éœ²è„•
+	        syspara_t.PS_wakeup_flag = 0;
+	        syspara_t.PS_login_times=0XFF;
+			run_t.gTimer_8s=5;      
+       
         break;
        
-}
+    	}
 
 }
+
 
                
-         
-
-   
-
-
- 
+      

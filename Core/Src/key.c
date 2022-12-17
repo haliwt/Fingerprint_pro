@@ -22,9 +22,9 @@ uint8_t buzzertimes;
     *
     * Function Name: void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     * Function : Interrupt function call back 
-    * Input Ref: GPIO_Pin：interrupt of GPIO of pin number
-    * Return Ref: 无
-    * 说    明: 无
+    * Input Ref: GPIO_Pin拢潞interrupt of GPIO of pin number
+    * Return Ref: 脦脼
+    * 脣碌    脙梅: 脦脼
     *
 *******************************************************************************/
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
@@ -33,30 +33,26 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
     if(GPIO_Pin == KEY_INPUT_Pin){
 		 POWER_ON();
         FP_POWER_ON()  ;
+         BACKLIGHT_ON();
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 	
 		if(run_t.lowPower_flag==0){
+		//	SystemClock_Config();
+			HAL_ResumeTick();
+			HAL_TIM_Base_Start_IT(&htim14);//
+
+
 			
-	            run_t.ADC_times=0;
-		  
-			 	run_t.lowPower_flag++;
-				if(run_t.normal_works_state ==0){//WT.EDIT 2022.10.08
-				 run_t.normal_works_state++;
-			     run_t.input_lowpower_stopmodel_flag=0;
-			  	 SystemClock_Config();
-				 HAL_ResumeTick();
-				 HAL_TIM_Base_Start_IT(&htim14);//
-				//  MX_USART1_UART_Init();
-				  
-				 run_t.inputDeepSleep_times =0;
-				     POWER_ON();
-                    FP_POWER_ON()  ;
-				 	
-				}
-				run_t.readI2C_data =1;//WT.EDIT 2022.09.26 jump the "if(run_t.touchkey_first_turn_on_led==1 && run_t.panel_lock ==0)"
-				run_t.touchkey_first_turn_on_led =1;//WT.EDIT 2022.09.26
-			    run_t.gTimer_8s=0;//WT.EDIT 2022.09.26
-			   
+			POWER_ON();
+			FP_POWER_ON()  ;
+			BACKLIGHT_ON();
+			run_t.lowPower_flag++;
+			run_t.ADC_times=0;
+			run_t.backlight_Cmd_lable =0xff;	 	
+			run_t.readI2C_data =1;//WT.EDIT 2022.09.26 jump the "if(run_t.touchkey_first_turn_on_led==1 && run_t.panel_lock ==0)"
+			
+			 run_t.gTimer_8s=0;
+			 run_t.inputDeepSleep_times =0; 
 			 	
 		}
 	   	
@@ -64,86 +60,63 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 	}
 }
 
-
-
-
-
-
-
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
-   static  uint8_t touchkey=0xff;
-    
-
-
-   if(GPIO_Pin == SC12B_INT_INPUT_Pin ||GPIO_Pin==FP_INT_INPUT_Pin){
+   if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
-      run_t.input_lowpower_stopmodel_flag=0;
-        POWER_ON();
-     FP_POWER_ON()  ;
-	 
-	   if(GPIO_Pin == SC12B_INT_INPUT_Pin )
+     
+       POWER_ON();
+       FP_POWER_ON()  ;
+	   BACKLIGHT_ON();
+
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-       if(GPIO_Pin==FP_INT_INPUT_Pin){
-	   	 	syspara_t.PS_wakeup_flag=1;
-	       __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);
-       	}
-      if(run_t.lowPower_flag==0){
       
-	 	    run_t.lowPower_flag++;
+      if(run_t.lowPower_flag==0){
+		//	SystemClock_Config();
+			HAL_ResumeTick();
+			HAL_TIM_Base_Start_IT(&htim14);//
 
-	        run_t.ADC_times=0;
-		 
-			run_t.input_lowpower_stopmodel_flag=0;
-		  	 SystemClock_Config();
-			  HAL_ResumeTick();
-			  HAL_TIM_Base_Start_IT(&htim14);//
-			//  MX_USART1_UART_Init();
-			     POWER_ON();
-     			FP_POWER_ON()  ;
-           
-    		run_t.readI2C_data =1;
-		  	 run_t.inputDeepSleep_times =0;
-		  
-		
-		 if(touchkey != run_t.touchkey_first && run_t.Confirm_newPassword ==0){//2022.10.19
-		 	  touchkey = run_t.touchkey_first;
-	         // run_t.touchkey_first_turn_on_led =1;
-		      run_t.readI2C_data =0;//WT.EDIT 2022.09.26
-			  run_t.gTimer_200ms=0;
-			  run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
-		 }
-      	
-      	
-    }
-}
+			POWER_ON();
+			FP_POWER_ON()  ;
+			run_t.lowPower_flag++;
 
+			run_t.ADC_times=0;
+			run_t.readI2C_data =1;
+			run_t.inputDeepSleep_times =0;
+			run_t.backlight_Cmd_lable =0xff;
+		    run_t.gTimer_8s=0;
+		}
+
+ 	}
   
    //fingerprint 
-//   if(GPIO_Pin==FP_INT_INPUT_Pin){
-//         syspara_t.PS_wakeup_flag=1;
-//		  POWER_ON();
-//		  FP_POWER_ON()  ;
-//		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-//      if(run_t.lowPower_flag==0){
-//
-//	      
-//
-//            run_t.ADC_times=0;
-//			run_t.lowPower_flag++;
-//	      	run_t.input_lowpower_stopmodel_flag=0;
-//		    SystemClock_Config();
-//	        HAL_ResumeTick();
-//			HAL_TIM_Base_Start_IT(&htim14);//
-//			//MX_USART1_UART_Init();
-//           //  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
-//		   POWER_ON();
-//		  FP_POWER_ON()  ;
-//		//  syspara_t.ps_serch_getimage=PS_GetImage();
-//		  	run_t.inputDeepSleep_times =0;
-//	      
-//       }
-//	}
+  if(GPIO_Pin==FP_INT_INPUT_Pin){
+        syspara_t.PS_wakeup_flag=1;
+		  POWER_ON();
+		  FP_POWER_ON()  ;
+		  BACKLIGHT_ON();
+		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+     if(run_t.lowPower_flag==0){
+
+		
+	//	SystemClock_Config();
+		HAL_ResumeTick();
+		MX_TIM14_Init();
+		HAL_TIM_Base_Start_IT(&htim14);//
+
+		POWER_ON();
+		FP_POWER_ON()  ;
+		BACKLIGHT_ON();
+		run_t.gTimer_200ms=0;
+	    run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
+        run_t.ADC_times=0;
+		run_t.lowPower_flag++;
+	    run_t.backlight_Cmd_lable =0xff;
+	    run_t.gTimer_8s=0;
+		run_t.inputDeepSleep_times =0;
+	      
+      }
+	}
 
 }
 
@@ -164,8 +137,8 @@ uint8_t Scan_Key(void)
    if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0 )
 	{
 		key.read &= ~0x01; // 0x1f & 0xfe =  0x1E
-		POWER_ON();
-		TouchKey_Led_Handler();//BACKLIGHT_2_ON();
+		//POWER_ON();
+		//TouchKey_Led_Handler();//BACKLIGHT_2_ON();
 	}
 	
 	
@@ -215,8 +188,10 @@ uint8_t Scan_Key(void)
                         buzzertimes++;
 						run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
 						run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
-                        BUZZER_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.10.05
+                        Buzzer_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.10.05
                         BUZZER_OFF(); 
+                        ERR_LED_OFF();
+                        OK_LED_ON();
                         HAL_Delay(400);
                        if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==1){
                          buzzertimes=0;
@@ -230,11 +205,14 @@ uint8_t Scan_Key(void)
                         BUZZER_OFF(); 
                         HAL_Delay(200);
                         Buzzer_ShortSound();
-                        BUZZER_OFF(); 
+                        BUZZER_OFF(); //BUZZER_OFF(); 
                         run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
                         run_t.eeprom_Reset_flag =1; //WT.EDIT 2022.10.26
                         run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
-						run_t.BackLight =1; //WT.EDIT 2022.10.26
+                        ERR_LED_OFF();
+                        OK_LED_ON();
+					    run_t.works_led_lable = works_ok_blink;
+					    run_t.clearEeeprom_count=0;//blink counter 
                         while(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0);
                         key.value = key.value|0x80;
                     }
@@ -302,32 +280,35 @@ void  SideKey_Fun(uint8_t keyvalue)
                
 		run_t.Confirm_newPassword = 1;
 		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
 		run_t.inputNewPassword_Enable =0;
 		run_t.gTimer_8s=0;
-		run_t.buzzer_key_sound_flag =1;//WT.EDIT 2022.10.06
-		run_t.BackLight =1; //WT.EDIT .2022.10.06
+		run_t.buzzer_sound_lable= sound_key;//run_t.buzzer_key_sound_flag =1;//WT.EDIT 2022.10.06
+		
 
        	run_t.inputNewPasswordTimes =0;
-		//run_t.password_unlock=0;//accomplish by save task//WT.EIDT 2022.09.12
-        run_t.password_unlock_model=0;
-		run_t.open_lock_fail=0;//run_t.lock_fail =0;
-		run_t.open_lock_success=0; 
+        run_t.password_unlock_model=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
-		syspara_t.ps_thefirst_input_fp =0;//clear fingerprint flag
 	
-        BACKLIGHT_2_ON();        
-		
+	
+        BACKLIGHT_ON();        
+		FP_POWER_ON();
 		POWER_ON();//WT.EDIT .2022.10.06
 		OK_LED_OFF();//WT.EDIT .2022.10.31
+		run_t.works_led_lable= works_null;
+		run_t.open_lock_lable=open_lock_null;
+		syspara_t.PS_wakeup_flag=0;
 	        
        }
 	 
       if(keyvalue== 0x81){
 
+        run_t.works_led_lable=works_ok_led_on;
         run_t.clearEeprom = 1;
 		run_t.inputDeepSleep_times =0;
         run_t.gTimer_8s=0;
+
 		
        }
 

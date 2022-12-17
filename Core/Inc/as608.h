@@ -9,47 +9,69 @@
 
 
 
-extern uint32_t AS608Addr;//Ä£¿éµØÖ·
+extern uint32_t AS608Addr;//Ä£ï¿½ï¿½ï¿½Ö·
 extern uint16_t EEPROM_AS608Addr;
 
 typedef struct  
 {
-	uint16_t pageID;//Ö¸ÎÆID
-	uint16_t mathscore;//Æ¥ÅäµÃ·Ö
+	uint16_t pageID;//Ö¸ï¿½ï¿½ID
+	uint16_t mathscore;//Æ¥ï¿½ï¿½Ã·ï¿½
 }SearchResult;
+
+typedef enum _color{
+
+  
+  color_off=0x00,
+  blue_on = 0x01,
+  green_on = 0x02,
+  red_on = 0x04
+  
+  
+}color;
+
+typedef enum _fun_color{
+
+   breath_led =0x01,
+	 blank_led ,
+	 open_led,
+	 close_led
+}fun_color;
+
+typedef enum _runcmd{
+	FP_SEARCH=0x01,
+	FP_GEN_CHAR,
+	FP_SEARCH_FAIL,
+	FP_SEARCH_INIT,
+    FP_SET_NEW_FP,
+    FP_SET_INIT
+}runcmd;
 
 typedef struct _syspara
 {
-	uint16_t PS_max;//Ö¸ÎÆ×î´óÈÝÁ¿
-	uint8_t  PS_level;//°²È«µÈ¼¶
-	uint32_t PS_addr;
-	uint8_t  PS_size;//Í¨Ñ¶Êý¾Ý°ü´óÐ¡
-	uint8_t  PS_N;//²¨ÌØÂÊ»ùÊýN
-	uint8_t  PS_rx_data_flag;
-	uint8_t  PS_input_success;
-	uint8_t  PS_input_fail;
-	uint8_t  PS_quit_input_ps_flag;
-	uint8_t  PS_finish_input_ps_flag;
 
-	uint8_t  	PS_check_fp_success;
-	uint8_t  	PS_check_fp_fail;
+	//image 
+	uint8_t ps_image_key;
+
 	uint8_t 	PS_clear_ps_success;
 	uint8_t 	PS_clear_ps_fail;
 
 	uint8_t PS_login_flag;
 	uint8_t PS_wakeup_flag;
-	uint8_t PS_pressed_flag;
-	uint8_t PS_login_success;
-    uint8_t uart1_rx_data;
-    uint8_t PS_read_template;
+  uint8_t  PS_login_success;
+  uint8_t handler_read_data_flag;
 	
-    uint8_t ps_error_times_key;
     
-    uint8_t ps_judeg_read_templete_flag;
+  uint8_t uart1_rx_data;
+  uint8_t PS_read_template;
+	
+  uint8_t ps_error_times_key;
+  uint8_t ps_judeg_read_templete_flag;
 	
 	//eeprom 
 	uint8_t ps_readEeprom_data;
-	uint8_t ps_thefirst_input_fp;
+  uint8_t FP_RunCmd_Lable;
+  uint8_t ps_serch_lable;
+  uint8_t fp_administrator_flag;
 
 
 	//search
@@ -72,51 +94,56 @@ typedef struct _syspara
 
 extern SysPara syspara_t;
 
-//void PS_StaGPIO_Init(void);//³õÊ¼»¯PA6¶Á×´Ì¬Òý½Å
+//void PS_StaGPIO_Init(void);//ï¿½ï¿½Ê¼ï¿½ï¿½PA6ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½ï¿½
 	
-uint8_t PS_GetImage(void); //Â¼ÈëÍ¼Ïñ 
+uint8_t PS_GetImage(void); //Â¼ï¿½ï¿½Í¼ï¿½ï¿½ 
  
-uint8_t PS_GenChar(uint8_t BufferID);//Éú³ÉÌØÕ÷ 
+uint8_t PS_GenChar(uint8_t BufferID);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 
-uint8_t PS_Match(void);//¾«È·±È¶ÔÁ½Ã¶Ö¸ÎÆÌØÕ÷ 
+uint8_t PS_Match(void);//ï¿½ï¿½È·ï¿½È¶ï¿½ï¿½ï¿½Ã¶Ö¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 
 
  
-uint8_t PS_RegModel(void);//ºÏ²¢ÌØÕ÷£¨Éú³ÉÄ£°å£© 
+uint8_t PS_RegModel(void);//ï¿½Ï²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½å£© 
  
-uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID);//´¢´æÄ£°å 
+uint8_t PS_StoreChar(uint8_t BufferID,uint16_t PageID);//ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ 
 
-uint8_t PS_DeletChar(uint16_t PageID,uint16_t N);//É¾³ýÄ£°å 
+uint8_t PS_DeletChar(uint16_t PageID,uint16_t N);//É¾ï¿½ï¿½Ä£ï¿½ï¿½ 
 
-uint8_t PS_Empty(void);//Çå¿ÕÖ¸ÎÆ¿â 
+uint8_t PS_Empty(void);//ï¿½ï¿½ï¿½Ö¸ï¿½Æ¿ï¿½ 
 
-uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA);//Ð´ÏµÍ³¼Ä´æÆ÷ 
+uint8_t PS_WriteReg(uint8_t RegNum,uint8_t DATA);//Ð´ÏµÍ³ï¿½Ä´ï¿½ï¿½ï¿½ 
  
-//uint8_t PS_ReadSysPara(SysPara *p); //¶ÁÏµÍ³»ù±¾²ÎÊý 
+//uint8_t PS_ReadSysPara(SysPara *p); //ï¿½ï¿½ÏµÍ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 
-//uint8_t PS_SetAddr(uint32_t addr);  //ÉèÖÃÄ£¿éµØÖ· 
+//uint8_t PS_SetAddr(uint32_t addr);  //ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½Ö· 
 
-//uint8_t PS_WriteNotepad(uint8_t NotePageNum,uint8_t *content);//Ð´¼ÇÊÂ±¾ 
+//uint8_t PS_WriteNotepad(uint8_t NotePageNum,uint8_t *content);//Ð´ï¿½ï¿½ï¿½Â±ï¿½ 
 
-//uint8_t PS_ReadNotepad(uint8_t NotePageNum,uint8_t *note);//¶Á¼ÇÊÂ 
+//uint8_t PS_ReadNotepad(uint8_t NotePageNum,uint8_t *note);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
 uint8_t PS_Search(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p);
 
 
-uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p);//¸ßËÙËÑË÷ 
+uint8_t PS_HighSpeedSearch(uint8_t BufferID,uint16_t StartPage,uint16_t PageNum,SearchResult *p);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 
   
-uint8_t PS_ValidTempleteNum(uint16_t *ValidN);//¶ÁÓÐÐ§Ä£°å¸öÊý 
+uint8_t PS_ValidTempleteNum(uint16_t *ValidN);//ï¿½ï¿½ï¿½ï¿½Ð§Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ 
 
-uint8_t PS_HandShake(uint32_t *PS_Addr); //ÓëAS608Ä£¿éÎÕÊÖ
+uint8_t PS_HandShake(uint32_t *PS_Addr); //ï¿½ï¿½AS608Ä£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 uint8_t PS_Sleep(void);
 
+uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes);
+
+
+
 void Add_FR(void);
-void Press_ReadFingerprint_Data(void);
+
 
 void Del_FR(void);
 
 void PS_Rx_InputInfo_Handler(void);
 void Fingerprint_NewClinet_Login_Fun(void);
+void RunCommand_Unlock_Fingerprint(void);
 
 
 #endif

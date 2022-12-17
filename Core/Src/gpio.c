@@ -77,13 +77,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PB13 -low*/
+  /*Configure GPIO pins : PB13 -KEY-SIDE*/
   GPIO_InitStruct.Pin = GPIO_PIN_13 ;   //|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;//GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;//GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-   /*Configure GPIO pins : PB8 */
+   /*Configure GPIO pins : PB8 -SC12B touch key*/
   GPIO_InitStruct.Pin =  GPIO_PIN_8;//|GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLDOWN;//GPIO_NOPULL;

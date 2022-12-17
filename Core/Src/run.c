@@ -5,7 +5,7 @@
 #include "motor.h"
 #include "kmp.h"
 #include "single_mode.h"
-#include "funpointer.h"
+
 #include "as608.h"
 
 
@@ -123,19 +123,14 @@ void SavePassword_To_EEPROM(void)
 		   	  
 				run_t.Confirm_newPassword =0; //to save new password of flag 
 				run_t.password_unlock_model=0;
-				run_t.open_lock_success=0;
+				
 				run_t.inputNewPasswordTimes =0;
-				run_t.open_lock_fail=1;//WT.EDIT 2022.12.07
+			
 				run_t.Numbers_counter =0;
 				run_t.passwordsMatch =0 ;
-				run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
-				
-		        run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-		        run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
-		        run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
-		      
-		  
-		        run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
+		      run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
+		      run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
 				
 			   return ;			
 				
@@ -157,19 +152,15 @@ void SavePassword_To_EEPROM(void)
 				 EEPROM_Write_Byte((run_t.userId + 0x01),pwd1,6);
 				 HAL_Delay(5);
 
-            run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-	
-	    		
-	   		run_t.inputNewPasswordTimes =0;
-				run_t.open_lock_fail =0;//WT.EDIT 2022.12.07
-			//	run_t.BackLight =2; //success is new password be save to eeprom
+	            run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+				run_t.inputNewPasswordTimes =0;
+			
 				run_t.Numbers_counter =0;
 				 run_t.motor_return_homePosition=0;
 		
 			
 				run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
-				run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.05
-				run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+				run_t.buzzer_sound_lable = sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
 			
 				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
 		        run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.10.14
@@ -177,7 +168,7 @@ void SavePassword_To_EEPROM(void)
 				ERR_LED_OFF();
                   run_t.gTimer_8s=7;
 				run_t.login_in_success=1; //WT.EDIT 2022.10.31
-				run_t.gTimer_1s=0;//WT.EDIT 2022.10.31
+			
 		
 						
 				return ;
@@ -190,22 +181,19 @@ void SavePassword_To_EEPROM(void)
 				run_t.inputNewPasswordTimes =0;
 				run_t.Confirm_newPassword =0;  //be save eeprom data flag bit
 
-				run_t.open_lock_success=0;
-				run_t.open_lock_fail=1;
-
-				run_t.led_blank  =0;
+		
 				run_t.motor_return_homePosition=0;
 				run_t.Numbers_counter =0;
-				run_t.buzzer_key_sound_flag =0;//WT.EDIT 2022.10.06	
-				run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
-				run_t.buzzer_longsound_flag =0;//WT.EDIT 2022.10.19	
+			
+				run_t.buzzer_sound_lable=sound_fail;//run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
+			
 				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
 				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
-				run_t.buzzer_two_short = 0;//WT.EDIT 2022.10.19
+				
 				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
 
 				run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-				run_t.BackLight =1;
+			
 				OK_LED_OFF(); //WT.EDIT 2022.10.28
 				ERR_LED_ON();
 				run_t.gTimer_8s=5;//WT.EDIT 2022.11.01
@@ -213,16 +201,10 @@ void SavePassword_To_EEPROM(void)
 				
 				}
               
-			  
-         	}
-		
-    	}
-		
-		
+			 }
+		}
 	}
-   
-
-}
+ }
 
 /****************************************************************************
 *
@@ -241,20 +223,16 @@ void RunCheck_Mode(uint16_t dat)
 		
        if(k0 != run_t.getSpecial_1_key){
          k0 = run_t.getSpecial_1_key;
-         
+      
 		 run_t.getSpecial_2_key++;//n1++;
 		 run_t.getNumbers_key++;//n2++;
 		 spec=1;
-
-
-		 
-	     run_t.BackLight=1;
 	 
-		  run_t.buzzer_key_sound_flag =1;
-		  run_t.open_lock_fail =0;
+		  run_t.buzzer_sound_lable = sound_key;//run_t.buzzer_key_sound_flag =1;
+		  
 		
 		  run_t.gTimer_8s=0;  //LED turn on holde times
-		  
+		  run_t.backlight_Cmd_lable=backlight_led_on;
 		   POWER_ON();
 
 		  if(run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.13
@@ -263,16 +241,16 @@ void RunCheck_Mode(uint16_t dat)
 			  run_t.gTimer_8s=0;
 			  if(run_t.clear_inputNumbers_newpassword ==2){ //the second times cancel input new password action.
 
-			      run_t.clear_inputNumbers_newpassword=0;
-				  run_t.inputNewPassword_Enable=0;
-				  run_t.Confirm_newPassword=0;
-			      run_t.inputNewPasswordTimes =0;
-				  run_t.BackLight =0;
-				   run_t.buzzer_key_sound_flag =1;
-				  run_t.stop_gTimer_8s =1;
-				  run_t.input_newPassword_over_number = 0;
-				  OK_LED_OFF();
-				  ERR_LED_OFF();
+				run_t.clear_inputNumbers_newpassword=0;
+				run_t.inputNewPassword_Enable=0;
+				run_t.Confirm_newPassword=0;
+				run_t.inputNewPasswordTimes =0;
+
+				run_t.buzzer_sound_lable = sound_key;//run_t.buzzer_key_sound_flag =1;
+
+				run_t.input_newPassword_over_number = 0;
+				OK_LED_OFF();
+				ERR_LED_OFF();
 
 			  }
 			  run_t.input_newPassword_over_number = 0;//WT.EDIT 2022.10.07
@@ -289,7 +267,7 @@ void RunCheck_Mode(uint16_t dat)
 	
 			  run_t.Numbers_counter =0 ;
 			   run_t.gTimer_8s=0;
-			 run_t.password_unlock_model=STORE_MODEL; //run_t.open_lock_success=STORE_MODEL;//3;
+			 run_t.password_unlock_model=STORE_MODEL_EEPROM; //run_t.open_lock_success=STORE_MODEL;//3;
 		     run_t.Confirm_newPassword=1;
 			 run_t.inputNewPwd_OK_led_blank_times=0;
 			   
@@ -306,7 +284,7 @@ void RunCheck_Mode(uint16_t dat)
 		 run_t.gTimer_8s=0;
 		 spec=1;
 		   
-			run_t.open_lock_fail =0 ;
+		
 		   run_t.Numbers_counter =0 ;
 		   run_t.passwordsMatch = 0;
 		   run_t.inputDeepSleep_times =0;
@@ -322,21 +300,21 @@ void RunCheck_Mode(uint16_t dat)
          if(k1 != run_t.getSpecial_2_key){
 	         k1 = run_t.getSpecial_2_key;
 
-             run_t.getSpecial_1_key++;//n1++
+           run_t.getSpecial_1_key++;//n1++
 		     run_t.getNumbers_key++;//n2++;
 		     spec=1;
 			 
-			run_t.BackLight=1;
+	
 		   
-         
-			if(run_t.Confirm_newPassword ==0){
-				run_t.buzzer_key_sound_flag =1; 
+         if(run_t.Confirm_newPassword ==0){
+				run_t.buzzer_sound_lable=sound_key;//run_t.buzzer_key_sound_flag =1; 
 				
             }
 			else if(run_t.inputNewPasswordTimes ==0){
-				run_t.buzzer_two_short = 1;
+				run_t.buzzer_sound_lable = sound_new_pwd_the_first;//run_t. = 1;
 			}
 			run_t.gTimer_8s=0;
+			 run_t.backlight_Cmd_lable=backlight_led_on;
 			POWER_ON();
 
 			if(run_t.Numbers_counter ==0){
@@ -351,9 +329,9 @@ void RunCheck_Mode(uint16_t dat)
                 run_t.passwordsMatch = 0;
                 run_t.error_times ++ ;
              
-				run_t.open_lock_fail=1;
-                run_t.buzzer_fail_sound_flag=1;
-				run_t.buzzer_key_sound_flag =0;
+		
+				run_t.buzzer_sound_lable =sound_fail;//run_t.buzzer_fail_sound_flag=1;
+				
                 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
 	                run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
 	                run_t.gTimer_input_error_times_60s =0;
@@ -372,8 +350,8 @@ void RunCheck_Mode(uint16_t dat)
 			          
 						if(run_t.inputNewPasswordTimes ==1){
 						 //Confirm Key "#"
-						    run_t.buzzer_key_sound_flag =0; 
-							run_t.buzzer_two_short = 2;
+						    
+							run_t.buzzer_sound_lable = sound_new_pwd_the_second;//run_t. = 2;
 
 						}
 					
@@ -382,12 +360,11 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.Numbers_counter=0;
 						run_t.inputDeepSleep_times =0;
 						run_t.gTimer_8s=0;
-						run_t.inputNewPwd_OK_led_blank_times=0;
-					
+						
 						
 			    }
 				else if(run_t.motor_return_homePosition==0){ // return home position
-						run_t.buzzer_key_sound_flag =1; 
+						run_t.buzzer_sound_lable =sound_key;//run_t.buzzer_key_sound_flag =1; 
 						run_t.passwordsMatch = 1;
 						run_t.inputNewPasswordTimes=0; //08.13
 					
@@ -395,9 +372,9 @@ void RunCheck_Mode(uint16_t dat)
 				}
 				else if(run_t.motor_return_homePosition==1){ //repeat itself motor doing run
 
-				        run_t.buzzer_key_sound_flag =1; 
+				        run_t.buzzer_sound_lable =sound_key;//run_t.buzzer_key_sound_flag =1; 
 					   run_t.passwordsMatch=1;
-				       run_t.oneself_copy_behavior=1; //prejudge statement
+				   
 					   run_t.inputDeepSleep_times =0;
 					   run_t.eepromAddress=0;
 
@@ -411,19 +388,15 @@ void RunCheck_Mode(uint16_t dat)
 
 	 
 	case KEY_0:
-		
-     
-		     key=1;
-			 spec=0;
-		    run_t.getNumbers_key++;
-		     run_t.inputDeepSleep_times =0;
-			 run_t.gTimer_8s=0;
-             run_t.inputNewPwd_OK_led_blank_times=0;
-   
-	
-		
-
-	 break;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
+            
+   break;
 
     case KEY_1 :
 
@@ -431,121 +404,99 @@ void RunCheck_Mode(uint16_t dat)
 		spec=0;
 		run_t.getNumbers_key++;
 		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
 		run_t.gTimer_8s=0;
-	    run_t.inputNewPwd_OK_led_blank_times=0;
+	   run_t.backlight_Cmd_lable = backlight_led_on;
    	 
 	break;
 			
     case KEY_2:
-         
-     	
-		     key=1;
-		    spec=0;
-		   run_t.getNumbers_key++;
-		  run_t.inputDeepSleep_times =0;
-	      run_t.gTimer_8s=0;
-          run_t.inputNewPwd_OK_led_blank_times=0;
+
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
   
 	 
 	break;
 			
 	case  KEY_3:
-	
-  
-		     key=1;
-			 spec=0;
-			 run_t.getNumbers_key++;
-			   run_t.inputDeepSleep_times =0;
-			    run_t.gTimer_8s=0;
-              run_t.inputNewPwd_OK_led_blank_times=0;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+	   run_t.backlight_Cmd_lable = backlight_led_on;         
  
 	
     break;
 			
 	case KEY_4:
-			
-     
-		     key=1;
-			 spec=0;
-			 run_t.getNumbers_key++;
-			  run_t.inputDeepSleep_times =0;
-			   run_t.gTimer_8s=0;
-
-               run_t.inputNewPwd_OK_led_blank_times=0;
-			
-	break;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
+   break;
 			
 	case KEY_5:
-			
-     
-		     key=1;
-			 spec=0;
-			 run_t.getNumbers_key++;
-			   run_t.inputDeepSleep_times =0;
-			    run_t.gTimer_8s=0;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
            
-              run_t.inputNewPwd_OK_led_blank_times=0;
-			
-             
-
-		
-	break;
+   break;
 			
 	case KEY_6:
-		
-    
-		     key=1;
-			 spec=0;
-		  run_t.getNumbers_key++;
-			  run_t.inputDeepSleep_times =0;
-			   run_t.gTimer_8s=0;
-             run_t.inputNewPwd_OK_led_blank_times=0;
-       
-		
-		
-	break;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
+          
+   break;
 	case KEY_7:
 		
-    
-		     key=1;
-			 spec=0;
-			 run_t.getNumbers_key++;
-			 run_t.inputDeepSleep_times =0;
-			  run_t.gTimer_8s=0;
-             run_t.inputNewPwd_OK_led_blank_times=0;
-         
-		
-		
-	break;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
+            
+   break;
 			
 	case KEY_8:
-		
-     	
-		     key=1;
-			 spec=0;
-			 run_t.getNumbers_key++;
-			 run_t.inputDeepSleep_times =0;
-			  run_t.gTimer_8s=0;
-          
-             run_t.inputNewPwd_OK_led_blank_times=0;
-          
-
-		
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+        run_t.backlight_Cmd_lable = backlight_led_on;
    break;
 			
 	case KEY_9:
-		
-		  	key=1;
-		    spec=0;
-		    run_t.getNumbers_key++;
-		    run_t.inputDeepSleep_times =0;
-			 run_t.gTimer_8s=0;
-     
-            run_t.inputNewPwd_OK_led_blank_times=0;
-	         
-
-		
-	break;
+		key=1;
+		spec=0;
+		run_t.getNumbers_key++;
+		run_t.inputDeepSleep_times =0;
+		run_t.gTimer_input_standby_cnt=0;
+		run_t.gTimer_8s=0;
+		run_t.backlight_Cmd_lable = backlight_led_on;
+   break;
 		  
 
 	}  
@@ -560,23 +511,22 @@ void RunCheck_Mode(uint16_t dat)
 
 			   run_t.getSpecial_2_key++;//n1++;
 		    
-
-				run_t.BackLight=1;
 				run_t.NumbersKey_pressedNumbers=1;
 				run_t.Numbers_counter ++ ;
-				run_t.buzzer_key_sound_flag =1;
+				run_t.buzzer_sound_lable =sound_key;//run_t.buzzer_key_sound_flag =1;
 			
 				 run_t.gTimer_8s=0;
 		
 				 run_t.passwordsMatch =0;
+				 run_t.backlight_Cmd_lable = backlight_led_on;
 				 POWER_ON();
 
 				 if(run_t.Confirm_newPassword ==1 && run_t.Numbers_counter >6){//WT.EDIT 2022.10.08
 
 				    run_t.input_newPassword_over_number = 1;//run_t.lock_fail=1;
 			        run_t.gTimer_8s=0;
-				    run_t.buzzer_fail_sound_flag =1;
-	 	
+				    run_t.buzzer_sound_lable = sound_fail;//run_t.buzzer_fail_sound_flag =1;
+	 	   
 	             }
 			     else{
 					temp = InputNumber_ToSpecialNumbers((TouchKey_Numbers) dat); //input Numbers
@@ -593,14 +543,11 @@ void RunCheck_Mode(uint16_t dat)
 	                  else  pwd1[run_t.Numbers_counter-1] =temp;
 				     
 	               
-	                  
-
-				    }
+	             }
 				
-			    }
-
-			 run_t.gTimer_8s=0;
-		     run_t.inputNewPwd_OK_led_blank_times=0;
+			   }
+			run_t.gTimer_8s=0;
+		    
      }
 }
 
@@ -614,7 +561,7 @@ void RunCheck_Mode(uint16_t dat)
 ****************************************************************************/
 void RunCommand_Unlock_Keyboard(void)
 {
-	uint8_t i;
+	
     
 	 if(run_t.Confirm_newPassword == 1){
 	 	run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
@@ -622,94 +569,62 @@ void RunCommand_Unlock_Keyboard(void)
 	 }
 	 else
 		ReadPassword_EEPROM_SaveData();
-	 run_t.detection_input_flag=1;
+	 
      
 }
 
-
+/****************************************************************************
+	*
+	*Function Name:void Lock_Open_Order(void)
+	*Function : excute open and don't open lock 
+	*Input Ref: NO
+	*Retrun Ref:NO
+	*
+****************************************************************************/
 void Lock_Open_Order(void)
 {
 	
     uint8_t i; 
-	if(run_t.detection_input_flag==1){
+ if(run_t.detection_input_flag==1){
 		run_t.detection_input_flag=0;
-    if(run_t.open_lock_fail == 1){//unlock is fail 
-         run_t.open_lock_fail=0;
+    switch(run_t.open_lock_lable){
 
-		OK_LED_OFF();
-		ERR_LED_ON();
-	    run_t.Led_OK_flag=0;
-		run_t.Led_ERR_flag =1;
-		//run_t.oneself_copy_behavior =0;//WT.EDIT 2022.10.28
-		run_t.Numbers_counter = 0;
-		 run_t.open_lock_success=0;	
-		run_t.eepromAddress=0;
-		run_t.passwordsMatch = 0;
-       
-		run_t.open_lock_fail_led=1;
-		run_t.error_times ++ ; //input times 5 ,
-		if(run_t.error_times > 4){
-			run_t.gTimer_10s_start=0;
-			run_t.gTimer_input_error_times_60s =0;
-            run_t.panel_lock=1;
-			run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
-			    
+    	 case open_lock_success:
 
-		}
-        run_t.Confirm_newPassword =0;
-	    run_t.inputNewPassword_Enable =0;
-	    run_t.buzzer_fail_sound_flag=1;
-		run_t.buzzer_key_sound_flag =0; //WT.EDIT 2022.10.19
-		run_t.buzzer_two_short=0;//WT.EDIT 2022.10.19
-		run_t.clear_inputNumbers_newpassword=0; //WT.EDIT 2022.10.14
-
-		run_t.Numbers_counter =0; //WT.EDIT 2022.10.14
-	 
-	       for(i=0;i<6;i++){
-		  	   pwd1[i]=0;
-			   Readpwd[i]=0;
-			   pwd2[i]=0;
-		
-		  	}
-		  
-	  }
-
-	 if(run_t.open_lock_success ==1){ //unlock 
-
-         if(run_t.Confirm_newPassword ==1){ //prepare new password 
+    	  if(run_t.Confirm_newPassword ==1){ //prepare new password 
 			
 			ERR_LED_OFF();
-		
+		    OK_LED_ON();
 				run_t.inputNewPassword_Enable =1; //Input Administrator password is OK
 				run_t.motor_return_homePosition= 0;
 				run_t.Numbers_counter =0 ;
 				run_t.eepromAddress=0;
 				run_t.passwordsMatch = 0;
-				//run_t.open_lock_success=3; // permit to save new password
-				run_t.buzzer_key_sound_flag =0; 
+			
 				
-				 run_t.buzzer_highsound_flag =1; //WT.EDIT 2022.10.28
 				
 				run_t.inputDeepSleep_times =0;
+				run_t.gTimer_input_standby_cnt=0;
 				run_t.error_times=0;
 			
-				run_t.open_lock_fail = 0;
 				run_t.gTimer_8s =0;
-				run_t.inputNewPwd_OK_led_blank_times=0;
-				run_t.password_unlock_model=STORE_MODEL;// permit to save new password
-			
+				
+                run_t.buzzer_sound_lable =sound_high;
+                run_t.inputNewPwd_OK_led_blank_times=0;
+			    run_t.works_led_lable = works_ok_blink;
+			    run_t.password_unlock_model=STORE_MODEL_EEPROM;// permit to save new password
+			  syspara_t.ps_serch_getimage=0xff;
+              syspara_t.ps_serch_genchar =0xff;
+              syspara_t.ps_serach_result=0xff;
 			
 		}
 		else{ //runing open lock 
-		       if(run_t.oneself_copy_behavior ==1){//WT.EDIT 2022.10.28
-                    Buzzer_LongSound(); //WT.EDIT 2022.10.06
+		       if(run_t.motor_return_homePosition==1){//WT.EDIT 2022.10.28
+                 run_t.buzzer_sound_lable =sound_excute;//Buzzer_LongSound(); //WT.EDIT 2022.10.06
 			        ERR_LED_OFF();
 			        OK_LED_ON();
-					run_t.Led_OK_flag =1;
-					run_t.Led_ERR_flag=0;
-					run_t.buzzer_key_sound_flag=0;
-					run_t.open_lock_success=0;
-					run_t.open_lock_fail=0;
+			        syspara_t.ps_image_key++;
+				
 					 run_t.Numbers_counter =0 ;
 					   run_t.passwordsMatch = 0;
 					   run_t.inputDeepSleep_times =0;
@@ -719,15 +634,25 @@ void Lock_Open_Order(void)
 						   pwd2[i]=0;
 					
 					  	}
+                syspara_t.ps_serch_getimage=0xff;
+                syspara_t.ps_serch_genchar =0xff;
+                syspara_t.ps_serach_result=0xff;
 
 			   }
-               else{
-			   	   
-                   run_t.motor_doing_flag=1;
-				   run_t.open_lock_success=0;
+            else{
+		   	    
+                syspara_t.ps_serch_getimage=0xff;
+                syspara_t.ps_serch_genchar =0xff;
+                syspara_t.ps_serach_result=0xff;
+                
+                run_t.motor_doing_flag=1;
+                run_t.Motor_RunCmd_Label=motor_run_start;
+                run_t.motorRunCount=0;
+				 
 			    	run_t.Numbers_counter =0 ; //WT.EDIT 2022.10.28
 				   run_t.passwordsMatch = 0;
 				   run_t.inputDeepSleep_times =0;
+				   run_t.buzzer_sound_lable = sound_excute;
 					   
 			       for(i=0;i<6;i++){
 				  	   pwd1[i]=0;
@@ -735,6 +660,7 @@ void Lock_Open_Order(void)
 					   pwd2[i]=0;
 				
 				  	}
+			   	
 
                }
 
@@ -742,22 +668,57 @@ void Lock_Open_Order(void)
 	     }
 
 
- 		}
+       run_t.open_lock_lable=open_lock_null;
+   break;
+
+   case open_lock_fail:
+			OK_LED_OFF();
+			ERR_LED_ON();
+
+
+			run_t.Numbers_counter = 0;
+			run_t.eepromAddress=0;
+			run_t.passwordsMatch = 0;
+			syspara_t.PS_login_times=0; //WT.EDIT 2022.12.17
+		
+			run_t.error_times ++ ; //input times 5 ,
+			if(run_t.error_times > 4){
+				run_t.gTimer_10s_start=0;
+				run_t.gTimer_input_error_times_60s =0;
+				run_t.panel_lock=1;
+				run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
+            run_t.works_led_lable = works_error_led_on;
+
+			}
+			run_t.Confirm_newPassword =0;
+			run_t.inputNewPassword_Enable =0;
+			run_t.buzzer_sound_lable =sound_fail;//run_t.buzzer_fail_sound_flag=1;
+
+			run_t.clear_inputNumbers_newpassword=0; //WT.EDIT 2022.10.14
+
+			run_t.Numbers_counter =0; //WT.EDIT 2022.10.14
+			syspara_t.ps_image_key++;
+			for(i=0;i<6;i++){
+			pwd1[i]=0;
+			Readpwd[i]=0;
+			pwd2[i]=0;
+
+			}
+			run_t.works_led_lable =  works_error_blink;
+             syspara_t.ps_serch_getimage=0xff;
+                syspara_t.ps_serch_genchar =0xff;
+                syspara_t.ps_serach_result=0xff;
+      run_t.open_lock_lable=open_lock_null;
+	break;
+
+	case open_lock_null:
+		run_t.open_lock_lable=0xff;
+
+	break;
+
 	}
-}
-/****************************************************************************
-	*
-	*Function Name:static void ReadPassword_EEPROM_SaveData(void)
-	*Function : run is main 
-	*Input Ref: NO
-	*Retrun Ref:NO
-	*
-****************************************************************************/
-void RunCommand_Unlock_Fingerprint(void)
-{
 
-      Press_ReadFingerprint_Data();
-
+   }
 }
 
 /****************************************************************************
@@ -824,7 +785,7 @@ static void Read_Administrator_Password(void)
 					if(value==1)//if(strcmp(pwd1,pwd2)==0)
 					{
 						readFlag[0]=0;
-						run_t.open_lock_success=1;
+						run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
 						  run_t.gTimer_8s =0;//
 						  for(i=0;i<6;i++){
 	                        pwd1[i]=0;
@@ -842,8 +803,8 @@ static void Read_Administrator_Password(void)
 						run_t.Numbers_counter =0 ;
 						run_t.passwordsMatch = 0;
                   if(run_t.eepromAddress==2){
-                         run_t.open_lock_fail = 1;
-						 run_t.open_lock_success=0;
+                         run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
+						
 						 run_t.gTimer_8s =0;//
 						 for(i=0;i<6;i++){
 	                        pwd1[i]=0;
@@ -881,26 +842,26 @@ static void Read_Administrator_Password(void)
 
 				   		syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 						if(syspara_t.ps_readEeprom_data==0){//WT.EDIT 2022.12.12			   
-                            run_t.open_lock_success=1;	
+                            run_t.open_lock_lable = open_lock_success;// run_t.open_lock_success=1;	
                             run_t.gTimer_8s =0;//
                         }
                         else{
-                            run_t.open_lock_fail=1;	
+                            run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail=1;	
                             run_t.gTimer_8s =0;//
                         }
-						  for(i=0;i<6;i++){
+						for(i=0;i<6;i++){
                         pwd1[i]=0;
                         pwd2[i]=0;
                         Readpwd[i]=0;
 
                       }
-					
+						 syspara_t.PS_login_times=0;
 						return ;
 
 					}
 					else{
 
-					     run_t.open_lock_fail = 1;
+					     run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
 						 run_t.gTimer_8s =0;//
 						   for(i=0;i<6;i++){
                         pwd1[i]=0;
@@ -908,12 +869,13 @@ static void Read_Administrator_Password(void)
                         Readpwd[i]=0;
 
                       }
+						 syspara_t.PS_login_times=0;
 						 return ;
 						
 					}
 				 }
                  else{
-                         run_t.open_lock_fail = 1;
+                          run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
 						 run_t.gTimer_8s =0;//
 						   for(i=0;i<6;i++){
                         pwd1[i]=0;
@@ -997,9 +959,7 @@ void ReadPassword_EEPROM_SaveData(void)
 			   break;
 	
 				 case 10:
-				   run_t.open_lock_fail = 1;
-				   run_t.Led_OK_flag =0;
-				   run_t.Led_ERR_flag=1;
+				   run_t.open_lock_lable = open_lock_fail;
 				   return ;
 				break;
 	
@@ -1031,18 +991,14 @@ void ReadPassword_EEPROM_SaveData(void)
 					{
 						readFlag[0]=0;
 						
-						 run_t.open_lock_success=1;
-						run_t.Led_OK_flag =1;
-						run_t.Led_ERR_flag=0;
+						run_t.open_lock_lable = open_lock_success;
 						return ;
 
 					}
 					else{
 						if(run_t.Confirm_newPassword ==1){
                      		readFlag[0]=0;
-						   run_t.open_lock_fail = 1;
-						   run_t.Led_OK_flag =0;
-						   run_t.Led_ERR_flag=1;
+						   run_t.open_lock_lable = open_lock_fail;
 							return ;
 						}
 						//n_t.eepromAddress++ ;	
@@ -1065,20 +1021,14 @@ void ReadPassword_EEPROM_SaveData(void)
 
 				   if(value==1){
 									   
-						 run_t.open_lock_success=1;
-						   run_t.open_lock_fail = 0;
-						 run_t.Led_OK_flag =1;
-						 run_t.Led_ERR_flag=0;
+						 run_t.open_lock_lable = open_lock_success;
 					
 						return ;
 
 					}
 					else{
 
-					     run_t.open_lock_fail = 1;
-						 run_t.open_lock_success=0;
-						  run_t.Led_OK_flag =0;
-						  run_t.Led_ERR_flag=1;
+					    run_t.open_lock_lable = open_lock_fail;
 						 return ;
 						
 					}

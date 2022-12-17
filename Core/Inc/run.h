@@ -35,115 +35,101 @@ typedef enum
 
 }TouchKey_Numbers;
 
+typedef enum _open_state{
+	open_lock_success = 0x01,
+	open_lock_fail,
+	open_lock_null
+
+}open_state;
+
 
 typedef struct __RUN_T{
-	//enum State state_;
-    //unsigned char cmdCtr_;   //event order cunter
 
-    unsigned char powerOn;
-	uint8_t   getTouchkey;
+   //power ref
+   unsigned char powerOn;
+	unsigned char error_times;
+	unsigned char panel_lock;
+	uint8_t ADC_times;
+
+	//lower power ref
+	uint8_t lowPower_flag;
+	unsigned char inputDeepSleep_times;
+	
+  
+	//touchkey 
+	uint8_t touchkey_first;
+	uint8_t readI2C_data;
+   uint8_t inputNewPassword_Enable;
 	uint8_t   getSpecial_1_key;
 	uint8_t   getSpecial_2_key;
 	uint8_t   getNumbers_key;
-	uint8_t   RunSequence;
-	
-
-
-  
-	uint8_t  saveEEPROM_fail_flag ; //WT.EDIT 2022.10.06	
-	uint8_t  eeprom_Reset_flag;
-	uint8_t  clearEeeprom_count;
-	
-	
-	
-	unsigned char Confirm_newPassword;
-	unsigned char inputNewPasswordTimes;
-
-	//password
-
-	unsigned char motor_return_homePosition;
-    unsigned char error_times;
-	unsigned char panel_lock;
-	unsigned char lock_fail;
-	unsigned char led_blank ;
-	unsigned char inputDeepSleep_times;
-	unsigned char clearEeprom;
-    
-    unsigned char eepromAddress;
-    uint8_t ADC_times;
-	
-	//touchkey 
-	uint8_t touchkey_first_turn_on_led;
-	uint8_t touchkey_first;
-	uint8_t readI2C_data;
-    uint8_t inputNewPassword_Enable;
-
-	
-	//motor
-    uint8_t clear_inputNumbers_newpassword;
-	uint8_t inputNewPwd_OK_led_blank_times;
-	uint8_t motor_doing_flag;
-	uint8_t motor_returnRun_flag;
-	
-
-    
-    
-	unsigned char BackLight;
-	uint8_t login_in_success;
-	
-	//buzzer sound
-	unsigned char buzzer_key_sound_flag;
-	uint8_t buzzer_two_short;
-    uint8_t buzzer_longsound_flag;
-	uint8_t buzzer_highsound_flag;
-	uint8_t buzzer_fail_sound_flag;
-
-	//pass word
-
-	uint8_t  open_lock_fail;
-	uint8_t  open_lock_success;
-	unsigned char Numbers_counter;
-	unsigned char passwordsMatch;
-    uint8_t password_unlock_model;
-	uint8_t       Led_OK_flag;
-	uint8_t 	  Led_ERR_flag ;
-	
-    //LED
-    uint8_t open_lock_fail_led;
-
-	unsigned char factory_test;
-	uint8_t lowPower_flag;
-	uint8_t oneself_copy_behavior;
-	uint8_t detection_input_flag;
-  
-	
 	uint8_t NumbersKey_pressedNumbers;
 
-	uint8_t clearEeeprom_done;
-	uint8_t normal_works_state ;
-	uint8_t input_newPassword_over_number;
-	uint8_t stop_gTimer_8s;
-	uint8_t input_lowpower_stopmodel_flag;
-
-
-	uint8_t readEepromData;
-   
 	
+	//motor ref
+   uint8_t motor_doing_flag;
+	uint8_t motor_returnRun_flag;
+	uint8_t motor_return_homePosition;
+	uint8_t Motor_RunCmd_Label;
 
+    //led ref
+    uint8_t backlight_run_flag;
+	uint8_t backlight_Cmd_lable;
+	uint8_t inputNewPwd_OK_led_blank_times;
+	uint8_t works_led_lable;
+
+	//login ref
+	uint8_t login_in_success;
+
+	
+	//buzzer sound
+
+	uint8_t buzzer_sound_lable;
+
+	//pass word ref
+   unsigned char Numbers_counter;
+	unsigned char passwordsMatch;
+   uint8_t password_unlock_model;
+   uint8_t input_newPassword_over_number;
+   unsigned char Confirm_newPassword;
+	unsigned char inputNewPasswordTimes;
+	uint8_t clear_inputNumbers_newpassword;
+	
+	//factory ref
+   unsigned char factory_test;
+
+   //eeprom ref
+   uint8_t clearEeeprom_done;
+   unsigned char eepromAddress;
+   uint8_t  saveEEPROM_fail_flag ; //WT.EDIT 2022.10.06	
+	uint8_t  eeprom_Reset_flag;
+	uint8_t  clearEeeprom_count;
+	unsigned char clearEeprom;
+	uint8_t readEepromData;
+
+	//run ref
+	uint8_t detection_input_flag;
+	uint8_t open_lock_lable;
+
+   
+	//timging
 	uint8_t gTimer_200ms;
 	unsigned char gTimer_10s;
-	unsigned char gTimer_1s;
 	unsigned char gTimer_8s;
 	unsigned char gTimer_60s;
 	unsigned char gTimer_ADC;
+	uint8_t  gTimer_input_standby_cnt;
 	
-	uint8_t  	gTimer_input_error_times_60s;
-	uint8_t 	gTimes_s;
-	uint8_t 	gTimer_10s_start;
+	uint8_t  gTimer_input_error_times_60s;
+	uint8_t gTimer_10s_start;
+	uint8_t gTimer_process_key_times;
+	uint8_t gTimer_process_times;
+
+	
 
 
 	uint16_t 	motorRunCount;
-	uint16_t   	returnHomePosition_Count;
+	
 
 	uint32_t userId;
    
@@ -179,7 +165,6 @@ unsigned char CompareValue(uint8_t *pt1,uint8_t *pt2);
 unsigned char  InputNumber_ToSpecialNumbers(TouchKey_Numbers number);
 void Lock_Open_Order(void);
 
-void RunCommand_Unlock_Fingerprint(void);
 
 #endif 
 

@@ -13,18 +13,9 @@ uint8_t  UART1_RX_DataBuf[1];
 
 uint8_t  UART1_DataBuf[1];
 
-
 uint16_t USART1_RX_STA=0; 
 
-
-
-
-
-
 volatile static uint8_t transOngoingFlag;
-
-
-
 
 /********************************************************************************
 	**
@@ -41,10 +32,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	if(huart->Instance==USART1)
     {	      
-	     
-      
-          
-            if(syspara_t.uart1_rx_data==0){
+	    if(syspara_t.uart1_rx_data==0){
               
             if(UART1_RX_DataBuf[0]==0x55) temp=0;
 		
@@ -82,7 +70,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			}
         }
         
-         HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf)); 
+         HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1); 
 	}
                
   

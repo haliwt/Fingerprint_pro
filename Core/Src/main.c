@@ -34,7 +34,7 @@
 #include "key.h"
 #include "single_mode.h"
 #include "delay.h"
-#include "funpointer.h"
+
 #include "as608.h"
 #include "usart.h"
 #include "cmd_link.h"
@@ -97,7 +97,7 @@ int main(void)
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+  SystemClock_Config();	
 
   /* USER CODE BEGIN SysInit */
 __HAL_RCC_PWR_CLK_ENABLE();
@@ -118,7 +118,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
   
   TouchKey_Run_Handler(TouchKey);
  
-   HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
+   HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1);
   /* USER CODE END 2 */
     syspara_t.ps_serch_getimage=0xff;
 	 syspara_t.ps_serch_genchar=0xff;
@@ -127,6 +127,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
      syspara_t.PS_wakeup_flag=0;
      syspara_t.PS_login_times=0;
      syspara_t.PS_clear_ps_success=0xff;
+	 Fingerprint_ReadData_Handler(RunCommand_Unlock_Fingerprint);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -137,17 +138,21 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
+            run_t.lowPower_flag=0;
 	   }
 	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
-             sidekey = Scan_Key();
-             SideKey_Fun(sidekey);
-	      
+
+        sidekey = Scan_Key();
+	    SideKey_Fun(sidekey);
+             
 	   	}
 	    
-	     CheckPassword_Lock_Handler();
-		 DisplayLed_Handler();
-		 RunMotor_Definite_Handler(); //definite motor
-	   
+	 	CheckPassword_Lock_Handler();
+		Buzzer_Sound_Handler();
+ 	//	DisplayLed_Handler();
+ 		RunMotor_Definite_Handler(); //definite motor
+ 		Standby_Model_Handler();
+	 
 	 }
   
   /* USER CODE END 3 */
