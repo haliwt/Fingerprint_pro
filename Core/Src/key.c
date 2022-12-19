@@ -29,8 +29,9 @@ uint8_t buzzertimes;
 *******************************************************************************/
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
+    
 
-    if(GPIO_Pin == KEY_INPUT_Pin){
+	if(GPIO_Pin == KEY_INPUT_Pin){
 		 POWER_ON();
         FP_POWER_ON()  ;
          BACKLIGHT_ON();
@@ -61,6 +62,9 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
+
+	static uint8_t rx_times=0xff;
+
    if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
      
@@ -91,11 +95,14 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
   
    //fingerprint 
   if(GPIO_Pin==FP_INT_INPUT_Pin){
-        syspara_t.PS_wakeup_flag=1;
+         syspara_t.PS_wakeup_flag=1;
 		  POWER_ON();
 		  FP_POWER_ON()  ;
 		  BACKLIGHT_ON();
-		  syspara_t.handler_read_data_flag++;
+		  if(rx_times !=syspara_t.fp_rx_times){
+		  	    rx_times =syspara_t.fp_rx_times;
+		  		syspara_t.handler_read_data_flag++;
+		  }
 		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
      if(run_t.lowPower_flag==0){
 
@@ -107,8 +114,11 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		POWER_ON();
 		FP_POWER_ON()  ;
 		BACKLIGHT_ON();
-		//run_t.buzzer_sound_lable=sound_key;//Buzzer_KeySound();
-		Buzzer_KeySound();
+		//if(rx_times !=syspara_t.fp_rx_times){
+			//rx_times =syspara_t.fp_rx_times;
+			Buzzer_KeySound();
+
+		///}
 		
 	    run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
       

@@ -55,6 +55,7 @@ typedef struct _syspara
 	uint8_t 	PS_clear_ps_success;
 	uint8_t 	PS_clear_ps_fail;
 	uint8_t     ps_pre_detector;
+	uint8_t     fp_rx_times;
 
   uint8_t PS_login_flag;
   uint8_t PS_wakeup_flag;
