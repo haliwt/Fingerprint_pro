@@ -128,7 +128,6 @@ switch(run_t.backlight_Cmd_lable){
 
           run_t.backlight_Cmd_lable = backlight_led_off;
           run_t.gTimer_8s=0;
-          Panel_LED_Off();
 		}
 		else{
              run_t.gTimer_input_standby_cnt=0;
@@ -145,8 +144,13 @@ switch(run_t.backlight_Cmd_lable){
      break;
 
      case backlight_led_off:
+         
+        OK_LED_OFF();
+		ERR_LED_OFF();
+		PS_LED_ALL_OFF();
+	    BACKLIGHT_OFF();
 
-      run_t.gTimer_8s=0;
+       run_t.gTimer_8s=0;
 	   syspara_t.handler_read_data_flag++;
 	   syspara_t.PS_login_times=0;
 	   syspara_t.PS_wakeup_flag=0;

@@ -58,7 +58,6 @@ typedef struct _syspara
 
   uint8_t PS_login_flag;
   uint8_t PS_wakeup_flag;
-  uint8_t  PS_login_success;
   uint8_t handler_read_data_flag;
 	
     
