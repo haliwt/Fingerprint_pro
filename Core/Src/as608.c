@@ -717,6 +717,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
 		case 0: //input 1 times syspara_t.PS_read_template=0;
 		run_t.gTimer_8s=0;
+	    run_t.inputNewPwd_OK_led_blank_times=0;
 		    if(syspara_t.PS_wakeup_flag==1){
 			ps_getImage=PS_GetImage();
 			if(ps_getImage==0){
@@ -744,6 +745,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
         case 1: //input 2 times
 		run_t.gTimer_8s=0;
+		run_t.inputNewPwd_OK_led_blank_times=0;
               if(syspara_t.PS_wakeup_flag==1){
 				syspara_t.PS_read_template=0;
 				ps_getImage=PS_GetImage();
@@ -779,6 +781,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
                      
          case 2: //input 3 times
 		 run_t.gTimer_8s=0;
+		 run_t.inputNewPwd_OK_led_blank_times=0;
             if(syspara_t.PS_wakeup_flag==1){
 			syspara_t.PS_read_template=0;
 			ps_getImage=PS_GetImage();
@@ -793,6 +796,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			HAL_Delay(600);
 			syspara_t.PS_login_times=3;
 			syspara_t.PS_wakeup_flag=0;	
+			run_t.inputNewPwd_OK_led_blank_times=0;
 			}
 			else{
 
@@ -813,6 +817,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
         case 3: //input 4  times 
 		run_t.gTimer_8s=0;
+		run_t.inputNewPwd_OK_led_blank_times=0;
             if(syspara_t.PS_wakeup_flag==1){
 	        	syspara_t.PS_read_template=0;
 	            ps_regmodel=PS_RegModel();
@@ -828,50 +833,61 @@ void Fingerprint_NewClinet_Login_Fun(void)
 							run_t.motor_return_homePosition=0;
 							run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
 							Buzzer_LongSound();
-							run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+							//run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
 							run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 
+							run_t.password_unlock_model =0;
+				            syspara_t.ps_login_new_fp_success=1;
+			                
 							
-				
 
 							AT24CXX_WriteOneByte((EEPROM_AS608Addr),(syspara_t.ps_readEeprom_data+1));
-							run_t.works_led_lable =works_ok_blink;  //run_t.led_blank	=1;//OK led blank three times
+							run_t.backlight_Cmd_lable = backlight_led_off; //run_t.led_blank	=1;//OK led blank three times
 						
 						}
 						else{
 							Buzzer_Fail_Sound();
 							 OK_LED_OFF() ;
 					         ERR_LED_ON();
+							 run_t.works_led_lable = works_error_blink;
+							 return ;
+							
 						}
 					}
 					else{
 						Buzzer_LongSound();
 						OK_LED_ON() ;
 					    ERR_LED_OFF();
+						syspara_t.ps_login_new_fp_success=1;	
+					    run_t.backlight_Cmd_lable = backlight_led_off;
+					  	run_t.password_unlock_model =0;
+						
+					  return ;
 					}
 			    }	
 				else{
-					 // Buzzer_Fail_Sound();//Buzzer_LongSound();
-					 // OK_LED_OFF() ;
-					  //ERR_LED_ON();
+					
 					  Buzzer_LongSound();
 					  OK_LED_ON() ;
 					  ERR_LED_OFF();
+			          syspara_t.ps_login_new_fp_success=1;	
+					  run_t.backlight_Cmd_lable = backlight_led_off;
+					  run_t.password_unlock_model =0;
+					  return ;
 				}
 				
 				
             }
             
          case 5:
-		 	syspara_t.ps_login_new_fp_success=1;
-			run_t.clearEeeprom_count=0;	
-         run_t.gTimer_8s=0;
-	      	  syspara_t.PS_read_template=1;
+		 	
+         	run_t.gTimer_8s=0;
+	      	syspara_t.PS_read_template=1;
 			syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
 	        syspara_t.PS_wakeup_flag = 0;
 	        syspara_t.PS_login_times=0xff;
 			run_t.gTimer_8s=5; 
-			run_t.password_unlock_model = EXIT_STORE_MODEL;
+			run_t.password_unlock_model =0;
 			
 			
             return;

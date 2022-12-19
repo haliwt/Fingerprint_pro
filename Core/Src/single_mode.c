@@ -129,7 +129,7 @@ static void UnLock_Aand_SaveData_Handler(void)
 	     else
 		     Fingerprint_NewClinet_Login_Fun();
 		run_t.motor_return_homePosition=0;
-		// run_t.password_unlock_model = EEXIT_STORE_MODEL;
+	
         
     break;
 
