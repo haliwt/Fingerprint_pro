@@ -224,6 +224,7 @@ static void Works_IndicateLed(void)
 	switch(run_t.works_led_lable){
 
 		case works_ok_led_on:
+			run_t.gTimer_8s =0;
 			ERR_LED_OFF();
 			OK_LED_OFF();
 		    PS_Green_Led_ON();
@@ -245,7 +246,8 @@ static void Works_IndicateLed(void)
 
 				   run_t. clearEeeprom_count=0;
 		            Del_FR();//fingerprint be deteleted
-		        run_t.clearEeeprom_count++;
+		         run_t.gTimer_led_blink_500ms=0;
+		        run_t.clearEeeprom_count=0;
                 run_t.works_led_lable=works_ok_blink;
 				 
 			}

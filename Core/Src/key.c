@@ -195,7 +195,7 @@ uint8_t Scan_Key(void)
                         Buzzer_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.10.05
                         BUZZER_OFF(); 
                         ERR_LED_OFF();
-                        OK_LED_ON();
+                        PS_Green_Led_ON();
                         HAL_Delay(400);
                        if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==1){
                          buzzertimes=0;
@@ -214,8 +214,8 @@ uint8_t Scan_Key(void)
                         run_t.eeprom_Reset_flag =1; //WT.EDIT 2022.10.26
                         run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         ERR_LED_OFF();
-                        OK_LED_ON();
-					    run_t.works_led_lable = works_ok_blink;
+                        //OK_LED_ON();
+                        PS_Green_Led_ON();
 					    run_t.clearEeeprom_count=0;//blink counter 
                         while(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0);
                         key.value = key.value|0x80;
