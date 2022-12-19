@@ -14,8 +14,6 @@ typedef enum _works_led{
     works_ok_blink,
     works_error_blink,
     works_null,
-    battery_led_on,
-    battery_led_off,
     factory_led_test,                   
     standby_led
 }works_led;

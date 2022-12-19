@@ -186,13 +186,9 @@ static void Save_To_EeepromNewPwd(void)
 ********************************************************/
 void TouchKey(void)
 {
-	 if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE || run_t.readI2C_data ==1){
+	 if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
          //if(I2C_Simple_Read_From_Device(SC12B_ADDR,SC_Data,2) ==DONE){
-			if(run_t.readI2C_data==1){
-                    POWER_ON();
-				run_t.readI2C_data++;
-
-			}
+			
 
 		 KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
 				RunCheck_Mode(KeyValue); 

@@ -49,7 +49,6 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			run_t.lowPower_flag++;
 			run_t.ADC_times=0;
 			run_t.backlight_Cmd_lable =0xff;	 	
-			run_t.readI2C_data =1;//WT.EDIT 2022.09.26 jump the "if(run_t.touchkey_first_turn_on_led==1 && run_t.panel_lock ==0)"
 			
 			 run_t.gTimer_8s=0;
 			 run_t.inputDeepSleep_times =0; 
@@ -83,7 +82,6 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			
 			run_t.buzzer_sound_lable=sound_key;//Buzzer_KeySound();
 			run_t.ADC_times=0;
-			run_t.readI2C_data =1;
 			run_t.inputDeepSleep_times =0;
 			run_t.backlight_Cmd_lable =0xff;
 		    run_t.gTimer_8s=0;

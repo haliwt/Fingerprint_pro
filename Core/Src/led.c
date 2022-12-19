@@ -97,7 +97,7 @@ void DisplayLed_Handler(void)
 	
    
 
-   if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff )){
+   if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff ) && run_t.clearEeprom ==0){
       run_t.backlight_Cmd_lable=backlight_led_off;
    	  Panel_LED_Off();
 
@@ -167,7 +167,6 @@ switch(run_t.backlight_Cmd_lable){
 
 		//wake up touch key
 		run_t.touchkey_first ++; //WT.EDIT 2022.10.19 ->touch key delay times 
-		run_t.readI2C_data =0; ////WT.EDIT.2022.10.28
 
 		for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
 		*(pwd2 + i)=0;//pwd2[i]=0;
@@ -229,7 +228,6 @@ static void Works_IndicateLed(void)
 			OK_LED_OFF();
 		    PS_Green_Led_ON();
 			run_t.input_newPassword_over_number=0;
-			run_t.readI2C_data =1;
 			run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 			 //erase EEPRO data 
 			 if(run_t.clearEeprom==1){
@@ -240,7 +238,6 @@ static void Works_IndicateLed(void)
 				  Del_FR();//fingerprint be deteleted
 				   run_t.gTimer_8s =0;
 			    
-				   run_t.clearEeeprom_done = 1;
 				  run_t.inputDeepSleep_times =0;//WT.EDIT 2022.10.26
 				  run_t.gTimer_input_standby_cnt=0;
 
@@ -258,11 +255,11 @@ static void Works_IndicateLed(void)
 			 if(cnt0==0){
 			 	cnt++;
 			   ERR_LED_OFF();
-			   PS_Green_Led_ON();
+			   PS_Green_Led_OFF();
 			 }
 			 run_t.input_newPassword_over_number=0;
-			 run_t.readI2C_data =1;
 			 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
+			 
 			 if(run_t.gTimer_led_blink_500ms < 6 ){
 
 			 	OK_LED_OFF();
@@ -274,8 +271,8 @@ static void Works_IndicateLed(void)
 				PS_Green_Led_ON();
 			 }
 
-			 if(run_t.gTimer_led_blink_500ms>9){ //1000.WT.EDIT 2022.10.31
-			 	
+			 if(run_t.gTimer_led_blink_500ms> 10){ //1000.WT.EDIT 2022.10.31
+			 	run_t.gTimer_led_blink_500ms=0;
 			 	run_t.clearEeeprom_count++;
 			 	if(run_t.inputNewPassword_Enable ==1)
 			 		run_t.inputNewPwd_OK_led_blank_times++;

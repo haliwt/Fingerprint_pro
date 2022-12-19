@@ -58,7 +58,6 @@ typedef struct __RUN_T{
   
 	//touchkey 
 	uint8_t touchkey_first;
-	uint8_t readI2C_data;
    uint8_t inputNewPassword_Enable;
 	uint8_t   getSpecial_1_key;
 	uint8_t   getSpecial_2_key;
@@ -99,7 +98,6 @@ typedef struct __RUN_T{
    unsigned char factory_test;
 
    //eeprom ref
-   uint8_t clearEeeprom_done;
    unsigned char eepromAddress;
    uint8_t  saveEEPROM_fail_flag ; //WT.EDIT 2022.10.06	
 	uint8_t  eeprom_Reset_flag;
