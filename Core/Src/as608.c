@@ -645,7 +645,8 @@ void RunCommand_Unlock_Fingerprint(void)
 		    if(syspara_t.PS_login_success==1)
 					run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
             syspara_t.PS_wakeup_flag=0;
-            syspara_t.FP_RunCmd_Lable = 0xff;   
+            syspara_t.FP_RunCmd_Lable = 0xff;
+			
             return ;
 
 			break;
@@ -653,8 +654,24 @@ void RunCommand_Unlock_Fingerprint(void)
 		}	
        
      break;
+     //search initialize password of administrator is ",1,2,3,4"
+     case FP_SEARCH_INIT:
+
+	       syspara_t.PS_login_success=1;
+		   syspara_t.ps_serch_getimage=0xff;
+		   run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
+		   run_t.error_times=0; //clear error input fingerprint of times 
+		   syspara_t.FP_RunCmd_Lable = 0xff;
+
+	 break;
+
+	 default:
+
+	 break;
 
    	}
+
+   
    //	}
 }
 /**********************************************************************
