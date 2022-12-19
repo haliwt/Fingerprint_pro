@@ -159,6 +159,8 @@ void RunMotor_Definite_Handler(void) //definite motor
         break;
 
         case morot_reverse :
+			 run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
+			 OK_LED_OFF();
             run_t.motor_return_homePosition=1;//motor runing flag 
             Motor_CW_Run();// Close
             run_t.Motor_RunCmd_Label=motor_stop;
@@ -172,13 +174,13 @@ void RunMotor_Definite_Handler(void) //definite motor
                 run_t.motor_return_homePosition=0;//motor runing flag 
                 run_t.motor_doing_flag=0;
                 run_t.Motor_RunCmd_Label= 0xff;
+				BACKLIGHT_OFF();
                 ERR_LED_OFF();
-                OK_LED_OFF();
 				PS_Green_Led_OFF();
                 run_t.motorRunCount=0;
                 syspara_t.PS_read_template=0;
-                //ps_color=PS_ControlBLN(0x01,0x01,0x01,0);
-               ps_color= PS_Breath_LED()  ;
+                run_t.backlight_Cmd_lable = backlight_led_off;
+      
             }
            
         break;
