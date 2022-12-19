@@ -49,10 +49,7 @@ typedef enum _runcmd{
 typedef struct _syspara
 {
 
-	//image 
-
-
-	uint8_t 	PS_clear_ps_success;
+uint8_t 	PS_clear_ps_success;
 	uint8_t 	PS_clear_ps_fail;
 	uint8_t     ps_pre_detector;
 	uint8_t     fp_rx_times;
@@ -60,6 +57,8 @@ typedef struct _syspara
   uint8_t PS_login_flag;
   uint8_t PS_wakeup_flag;
   uint8_t handler_read_data_flag;
+  uint8_t ps_login_new_fp_success;
+    
 	
     
   uint8_t uart1_rx_data;

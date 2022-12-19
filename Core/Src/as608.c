@@ -618,7 +618,7 @@ void RunCommand_Unlock_Fingerprint(void)
 				run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
 				run_t.error_times=0; //clear error input fingerprint of times 
 				syspara_t.FP_RunCmd_Lable = 0xff;
-					
+				
 				return ;
 				}
 				else if(USART1_RX_BUF[9]==0X15){
@@ -863,13 +863,17 @@ void Fingerprint_NewClinet_Login_Fun(void)
             }
             
          case 5:
+		 	syspara_t.ps_login_new_fp_success=1;
+			run_t.clearEeeprom_count=0;	
          run_t.gTimer_8s=0;
 	      	  syspara_t.PS_read_template=1;
 			syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
 	        syspara_t.PS_wakeup_flag = 0;
 	        syspara_t.PS_login_times=0xff;
 			run_t.gTimer_8s=5; 
-			run_t.password_unlock_model = EXIT_STORE_MODEL;     
+			run_t.password_unlock_model = EXIT_STORE_MODEL;
+			
+			
             return;
 		
         break;

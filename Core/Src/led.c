@@ -304,7 +304,7 @@ static void Works_IndicateLed(void)
 			 		run_t.inputNewPwd_OK_led_blank_times++;
 			 }
 
-			 if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0)){//WT.EDIT 2022.10.08
+			 if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0) && syspara_t.ps_login_new_fp_success==0){//WT.EDIT 2022.10.08
 
 			 	if(run_t.inputNewPwd_OK_led_blank_times >9){
 			 	run_t.inputNewPwd_OK_led_blank_times=0;
@@ -315,6 +315,15 @@ static void Works_IndicateLed(void)
 			 	}
 
 			 }
+             
+             if(syspara_t.ps_login_new_fp_success==1 && run_t.clearEeeprom_count >2){
+                  syspara_t.ps_login_new_fp_success=0;
+                  run_t.inputNewPassword_Enable=0;
+                  run_t.clearEeeprom_count=0;
+				  cnt0 = 0;
+                  run_t.works_led_lable= works_ok_led_off;
+             
+             }
 			
 			 if(run_t.clearEeeprom_count >2 &&  run_t.inputNewPassword_Enable ==0){
 			 	run_t.clearEeeprom_count=0;
