@@ -136,12 +136,9 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE END WHILE */
         
     /* USER CODE BEGIN 3 */
-//	ps_red=PS_Green_Led_ON();
-//    HAL_Delay(500);
-//    PS_Green_Led_OFF();
-//    HAL_Delay(500);
 
-	#if 1
+
+	
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
             run_t.lowPower_flag=0;
@@ -158,7 +155,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
  		DisplayLed_Handler();
  		RunMotor_Definite_Handler(); //definite motor
  		Standby_Model_Handler();
-	  #endif 
+	 
 	 }
  
   

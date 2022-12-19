@@ -24,9 +24,7 @@ uint8_t ps_color=0xff;
  *********************************************************/
 void Motor_CCW_Run(void) 
 {
-//	MotorStart_CW_Step();
-//	MOTOR_CW_RUN();	
-//	MOTOR_CCW_OFF();
+
     MotorStart_CCW_Step();
     MOTOR_CCW_RUN();
     MOTOR_CW_OFF();	
@@ -42,11 +40,7 @@ void Motor_CCW_Run(void)
  *********************************************************/
 void Motor_CW_Run(void)
 {
-//	MotorStart_CCW_Step();
-//    MOTOR_CCW_RUN();
-//    MOTOR_CW_OFF();
-
-     MotorStart_CW_Step();
+	MotorStart_CW_Step();
 	 MOTOR_CW_RUN();	
 	 MOTOR_CCW_OFF();
 	
@@ -65,13 +59,7 @@ void Motor_Stop(void)
  */
  static void MotorStart_CW_Step(void)//Up 
 {
-//	
-//       MOTOR_CCW_OFF();
-//        
-//       MOTOR_CW_RUN();	
-//	   HAL_Delay(25);//__delay_ms(25);
-//	   MOTOR_CW_OFF();
-//	   HAL_Delay(25);//__delay_ms(25);
+
        MOTOR_CW_RUN();	
        HAL_Delay(10);//__delay_ms(50);
 	  
@@ -82,12 +70,7 @@ void Motor_Stop(void)
 {
 
    
-//	   MOTOR_CW_OFF();	
-//	
-//	   MOTOR_CCW_RUN();
-//	   HAL_Delay(25);//__delay_ms(50);
-//	    MOTOR_CCW_OFF();
-//	   HAL_Delay(25);//__delay_ms(50);
+
        MOTOR_CCW_RUN();
 	   HAL_Delay(10);
 	
@@ -160,7 +143,9 @@ void RunMotor_Definite_Handler(void) //definite motor
 
         case morot_reverse :
 			 run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
+			 PS_Blue_Led_ON();
 			 OK_LED_OFF();
+		    
             run_t.motor_return_homePosition=1;//motor runing flag 
             Motor_CW_Run();// Close
             run_t.Motor_RunCmd_Label=motor_stop;
