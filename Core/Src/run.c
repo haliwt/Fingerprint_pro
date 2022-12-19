@@ -638,7 +638,6 @@ void Lock_Open_Order(void)
 				syspara_t.ps_serch_getimage=0xff;
 				syspara_t.ps_serch_genchar =0xff;
 				syspara_t.ps_serach_result=0xff;
-				HAL_Delay(500);
 				syspara_t.handler_read_data_flag++;
 
 			}
