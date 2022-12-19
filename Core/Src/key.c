@@ -47,7 +47,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			FP_POWER_ON()  ;
 			BACKLIGHT_ON();
 			run_t.lowPower_flag++;
-			run_t.ADC_times=0;
+		
 			run_t.backlight_Cmd_lable =0xff;	 	
 			
 			 run_t.gTimer_8s=0;
@@ -81,7 +81,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			run_t.lowPower_flag++;
 			
 			run_t.buzzer_sound_lable=sound_key;//Buzzer_KeySound();
-			run_t.ADC_times=0;
+			
 			run_t.inputDeepSleep_times =0;
 			run_t.backlight_Cmd_lable =0xff;
 		    run_t.gTimer_8s=0;
@@ -95,7 +95,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		  POWER_ON();
 		  FP_POWER_ON()  ;
 		  BACKLIGHT_ON();
-		//  run_t.buzzer_sound_lable=sound_key;//Buzzer_KeySound();
+		  syspara_t.handler_read_data_flag++;
 		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
      if(run_t.lowPower_flag==0){
 
@@ -111,7 +111,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		Buzzer_KeySound();
 		
 	    run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
-        run_t.ADC_times=0;
+      
 		run_t.lowPower_flag++;
 	    run_t.backlight_Cmd_lable =0xff;
 	    run_t.gTimer_8s=0;

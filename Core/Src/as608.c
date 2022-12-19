@@ -584,8 +584,8 @@ void RunCommand_Unlock_Fingerprint(void)
     
 
 	//fingerprint open lock doing 
-  // if(getImage != syspara_t.handler_read_data_flag){
-	//  getImage = syspara_t.handler_read_data_flag;
+   if(getImage != syspara_t.handler_read_data_flag || run_t.Confirm_newPassword==1){
+	  getImage = syspara_t.handler_read_data_flag;
   
    switch(syspara_t.FP_RunCmd_Lable){
 
@@ -672,7 +672,7 @@ void RunCommand_Unlock_Fingerprint(void)
    	}
 
    
-   //	}
+   }
 }
 /**********************************************************************
 	*
@@ -944,7 +944,7 @@ uint8_t  PS_Red_Led_ON(void)
 }
 /**********************************************************************
 	*
-	*Function Name:uint8_t  PS_Red_LED_ON(void)
+	*Function Name:uint8_t  PS_Red_Led_ON(void)
 	*Function : PS turn off LED display
 	*Iinput Ref: NO
 	*Return Ref:NO

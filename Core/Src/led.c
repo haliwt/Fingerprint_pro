@@ -49,11 +49,11 @@ void DisplayLed_Handler(void)
 	Works_IndicateLed();
 
 	if(run_t.panel_lock ==1){
-         	  OK_LED_OFF();	
+		      Panel_LED_Off();
+         	
               ERR_LED_ON();
-         	  BACKLIGHT_OFF();
-         	  FP_POWER_OFF();
-         	  run_t.inputDeepSleep_times =0;
+         	 
+         	 run_t.inputDeepSleep_times =0;
          	  run_t.gTimer_input_standby_cnt=0;
          	  run_t.gTimer_8s=0;
              if(run_t.gTimer_input_error_times_60s > 5){
@@ -139,10 +139,14 @@ switch(run_t.backlight_Cmd_lable){
 
            run_t.lowPower_flag=0;
 		}
+		
 		run_t.backlight_run_flag=1;
      break;
 
      case backlight_led_off:
+
+	   syspara_t.handler_read_data_flag++;
+	   syspara_t.PS_login_times=0;	
 
         if(run_t.gTimer_8s > 8){
 
@@ -198,6 +202,7 @@ switch(run_t.backlight_Cmd_lable){
           run_t.inputDeepSleep_times =0;
 
 	   }
+	   
 		run_t.backlight_run_flag=1;
 	break;
 
@@ -310,6 +315,7 @@ static void Works_IndicateLed(void)
              OK_LED_OFF();
 			 ERR_LED_OFF();
 		     PS_LED_ALL_OFF();
+			 BACKLIGHT_OFF();
 		     run_t.works_led_lable= works_null;
 
 		break;
@@ -414,6 +420,7 @@ static void Works_IndicateLed(void)
             PS_LED_ALL_OFF();
 			OK_LED_OFF();
 		    ERR_LED_OFF();
+			BACKLIGHT_OFF();
             run_t.works_led_lable= 0xff;
             run_t.backlight_Cmd_lable=backlight_led_off;
 		break;
