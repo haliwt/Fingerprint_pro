@@ -155,6 +155,8 @@ uint8_t  PS_Red_LED_OFF(void);
 uint8_t PS_Green_Led_OFF(void);
 uint8_t PS_Green_Led_ON(void);
 
+uint8_t PS_Blue_Led_ON(void);
+uint8_t PS_Blue_Led_OFF(void);
 
 
 

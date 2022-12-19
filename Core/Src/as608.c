@@ -984,3 +984,30 @@ uint8_t PS_Green_Led_OFF(void)
 	return ps_green;
 
 }
+/**********************************************************************
+	*
+	*Function Name:void PS_Blue_Led_ON(void)
+	*Function : PS turn off LED display clolor is green
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t PS_Blue_Led_ON(void)
+{
+	uint8_t ps_blue;
+    ps_blue=PS_ControlBLN(0x03,0x01,0x01,0);
+
+	return ps_blue;
+
+
+}
+
+uint8_t PS_Blue_Led_OFF(void)
+{
+	uint8_t ps_blue;
+    ps_blue=PS_ControlBLN(0x04,0x00,0x00,0);
+
+	return ps_blue;
+
+}
+

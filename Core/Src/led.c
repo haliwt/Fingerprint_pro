@@ -226,8 +226,7 @@ static void Works_IndicateLed(void)
 			run_t.gTimer_8s =0;
 			ERR_LED_OFF();
 			OK_LED_OFF();
-		    PS_Green_Led_ON();
-			run_t.input_newPassword_over_number=0;
+		    run_t.input_newPassword_over_number=0;
 			run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 			 //erase EEPRO data 
 			 if(run_t.clearEeprom==1){
@@ -248,6 +247,10 @@ static void Works_IndicateLed(void)
                 run_t.works_led_lable=works_ok_blink;
 				 
 			}
+			else{
+				PS_Green_Led_ON();
+
+			}
 		break;
 
 		case works_ok_blink:
@@ -255,23 +258,23 @@ static void Works_IndicateLed(void)
 			 if(cnt0==0){
 			 	cnt++;
 			   ERR_LED_OFF();
-			   PS_Green_Led_OFF();
+			   PS_Blue_Led_OFF();
 			 }
 			 run_t.input_newPassword_over_number=0;
 			 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 			 
 			 if(run_t.gTimer_led_blink_500ms < 6 ){
 
-			 	OK_LED_OFF();
-			    PS_Green_Led_OFF();
+			 	OK_LED_ON();
+			    PS_Green_Led_ON();
 
 			 }
 			 else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){//500.WT.EDIT 2022.10.31
-			 	OK_LED_ON();
-				PS_Green_Led_ON();
+			 	OK_LED_OFF();
+				PS_Green_Led_OFF();
 			 }
 
-			 if(run_t.gTimer_led_blink_500ms> 10){ //1000.WT.EDIT 2022.10.31
+			 if(run_t.gTimer_led_blink_500ms> 9){ //1000.WT.EDIT 2022.10.31
 			 	run_t.gTimer_led_blink_500ms=0;
 			 	run_t.clearEeeprom_count++;
 			 	if(run_t.inputNewPassword_Enable ==1)
@@ -316,6 +319,7 @@ static void Works_IndicateLed(void)
 		case works_error_led_on:
 		    OK_LED_OFF();	
             ERR_LED_ON();
+		    PS_Red_LED_ON();
 			run_t.gTimer_8s=0;
 			run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
 			run_t.password_unlock_model=0;
@@ -332,6 +336,7 @@ static void Works_IndicateLed(void)
 		case works_error_led_off:
 		    OK_LED_OFF();	
             ERR_LED_OFF();
+		    PS_LED_ALL_OFF();
             run_t.works_led_lable= works_null;
 		break;
 
