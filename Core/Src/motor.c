@@ -88,6 +88,7 @@ void Motor_Stop(void)
 void RunMotor_Definite_Handler(void) //definite motor
 {
 
+  static uint8_t adjust_ref,stop_flag;
   if(run_t.motor_doing_flag==1){//open lock doing
 
         run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
@@ -154,8 +155,23 @@ void RunMotor_Definite_Handler(void) //definite motor
         break;
 
         case motor_stop:
-            if(run_t.motorRunCount >20){//15 //100ms x 10 =1s motor stop 1s 
-                Motor_Stop();
+            if(run_t.motorRunCount >20 && adjust_ref <6 ){//15 //100ms x 10 =1s motor stop 1s 
+               
+                adjust_ref++;
+				Motor_Stop();
+			    stop_flag =1;
+            }
+			else if(run_t.motorRunCount >23) {
+        		adjust_ref=0;
+				Motor_Stop();
+			    stop_flag=1;
+                
+			}
+			
+  
+
+			 if(stop_flag==1){
+			 	stop_flag=0;
                 run_t.motor_return_homePosition=0;//motor runing flag 
                 run_t.motor_doing_flag=0;
                 run_t.Motor_RunCmd_Label= 0xff;
