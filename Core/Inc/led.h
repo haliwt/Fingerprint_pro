@@ -4,17 +4,17 @@
 #include "gpio.h"
 
 typedef enum _works_led{
-
-	backlight_led_on=0x01,
-	backlight_led_off,
-	works_ok_led_on,
+    works_ok_led_on=0x01,
     works_ok_led_off,
     works_error_led_on,
     works_error_led_off,
     works_ok_blink,
     works_error_blink,
     works_null,
-    factory_led_test,                   
+    factory_led_test,  
+    backlight_led_on,
+	backlight_led_off,
+    backlight_led_confirm,
     standby_led
 }works_led;
 

@@ -278,6 +278,7 @@ void  SideKey_Fun(uint8_t keyvalue)
 	 if(keyvalue == 0x01){
                
 		run_t.Confirm_newPassword = 1;
+		syspara_t.PS_wakeup_flag=0;
 		run_t.inputDeepSleep_times =0;
 		run_t.gTimer_input_standby_cnt=0;
 		run_t.inputNewPassword_Enable =0;
@@ -289,20 +290,21 @@ void  SideKey_Fun(uint8_t keyvalue)
         run_t.password_unlock_model=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
-	
+	    
 	
         BACKLIGHT_ON();        
 		FP_POWER_ON();
 		POWER_ON();//WT.EDIT .2022.10.06
 		OK_LED_OFF();//WT.EDIT .2022.10.31
-		run_t.works_led_lable= works_null;
-		run_t.open_lock_lable=open_lock_null;
-		syspara_t.PS_wakeup_flag=0;
+		ERR_LED_OFF();
+		PS_Blue_Led_ON();
+	
 	        
        }
 	 
       if(keyvalue== 0x81){
-
+	  	
+		syspara_t.PS_wakeup_flag=0;
         run_t.works_led_lable=works_ok_led_on;
         run_t.clearEeprom = 1;
 		run_t.inputDeepSleep_times =0;

@@ -79,6 +79,7 @@ void CheckPassword_Lock_Handler(void)
 	//keyboard password lock
     if(run_t.passwordsMatch==0){ //&& run_t.readI2C_data ==1 && run_t.factory_test ==0){
 	  	TouchKey_Handler();
+
      }//fingerprint lock input 
 	 
 	 
@@ -94,9 +95,11 @@ void CheckPassword_Lock_Handler(void)
      else if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0){
 		  
 		  run_t.passwordsMatch=0;
+		  syspara_t.PS_wakeup_flag=0;
 		  if(run_t.login_in_success ==0) //WT.EDIT 2022.10.31
              run_t.gTimer_8s=0;
           RunCommand_Unlock_Keyboard();
+		  
          run_t.detection_input_flag=1;
 		 
     }

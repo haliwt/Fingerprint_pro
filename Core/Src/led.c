@@ -115,7 +115,8 @@ void DisplayLed_Handler(void)
 ****************************************************************************/
 static void BackLight_Fun(void)
 {
-uint8_t i;
+	uint8_t i;
+	
 
 switch(run_t.backlight_Cmd_lable){
      
@@ -145,10 +146,13 @@ switch(run_t.backlight_Cmd_lable){
 
      case backlight_led_off:
 
+      run_t.gTimer_8s=0;
 	   syspara_t.handler_read_data_flag++;
-	   syspara_t.PS_login_times=0;	
+	   syspara_t.PS_login_times=0;
+	   syspara_t.PS_wakeup_flag=0;
+	   run_t.Confirm_newPassword = 0;
 
-        if(run_t.gTimer_8s > 8){
+       
 
         run_t.Confirm_newPassword=0;
      	run_t.login_in_success =0;//WT.EDIT 2022.10.31
@@ -182,15 +186,29 @@ switch(run_t.backlight_Cmd_lable){
 		//PS_Sleep(void);
 		POWER_OFF();
 		run_t.gTimer_input_standby_cnt=0;
-        run_t.backlight_Cmd_lable=standby_led;
+        
+       
+         run_t.backlight_Cmd_lable = backlight_led_confirm;
 
-        }
-        else{
-
-        	run_t.gTimer_input_standby_cnt=0;
-        }
+		
 		run_t.backlight_run_flag=1;
      break;
+
+
+	case backlight_led_confirm:
+
+	      if(run_t.gTimer_8s >8 ){
+		    run_t.backlight_Cmd_lable = standby_led;
+
+		 }
+		  else{
+
+		     run_t.gTimer_input_standby_cnt=0;
+
+		  }
+
+		run_t.backlight_run_flag=1;
+	break;
 
     case standby_led:
         
