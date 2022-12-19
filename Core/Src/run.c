@@ -638,7 +638,7 @@ void Lock_Open_Order(void)
 				syspara_t.ps_serch_getimage=0xff;
 				syspara_t.ps_serch_genchar =0xff;
 				syspara_t.ps_serach_result=0xff;
-				syspara_t.handler_read_data_flag++;
+				//syspara_t.handler_read_data_flag++;
 
 			}
             else{
@@ -655,7 +655,7 @@ void Lock_Open_Order(void)
 				   run_t.passwordsMatch = 0;
 				   run_t.inputDeepSleep_times =0;
 				   run_t.buzzer_sound_lable = sound_excute;
-				 //  run_t.works_led_lable = works_ok_led_on;
+				
 					   
 			       for(i=0;i<6;i++){
 				  	   pwd1[i]=0;
@@ -663,7 +663,7 @@ void Lock_Open_Order(void)
 					   pwd2[i]=0;
 				
 				  	}
-			   	// syspara_t.handler_read_data_flag++;
+			   
 
                }
 

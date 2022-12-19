@@ -98,7 +98,7 @@ void RunMotor_Definite_Handler(void) //definite motor
         case motor_run_start:
             PS_Green_Led_ON();
             run_t.motor_return_homePosition=1;//motor runing flag 
-            syspara_t.handler_read_data_flag++;
+           // syspara_t.handler_read_data_flag++;
            
             run_t.Numbers_counter =0 ;
             run_t.eepromAddress=0;

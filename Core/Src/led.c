@@ -151,7 +151,7 @@ switch(run_t.backlight_Cmd_lable){
 	    BACKLIGHT_OFF();
 
        run_t.gTimer_8s=0;
-	   syspara_t.handler_read_data_flag++;
+	  // syspara_t.handler_read_data_flag++;
 	   syspara_t.PS_login_times=0;
 	   syspara_t.PS_wakeup_flag=0;
 	   run_t.Confirm_newPassword = 0;
