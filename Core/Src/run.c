@@ -616,6 +616,7 @@ void Lock_Open_Order(void)
 			  syspara_t.ps_serch_getimage=0xff;
               syspara_t.ps_serch_genchar =0xff;
               syspara_t.ps_serach_result=0xff;
+			  run_t.inputNewPwd_OK_led_blank_times=0;
 			
 		}
 		else{ //runing open lock 

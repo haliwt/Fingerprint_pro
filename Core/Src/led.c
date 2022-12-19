@@ -97,7 +97,8 @@ void DisplayLed_Handler(void)
 	
    
 
-   if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff ) && run_t.clearEeprom ==0){
+   if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff ) && run_t.clearEeprom ==0\
+   		&& run_t.inputNewPassword_Enable ==0){
       run_t.backlight_Cmd_lable=backlight_led_off;
    	  Panel_LED_Off();
 
