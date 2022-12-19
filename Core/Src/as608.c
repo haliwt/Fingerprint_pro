@@ -934,7 +934,7 @@ uint8_t  PS_Error_Blink_LED(void)
 	*Return Ref:NO
 	*
 ***********************************************************************/
-uint8_t  PS_Red_LED_ON(void)
+uint8_t  PS_Red_Led_ON(void)
 {
     uint8_t ps_red;
     ps_red=PS_ControlBLN(0x03,0x04,0x04,0);
@@ -950,7 +950,7 @@ uint8_t  PS_Red_LED_ON(void)
 	*Return Ref:NO
 	*
 ***********************************************************************/
-uint8_t  PS_Red_LED_OFF(void)
+uint8_t  PS_Red_Led_OFF(void)
 {
     uint8_t ps_error;
     ps_error=PS_ControlBLN(0x04,0x00,0x00,0);

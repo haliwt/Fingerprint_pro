@@ -136,9 +136,9 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE END WHILE */
         
     /* USER CODE BEGIN 3 */
-//	ps_red=PS_Red_LED_ON();
+//	ps_red=PS_Green_Led_ON();
 //    HAL_Delay(500);
-//    PS_Red_LED_OFF();
+//    PS_Green_Led_OFF();
 //    HAL_Delay(500);
 
 	#if 1

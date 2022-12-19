@@ -149,8 +149,8 @@ uint8_t  PS_LED_ALL_OFF(void);
 
 uint8_t PS_Breath_LED(void) ;
 uint8_t  PS_Error_Blink_LED(void);
-uint8_t  PS_Red_LED_ON(void);
-uint8_t  PS_Red_LED_OFF(void);
+uint8_t  PS_Red_Led_ON(void);
+uint8_t  PS_Red_Led_OFF(void);
 
 uint8_t PS_Green_Led_OFF(void);
 uint8_t PS_Green_Led_ON(void);
