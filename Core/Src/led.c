@@ -16,6 +16,8 @@ static void Works_IndicateLed(void);
 uint16_t adcVale;
 uint16_t adcx;
 uint8_t ps_sleep=0xff;
+uint8_t ps_error_led=0xff;
+
 
 float temp;  
 
@@ -24,7 +26,7 @@ void Panel_LED_Off(void)
 {
 
       BACKLIGHT_OFF();
-      FP_POWER_OFF();
+      PS_LED_ALL_OFF();//FP_POWER_OFF();
 	  OK_LED_OFF();
 	  ERR_LED_OFF();
 	  BAT_LED_OFF();
@@ -95,7 +97,7 @@ void DisplayLed_Handler(void)
 	
    
 
-   if(run_t.gTimer_8s > 8 && run_t.backlight_run_flag==0){
+   if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff )){
       run_t.backlight_Cmd_lable=backlight_led_off;
    	  Panel_LED_Off();
 
@@ -132,7 +134,9 @@ switch(run_t.backlight_Cmd_lable){
 		}
 		else{
            BACKLIGHT_OFF();
+		   PS_LED_ALL_OFF();
 
+           run_t.lowPower_flag=0;
 		}
 		run_t.backlight_run_flag=1;
      break;
@@ -143,8 +147,8 @@ switch(run_t.backlight_Cmd_lable){
 
         run_t.Confirm_newPassword=0;
      	run_t.login_in_success =0;//WT.EDIT 2022.10.31
-		
-		run_t.gTimer_200ms=0;//WT.EDIT 2022.10.19
+		run_t.lowPower_flag=0;
+	
         
 		syspara_t.PS_login_times=0;	//fingerprint input times 
 		Panel_LED_Off();
@@ -222,6 +226,7 @@ static void Works_IndicateLed(void)
 		case works_ok_led_on:
 			ERR_LED_OFF();
 			OK_LED_OFF();
+		    PS_Green_Led_ON();
 			run_t.input_newPassword_over_number=0;
 			run_t.readI2C_data =1;
 			run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
@@ -247,57 +252,65 @@ static void Works_IndicateLed(void)
 		break;
 
 		case works_ok_blink:
-		    // run_t.gTimer_8s=0;
-			// cnt0++;
-			// ERR_LED_OFF();
-		
-			// run_t.input_newPassword_over_number=0;
-			// run_t.readI2C_data =1;
-			// run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
-			// if(cnt0 < 501 ){
+		     run_t.gTimer_8s=0;
+			 if(cnt0==0){
+			 	cnt++;
+			   ERR_LED_OFF();
+			   PS_Green_Led_ON();
+			 }
+			 run_t.input_newPassword_over_number=0;
+			 run_t.readI2C_data =1;
+			 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
+			 if(run_t.gTimer_led_blink_500ms < 6 ){
 
-			// OK_LED_OFF();
+			 	OK_LED_OFF();
+			    PS_Green_Led_OFF();
 
-			// }
-			// else if(cnt0>499 && cnt0 < 1001){//500.WT.EDIT 2022.10.31
-			// OK_LED_ON();
-			// }
+			 }
+			 else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){//500.WT.EDIT 2022.10.31
+			 	OK_LED_ON();
+				PS_Green_Led_ON();
+			 }
 
-			// if(cnt0>999){ //1000.WT.EDIT 2022.10.31
-			// 	cnt0 = 0;
-			// 	run_t.clearEeeprom_count++;
-			// 	if(run_t.inputNewPassword_Enable ==1)
-			// 		run_t.inputNewPwd_OK_led_blank_times++;
-			// }
+			 if(run_t.gTimer_led_blink_500ms>9){ //1000.WT.EDIT 2022.10.31
+			 	
+			 	run_t.clearEeeprom_count++;
+			 	if(run_t.inputNewPassword_Enable ==1)
+			 		run_t.inputNewPwd_OK_led_blank_times++;
+			 }
 
-			// if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0)){//WT.EDIT 2022.10.08
+			 if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0)){//WT.EDIT 2022.10.08
 
-			// 	if(run_t.inputNewPwd_OK_led_blank_times >9){
-			// 	run_t.inputNewPwd_OK_led_blank_times=0;
-				
-			// 	run_t.inputNewPassword_Enable =0;
+			 	if(run_t.inputNewPwd_OK_led_blank_times >9){
+			 	run_t.inputNewPwd_OK_led_blank_times=0;
+				cnt0 = 0;
+			 	run_t.inputNewPassword_Enable =0;
 
-			// 	OK_LED_OFF();
-			// 	run_t.works_led_lable=works_null;
+			 	OK_LED_OFF();
+				PS_LED_ALL_OFF();
+			 	run_t.works_led_lable= works_ok_led_off;//run_t.works_led_lable=works_null;
 			
-			// 	}
+			 	}
 
-			// }
+			 }
 			
-			// if(run_t.clearEeeprom_count >2 &&  run_t.inputNewPassword_Enable ==0){
-			// 	run_t.clearEeeprom_count=0;
-				
-			// 	OK_LED_OFF();
-			
-			// 	if(run_t.eeprom_Reset_flag ==1)
-			// 	run_t.eeprom_Reset_flag =0;//WT.EDIT 2022.10.26
-            //     run_t.works_led_lable= works_null;
-			// }
-			
-			 run_t.works_led_lable= 0xff;
+			 if(run_t.clearEeeprom_count >2 &&  run_t.inputNewPassword_Enable ==0){
+			 	run_t.clearEeeprom_count=0;
+				cnt0 = 0;
+			 	OK_LED_OFF();
+			    PS_LED_ALL_OFF();
+			 	if(run_t.eeprom_Reset_flag ==1)
+			 	run_t.eeprom_Reset_flag =0;//WT.EDIT 2022.10.26
+                 run_t.works_led_lable= works_ok_led_off;
+			 }
+			 
 		break;
 
 		case works_ok_led_off:
+             OK_LED_OFF();
+			 ERR_LED_OFF();
+		     PS_LED_ALL_OFF();
+		     run_t.works_led_lable= works_null;
 
 		break;
 
@@ -324,8 +337,12 @@ static void Works_IndicateLed(void)
 		break;
 
 		case works_error_blink:
+			syspara_t.PS_read_template=0;
+			if(cnt==0){
+				cnt++;
+			   PS_Red_LED_ON();
 
-			cnt ++ ;
+			}
 			//  run_t.BackLight =0;//WT.EDIT .2022.10.19
 			run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
 			
@@ -338,27 +355,32 @@ static void Works_IndicateLed(void)
 			OK_LED_OFF();
 
 
-			if(cnt < 501 ){
+			if(run_t.gTimer_led_blink_500ms < 6 ){
 
 			ERR_LED_OFF();
+			PS_Red_LED_OFF();
 
 			}
-			else if(cnt > 500 && cnt < 1001){
+			else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){
 			ERR_LED_ON();
+			 PS_Red_LED_ON();
 			}
-			if(cnt>1000){
-			cnt = 0;
+			if(run_t.gTimer_led_blink_500ms > 10){
 			cntrecoder++;
+			run_t.gTimer_led_blink_500ms=0;
 
 			}
+		
 			if(cntrecoder > 2){
-			cntrecoder =0;
+			   cntrecoder =0;
 
 			run_t.saveEEPROM_fail_flag =0;
 		
 			run_t.input_newPassword_over_number=0;
 
 			ERR_LED_OFF();
+			PS_LED_ALL_OFF();
+			cnt=0;
 		    run_t.works_led_lable= works_null;
 
 			}
@@ -387,7 +409,9 @@ static void Works_IndicateLed(void)
 		break;
 
 		case works_null:
-            
+            PS_LED_ALL_OFF();
+			OK_LED_OFF();
+		    ERR_LED_OFF();
             run_t.works_led_lable= 0xff;
             run_t.backlight_Cmd_lable=backlight_led_off;
 		break;
@@ -465,12 +489,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	t0++;
     t1++;
-	run_t.gTimer_process_times++;
-	run_t.gTimer_process_key_times++;
+
+
 	if(t1>9){ //10ms x10=100ms
         t1=0;
         run_t.motorRunCount++;
-	    run_t.gTimer_process_key_times++;
+	    run_t.gTimer_led_blink_500ms++;
 	}
     if(t0>99){ //10*100 =1000ms "1s"
        t0=0;

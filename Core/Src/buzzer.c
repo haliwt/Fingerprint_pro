@@ -8,9 +8,6 @@
 
 #define CPU_FREQUENCY_MHZ 24 // STM32时钟主频
 
-
-
-
 static void Buzzer_High_Sound(void);
 
 static void Buzzer_ErrorSound(void);
@@ -153,7 +150,7 @@ static void Buzzer_ErrorSound(void)
 *****************************************************************/
 static void Buzzer_High_Sound(void)
 {
-      #ifdef STM32L010F4P6_IC
+     
 
 	 unsigned int m=250;//300
 	
@@ -163,15 +160,7 @@ static void Buzzer_High_Sound(void)
           delay_us(480);//480
          
        }
-	 #else
 
-       
-	    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3); //
-		HAL_Delay(250);
-		HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_3);
-
-
-	 #endif 
 }
 /****************************************************************************
 *

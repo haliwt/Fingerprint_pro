@@ -82,8 +82,10 @@ void CheckPassword_Lock_Handler(void)
      }//fingerprint lock input 
 	 
 	 
-	 if(FP_INPUT_KEY()==1  &&  run_t.inputNewPassword_Enable ==0 && run_t.passwordsMatch ==0 ){
+	 if((FP_INPUT_KEY()==1  || syspara_t.ps_pre_detector==1 ) && run_t.inputNewPassword_Enable ==0 && run_t.passwordsMatch ==0 ){
 	 	fp_cnt++;
+
+	  
 		FP_ReadData_Handler();
 
 		run_t.detection_input_flag=1;

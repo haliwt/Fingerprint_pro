@@ -112,7 +112,7 @@ void RunMotor_Definite_Handler(void) //definite motor
       switch(run_t.Motor_RunCmd_Label){
 
         case motor_run_start:
-            
+            PS_Green_Led_ON();
             run_t.motor_return_homePosition=1;//motor runing flag 
             syspara_t.handler_read_data_flag++;
            
@@ -125,6 +125,7 @@ void RunMotor_Definite_Handler(void) //definite motor
             run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
             ERR_LED_OFF();
             OK_LED_ON();
+			
            // Buzzer_LongSound(); //WT.EDIT 2022.10.06
             Motor_CCW_Run();//open passwordlock 
                      
@@ -173,9 +174,11 @@ void RunMotor_Definite_Handler(void) //definite motor
                 run_t.Motor_RunCmd_Label= 0xff;
                 ERR_LED_OFF();
                 OK_LED_OFF();
+				PS_Green_Led_OFF();
                 run_t.motorRunCount=0;
                 syspara_t.PS_read_template=0;
-                ps_color=PS_ControlBLN(0x01,0x01,0x01,0);
+                //ps_color=PS_ControlBLN(0x01,0x01,0x01,0);
+               ps_color= PS_Breath_LED()  ;
             }
            
         break;

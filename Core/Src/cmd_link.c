@@ -34,8 +34,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     {	      
 	    if(syspara_t.uart1_rx_data==0){
               
-            if(UART1_RX_DataBuf[0]==0x55) temp=0;
-		
+            if(UART1_RX_DataBuf[0]==0x55){
+				temp=0;
+				syspara_t.ps_pre_detector=1; //ahead of detector of fingerprint
+				syspara_t.uart1_rx_data= 0;
+            }
             
 			if(UART1_RX_DataBuf[0]==0xEF) temp= 1;
 			if(temp==1){
@@ -47,6 +50,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
+				  syspara_t.ps_pre_detector=0;
 				  temp= 0;
                       
                 
@@ -56,6 +60,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
+				  syspara_t.ps_pre_detector=0;
 				 
                  temp= 0;
             }
@@ -64,6 +69,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
+				  syspara_t.ps_pre_detector=0;
 				  temp= 0;
                 
             }

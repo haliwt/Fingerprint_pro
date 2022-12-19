@@ -113,7 +113,7 @@ typedef struct __RUN_T{
 
    
 	//timging
-	uint8_t gTimer_200ms;
+
 	unsigned char gTimer_10s;
 	unsigned char gTimer_8s;
 	unsigned char gTimer_60s;
@@ -122,13 +122,9 @@ typedef struct __RUN_T{
 	
 	uint8_t  gTimer_input_error_times_60s;
 	uint8_t gTimer_10s_start;
-	uint8_t gTimer_process_key_times;
-	uint8_t gTimer_process_times;
-
+	uint8_t gTimer_led_blink_500ms;
 	
-
-
-	uint16_t 	motorRunCount;
+uint16_t 	motorRunCount;
 	
 
 	uint32_t userId;

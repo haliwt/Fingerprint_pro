@@ -55,6 +55,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
  uint16_t sidekey;
+uint8_t ps_red=0xff;
 
 
 /* USER CODE END PM */
@@ -135,7 +136,12 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE END WHILE */
         
     /* USER CODE BEGIN 3 */
-	
+//	ps_red=PS_Red_LED_ON();
+//    HAL_Delay(500);
+//    PS_Red_LED_OFF();
+//    HAL_Delay(500);
+
+	#if 1
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
             run_t.lowPower_flag=0;
@@ -146,14 +152,15 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	    SideKey_Fun(sidekey);
              
 	   	}
-	    
+
 	 	CheckPassword_Lock_Handler();
 		Buzzer_Sound_Handler();
  		DisplayLed_Handler();
  		RunMotor_Definite_Handler(); //definite motor
- 	//	Standby_Model_Handler();
-	 
+ 		Standby_Model_Handler();
+	  #endif 
 	 }
+ 
   
   /* USER CODE END 3 */
 }

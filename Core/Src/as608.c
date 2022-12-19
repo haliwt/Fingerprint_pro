@@ -40,7 +40,7 @@ uint16_t EEPROM_AS608Addr = 0x60;
 
 uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
 uint8_t ps_getImage=0xff;
-
+static uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes);
 
 //send data one byte
 static void MYUSART_SendData(uint8_t data)
@@ -517,7 +517,7 @@ uint8_t PS_Sleep(void)
 	*Return Ref:NO
 	*
 ***********************************************************************/
-uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes)
+static uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes)
 {
 	uint16_t temp;
     uint8_t  ensure;
@@ -584,12 +584,12 @@ void RunCommand_Unlock_Fingerprint(void)
     
 
 	//fingerprint open lock doing 
-	
+  // if(getImage != syspara_t.handler_read_data_flag){
+	//  getImage = syspara_t.handler_read_data_flag;
   
    switch(syspara_t.FP_RunCmd_Lable){
 
-      if(getImage != syspara_t.handler_read_data_flag){
-	  	  getImage = syspara_t.handler_read_data_flag;
+    
 
    	  case FP_SEARCH:
 	    if(FP_INPUT_KEY()==1 || syspara_t.PS_wakeup_flag==1){
@@ -655,7 +655,7 @@ void RunCommand_Unlock_Fingerprint(void)
      break;
 
    	}
-   	}
+   //	}
 }
 /**********************************************************************
 	*
@@ -860,8 +860,110 @@ void Fingerprint_NewClinet_Login_Fun(void)
        
 }
 
+/**********************************************************************
+	*
+	*Function Name:void PS_LED_OFF(void)
+	*Function : PS turn off LED display
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t  PS_LED_ALL_OFF(void)
+{
+   uint8_t ps_led_state;
 
 
+  ps_led_state =PS_ControlBLN(0x04,0x00,0x00,0x00);
 
-               
-      
+  return ps_led_state;
+}
+/**********************************************************************
+	*
+	*Function Name:void PS_LED_OFF(void)
+	*Function : PS turn off LED display
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t PS_Breath_LED(void)  
+{
+    uint8_t ps_breath;
+    ps_breath=PS_ControlBLN(0x01,0x01,0x01,0);
+
+	return ps_breath;
+
+}
+/**********************************************************************
+	*
+	*Function Name:uint8_t  PS_Error_Blank_LED(void)
+	*Function : PS turn off LED display
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t  PS_Error_Blink_LED(void)
+{
+    uint8_t ps_error;
+    ps_error=PS_ControlBLN(0x02,0x04,0x04,3);
+
+	return ps_error;
+
+}
+/**********************************************************************
+	*
+	*Function Name:uint8_t  PS_Red_LED_ON(void)
+	*Function : PS turn off LED display
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t  PS_Red_LED_ON(void)
+{
+    uint8_t ps_red;
+    ps_red=PS_ControlBLN(0x03,0x04,0x04,0);
+
+	return ps_red;
+
+}
+/**********************************************************************
+	*
+	*Function Name:uint8_t  PS_Red_LED_ON(void)
+	*Function : PS turn off LED display
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t  PS_Red_LED_OFF(void)
+{
+    uint8_t ps_error;
+    ps_error=PS_ControlBLN(0x04,0x00,0x00,0);
+
+	return ps_error;
+
+}
+/**********************************************************************
+	*
+	*Function Name:void PS_Green_Led_OFF(void)
+	*Function : PS turn off LED display clolor is green
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+uint8_t PS_Green_Led_ON(void)
+{
+	uint8_t ps_green;
+    ps_green=PS_ControlBLN(0x03,0x02,0x02,0);
+
+	return ps_green;
+
+
+}
+
+uint8_t PS_Green_Led_OFF(void)
+{
+	uint8_t ps_green;
+    ps_green=PS_ControlBLN(0x04,0x00,0x00,0);
+
+	return ps_green;
+
+}

@@ -54,9 +54,10 @@ typedef struct _syspara
 
 	uint8_t 	PS_clear_ps_success;
 	uint8_t 	PS_clear_ps_fail;
+	uint8_t     ps_pre_detector;
 
-	uint8_t PS_login_flag;
-	uint8_t PS_wakeup_flag;
+  uint8_t PS_login_flag;
+  uint8_t PS_wakeup_flag;
   uint8_t  PS_login_success;
   uint8_t handler_read_data_flag;
 	
@@ -132,7 +133,7 @@ uint8_t PS_HandShake(uint32_t *PS_Addr); //��AS608ģ������
 
 uint8_t PS_Sleep(void);
 
-uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes);
+//uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor,uint8_t cycletimes);
 
 
 
@@ -144,6 +145,19 @@ void Del_FR(void);
 void PS_Rx_InputInfo_Handler(void);
 void Fingerprint_NewClinet_Login_Fun(void);
 void RunCommand_Unlock_Fingerprint(void);
+uint8_t  PS_LED_ALL_OFF(void);
+
+uint8_t PS_Breath_LED(void) ;
+uint8_t  PS_Error_Blink_LED(void);
+uint8_t  PS_Red_LED_ON(void);
+uint8_t  PS_Red_LED_OFF(void);
+
+uint8_t PS_Green_Led_OFF(void);
+uint8_t PS_Green_Led_ON(void);
+
+
+
+
 
 
 #endif
