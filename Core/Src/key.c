@@ -161,13 +161,14 @@ uint8_t Scan_Key(void)
 		}
 		case first: //shot key times 
 		{
-			if(key.read == key.buffer) // adjust key be down 
+			if(key.read == key.buffer) // adjust key be down  short key
 			{
-				if(++key.on_time> 100 && ++key.on_time < 500) //1000  0.5us -> short time key
+				if(++key.on_time> 100 && ++key.on_time < 800) //1000  0.5us -> short time key
 				{
 					key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
 					key.on_time = 0;
                     key.state   = second;
+					//Buzzer_KeySound();
                  }
 			}
 			else
@@ -190,7 +191,7 @@ uint8_t Scan_Key(void)
                         buzzertimes++;
 						run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
 						run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
-                        Buzzer_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.10.05
+                        Buzzer_KeySound();
                         BUZZER_OFF(); 
                         ERR_LED_OFF();
                         PS_Blue_Led_ON();

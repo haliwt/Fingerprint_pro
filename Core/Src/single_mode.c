@@ -96,8 +96,7 @@ void CheckPassword_Lock_Handler(void)
 		  
 		  run_t.passwordsMatch=0;
 		  syspara_t.PS_wakeup_flag=0;
-		  if(run_t.login_in_success ==0) //WT.EDIT 2022.10.31
-             run_t.gTimer_8s=0;
+
           RunCommand_Unlock_Keyboard();
 		  
          run_t.detection_input_flag=1;

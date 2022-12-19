@@ -167,7 +167,7 @@ void SavePassword_To_EEPROM(void)
 		        OK_LED_ON(); //WT.EDIT 2022.10.28
 				ERR_LED_OFF();
                   run_t.gTimer_8s=7;
-				run_t.login_in_success=1; //WT.EDIT 2022.10.31
+				
 			
 		
 						

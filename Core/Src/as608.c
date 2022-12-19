@@ -832,7 +832,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 							run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 
 							
-							run_t.login_in_success=1; //WT.EDIT 2022.10.31
+				
 
 							AT24CXX_WriteOneByte((EEPROM_AS608Addr),(syspara_t.ps_readEeprom_data+1));
 							run_t.works_led_lable =works_ok_blink;  //run_t.led_blank	=1;//OK led blank three times
@@ -851,9 +851,12 @@ void Fingerprint_NewClinet_Login_Fun(void)
 					}
 			    }	
 				else{
-					  Buzzer_Fail_Sound();//Buzzer_LongSound();
-					  OK_LED_OFF() ;
-					  ERR_LED_ON();
+					 // Buzzer_Fail_Sound();//Buzzer_LongSound();
+					 // OK_LED_OFF() ;
+					  //ERR_LED_ON();
+					  Buzzer_LongSound();
+					  OK_LED_ON() ;
+					  ERR_LED_OFF();
 				}
 				
 				

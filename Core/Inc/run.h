@@ -78,7 +78,7 @@ typedef struct __RUN_T{
 	uint8_t works_led_lable;
 
 	//login ref
-	uint8_t login_in_success;
+
 
 	
 	//buzzer sound

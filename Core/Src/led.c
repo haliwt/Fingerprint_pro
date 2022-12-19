@@ -156,17 +156,13 @@ switch(run_t.backlight_Cmd_lable){
 	   syspara_t.PS_wakeup_flag=0;
 	   run_t.Confirm_newPassword = 0;
 
-       
-
-        run_t.Confirm_newPassword=0;
-     	run_t.login_in_success =0;//WT.EDIT 2022.10.31
-		run_t.lowPower_flag=0;
+       run_t.lowPower_flag=0;
 	
         
 		syspara_t.PS_login_times=0;	//fingerprint input times 
 		Panel_LED_Off();
 		HAL_ADC_Stop(&hadc1);
-		// ps_led=PS_ControlBLN(open_led,0,0,0);
+	
       
 		run_t.passwordsMatch =0 ;
 		run_t.powerOn =3;
@@ -187,14 +183,9 @@ switch(run_t.backlight_Cmd_lable){
 		*(pwd1+i)=0;//pwd1[i]=0;
 
 		}
-		//PS_Sleep(void);
-		POWER_OFF();
-		run_t.gTimer_input_standby_cnt=0;
-        
-       
-         run_t.backlight_Cmd_lable = backlight_led_confirm;
 
-		
+		run_t.gTimer_input_standby_cnt=0;
+        run_t.backlight_Cmd_lable = backlight_led_confirm;
 		run_t.backlight_run_flag=1;
      break;
 
