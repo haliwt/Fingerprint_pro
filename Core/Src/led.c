@@ -174,7 +174,7 @@ switch(run_t.backlight_Cmd_lable){
 		run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
 
 		//wake up touch key
-		run_t.touchkey_first ++; //WT.EDIT 2022.10.19 ->touch key delay times 
+	
 
 		for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
 		*(pwd2 + i)=0;//pwd2[i]=0;
@@ -278,28 +278,28 @@ static void Works_IndicateLed(void)
 			 if(cnt0==0){
 			 	cnt0++;
 			 
-			   PS_Green_Led_OFF();
+			 //  PS_Green_Led_OFF();
 			   ERR_LED_OFF();
 			 }
 			
 				 run_t.input_newPassword_over_number=0;
 				 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 				 
-				 if(run_t.gTimer_led_blink_500ms < 6 ){
+				 if(run_t.gTimer_led_blink_500ms  < 3 ){
 
 				 	
 				    PS_Green_Led_ON();
 					OK_LED_ON();
 
 				 }
-				 else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){//500.WT.EDIT 2022.10.31
+				 else if(run_t.gTimer_led_blink_500ms  > 2){//500.WT.EDIT 2022.10.31
 				 	
 
 					PS_Green_Led_OFF();
 					OK_LED_OFF();
 				 }
 
-				 if(run_t.gTimer_led_blink_500ms> 10){ //1000.WT.EDIT 2022.10.31
+				 if(run_t.gTimer_led_blink_500ms > 4){ //1000.WT.EDIT 2022.10.31
 				 	run_t.gTimer_led_blink_500ms=0;
 				 	run_t.clearEeeprom_count++;
 				 	if(run_t.inputNewPassword_Enable ==1)
@@ -329,12 +329,26 @@ static void Works_IndicateLed(void)
 		break;
 
 		case works_ok_led_off:
+			
              OK_LED_OFF();
 			 ERR_LED_OFF();
 		     PS_LED_ALL_OFF();
 			 BACKLIGHT_OFF();
-		     run_t.works_led_lable= works_null;
-			 run_t.password_unlock_model=0;
+
+			  run_t.gTimer_8s=0;
+			  run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
+		     run_t.Numbers_counter =0;
+			 run_t.powerOn =3;
+	
+			syspara_t.PS_login_times=0;
+			syspara_t.PS_wakeup_flag=0;
+			run_t.Confirm_newPassword = 0;
+			run_t.inputNewPassword_Enable=0;
+
+			run_t.lowPower_flag=0;
+			syspara_t.PS_login_times=0;	//fingerprint input times 
+			run_t.works_led_lable= works_null;
+			run_t.password_unlock_model=0;
 
 		break;
 
@@ -475,7 +489,7 @@ void Standby_Model_Handler()
     
  	  if(run_t.inputDeepSleep_times > 1){
 		run_t.backlight_run_flag=0;
-		run_t.touchkey_first =0; //WT.EDIT 2022.09.26
+
 		run_t.gTimer_10s=0;
 		run_t.lowPower_flag=0;
 		ps_sleep=PS_Sleep();
@@ -528,7 +542,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  run_t.gTimer_10s_start++;
 	  run_t.gTimer_8s++;
 	  run_t.gTimer_10s ++;
-	   run_t.gTimer_ADC ++;
+	  run_t.gTimer_ADC ++;
+	  
 	  
 	   if(run_t.gTimer_10s_start>9){ //10s
 	   	 run_t.gTimer_10s_start=0;
