@@ -186,7 +186,7 @@ uint8_t Scan_Key(void)
 		{
 			if(key.read == key.buffer) // adjust key be down  short key
 			{
-				if(++key.on_time> 100 && ++key.on_time < 800) //1000  0.5us -> short time key
+				if(++key.on_time> 50 && ++key.on_time < 800) //1000  0.5us -> short time key
 				{
 					key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
 					key.on_time = 0;
