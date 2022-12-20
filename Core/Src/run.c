@@ -539,7 +539,7 @@ void RunCheck_Mode(uint16_t dat)
 					  if(run_t.inputNewPasswordTimes ==0 && run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.14
 						 read_numbers = OverNumbers_Password_Handler();
 						 if(read_numbers==1){
-							//run_t.open_lock_lable = open_lock_fail;
+							run_t.open_lock_lable = open_lock_fail;
 							run_t.passwordsMatch = 0; //run next step process
 							run_t.Numbers_counter=0;
 							run_t.inputDeepSleep_times =0;
@@ -1155,12 +1155,11 @@ uint8_t OverNumbers_Password_Handler(void)
 
 
 	if(readFlag[0] ==1){ //over ten numbers password
-
-		run_t.open_lock_lable = open_lock_fail;
+		
 		read_flag = 1;
 	}
 	else{
-	   run_t.open_lock_lable = open_lock_success;
+	   
 	   read_flag = 0;
 	}
 
