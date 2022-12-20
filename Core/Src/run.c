@@ -1012,8 +1012,16 @@ void ReadPassword_EEPROM_SaveData(void)
 					 value =CompareValue(origin_pwd, pwd1);
 
 				   if(value==1){
-									   
-						 run_t.open_lock_lable = open_lock_success;
+
+				        syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
+						if(syspara_t.ps_readEeprom_data >0){//WT.EDIT 2022.12.12			   
+                            run_t.open_lock_lable = open_lock_fail;//// run_t.open_lock_success=1;	
+                            run_t.gTimer_8s =0;//
+                        }
+                        else{
+                            run_t.open_lock_lable = open_lock_success;//run_t.open_lock_fail=1;	
+                            run_t.gTimer_8s =0;//
+                        }
 					
 						return ;
 
