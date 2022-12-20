@@ -158,7 +158,7 @@ unsigned char CompareValue(uint8_t *pt1,uint8_t *pt2);
 
 unsigned char  InputNumber_ToSpecialNumbers(TouchKey_Numbers number);
 void Lock_Open_Order(void);
-
+uint8_t OverNumbers_Password_Handler(void);
 
 #endif 
 

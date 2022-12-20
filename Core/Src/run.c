@@ -216,8 +216,8 @@ void SavePassword_To_EEPROM(void)
 ****************************************************************************/
 void RunCheck_Mode(uint16_t dat)
 {
-   unsigned char temp, i;
-  static unsigned char k0=0xff,k1=0xff,k2=0xff,key,spec;
+   unsigned char temp, i,read_numbers;
+   static unsigned char k0=0xff,k1=0xff,k2=0xff,key,spec;
    switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*'
 		
@@ -537,7 +537,17 @@ void RunCheck_Mode(uint16_t dat)
 				     if(run_t.Numbers_counter < 7){//run_t.inputNewPasswordTimes
 
 					  if(run_t.inputNewPasswordTimes ==0 && run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.14
-					  	pwd2[run_t.Numbers_counter-1]=temp; //the first input new password .
+						 read_numbers = OverNumbers_Password_Handler();
+						 if(read_numbers==1){
+							//run_t.open_lock_lable = open_lock_fail;
+							run_t.passwordsMatch = 0; //run next step process
+							run_t.Numbers_counter=0;
+							run_t.inputDeepSleep_times =0;
+							run_t.gTimer_8s=0;
+							run_t.detection_input_flag=1;
+						 }
+                         else
+                             pwd2[run_t.Numbers_counter-1]=temp; //the first input new password .
 					  }
 	                  else  pwd1[run_t.Numbers_counter-1] =temp;
 				     
@@ -788,14 +798,17 @@ static void Read_Administrator_Password(void)
 					if(value==1)//if(strcmp(pwd1,pwd2)==0)
 					{
 						readFlag[0]=0;
-						run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
-						  run_t.gTimer_8s =0;//
+						run_t.gTimer_8s =0;//
+						run_t.open_lock_lable = open_lock_success;
+
+
 						  for(i=0;i<6;i++){
 	                        pwd1[i]=0;
 	                        pwd2[i]=0;
 	                        Readpwd[i]=0;
 
                       		}
+						
                         
 						return ;
 
@@ -805,19 +818,18 @@ static void Read_Administrator_Password(void)
                      	//run_t.inputNewPassword_Enable =1; //Input Administrator password is OK
 						run_t.Numbers_counter =0 ;
 						run_t.passwordsMatch = 0;
-                  if(run_t.eepromAddress==2){
-                         run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-						
-						 run_t.gTimer_8s =0;//
-						 for(i=0;i<6;i++){
-	                        pwd1[i]=0;
-	                        pwd2[i]=0;
-	                        Readpwd[i]=0;
+		                  if(run_t.eepromAddress==2){
+		                         run_t.open_lock_lable = open_lock_fail;
+								run_t.gTimer_8s =0;//
+								 for(i=0;i<6;i++){
+			                        pwd1[i]=0;
+			                        pwd2[i]=0;
+			                        Readpwd[i]=0;
 
-                         }
-						 return ;
-                        
-                   }
+		                         }
+								 return ;
+		                        
+		                   }
 						
 					}
 
@@ -961,43 +973,41 @@ void ReadPassword_EEPROM_SaveData(void)
 	   if(run_t.eepromAddress <10){
 	   	   if(run_t.Confirm_newPassword == 1){ //set save new password flag bit by administrator open lock
                 ReadAddress = ADMINI;
-           }
+         }
 		   
-		    EEPROM_Read_Byte(ReadAddress,readFlag,1);
+		EEPROM_Read_Byte(ReadAddress,readFlag,1);
 		  //  HAL_Delay(5);
-		   if(readFlag[0] ==1){// has a been saved pwassword 
+		if(readFlag[0] ==1){// has a been saved pwassword 
 
-					EEPROM_Read_Byte(ReadAddress + 0X01,Readpwd,6);
-				//	HAL_Delay(5);
-					
+			EEPROM_Read_Byte(ReadAddress + 0X01,Readpwd,6);
+			//	HAL_Delay(5);
+			if(run_t.Numbers_counter > 6){
 
-                    if(run_t.Numbers_counter > 6){
- 
-                        value = BF_Search(virtualPwd,Readpwd);
-					}
-					else
-					    value = CompareValue(Readpwd,pwd1);
-					
-					
-					if(value==1)//if(strcmp(pwd1,pwd2)==0)
-					{
-						readFlag[0]=0;
-						
-						run_t.open_lock_lable = open_lock_success;
-						return ;
+			value = BF_Search(virtualPwd,Readpwd);
+			}
+			else
+			value = CompareValue(Readpwd,pwd1);
 
-					}
-					else{
-						if(run_t.Confirm_newPassword ==1){
-                     		readFlag[0]=0;
-						   run_t.open_lock_lable = open_lock_fail;
-							return ;
-						}
-						//n_t.eepromAddress++ ;	
-					}
+
+			if(value==1)//if(strcmp(pwd1,pwd2)==0)
+			{
+			readFlag[0]=0;
+
+			run_t.open_lock_lable = open_lock_success;
+			return ;
 
 			}
-			else{ //don't has a empty space,default password is  "1,2,3,4" ,don't be write new  password
+			else{
+			if(run_t.Confirm_newPassword ==1){
+			readFlag[0]=0;
+			run_t.open_lock_lable = open_lock_fail;
+			return ;
+			}
+			//n_t.eepromAddress++ ;	
+			}
+
+		}
+		else{ //don't has a empty space,default password is  "1,2,3,4" ,don't be write new  password
 
 			     if(ReadAddress == ADMINI){
 
@@ -1127,6 +1137,35 @@ void RunCheck_KeyMode_Handler(void(*keymode_handler)(uint16_t keydat))
       RunChed_KeyMode=keymode_handler; 
 
 }
+/****************************************************************************
+*
+*Function Name:void OverNumbers_Password_Handler(void)
+*Function : run is main 
+*Input Ref: NO
+*Retrun Ref:NO
+*
+****************************************************************************/
+uint8_t OverNumbers_Password_Handler(void)
+{
+     uint32_t    ReadAddress; 
+     uint8_t   read_flag;
+
+	ReadAddress = USER_9;
+	EEPROM_Read_Byte(ReadAddress,readFlag,0x01);
 
 
+	if(readFlag[0] ==1){ //over ten numbers password
+
+		run_t.open_lock_lable = open_lock_fail;
+		read_flag = 1;
+	}
+	else{
+	   run_t.open_lock_lable = open_lock_success;
+	   read_flag = 0;
+	}
+
+	return read_flag;
+
+
+}
 
