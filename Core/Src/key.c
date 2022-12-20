@@ -306,15 +306,12 @@ void  SideKey_Fun(uint8_t keyvalue)
 		run_t.gTimer_input_standby_cnt=0;
 		run_t.inputNewPassword_Enable =0;
 		run_t.gTimer_8s=0;
-		run_t.buzzer_sound_lable= sound_key;//run_t.buzzer_key_sound_flag =1;//WT.EDIT 2022.10.06
-		
-
-       	run_t.inputNewPasswordTimes =0;
+		run_t.inputNewPasswordTimes =0;
         run_t.password_unlock_model=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
 	    
-	
+	    Buzzer_KeySound();
         BACKLIGHT_ON();        
 		FP_POWER_ON();
 		POWER_ON();//WT.EDIT .2022.10.06

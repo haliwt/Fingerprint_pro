@@ -100,6 +100,7 @@ void DisplayLed_Handler(void)
    if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff ) && run_t.clearEeprom ==0\
    		&& run_t.inputNewPassword_Enable ==0){
       run_t.backlight_Cmd_lable=backlight_led_off;
+	  run_t.Confirm_newPassword=0;
    	  Panel_LED_Off();
 
    }
@@ -156,10 +157,8 @@ switch(run_t.backlight_Cmd_lable){
 	   syspara_t.PS_wakeup_flag=0;
 	   run_t.Confirm_newPassword = 0;
 
-       run_t.lowPower_flag=0;
-	
-        
-		syspara_t.PS_login_times=0;	//fingerprint input times 
+        run_t.lowPower_flag=0;
+	    syspara_t.PS_login_times=0;	//fingerprint input times 
 		Panel_LED_Off();
 		HAL_ADC_Stop(&hadc1);
 	
