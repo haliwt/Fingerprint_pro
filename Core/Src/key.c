@@ -33,11 +33,11 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 	if(GPIO_Pin == KEY_INPUT_Pin){
 
-//	 if(run_t.panel_lock==0){
-//		 POWER_ON();
-//        FP_POWER_ON()  ;
-//         BACKLIGHT_ON();
-//	 	}
+	 if(run_t.panel_lock==0){
+		 POWER_ON();
+        FP_POWER_ON()  ;
+         BACKLIGHT_ON();
+	 	}
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 	
 		if(run_t.lowPower_flag==0){
@@ -70,11 +70,11 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
    if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
-//      if(run_t.panel_lock==0){
-//       POWER_ON();
-//       FP_POWER_ON()  ;
-//	   BACKLIGHT_ON();
-//      }
+      if(run_t.panel_lock==0){
+       POWER_ON();
+       FP_POWER_ON()  ;
+	   BACKLIGHT_ON();
+      }
 
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
@@ -127,23 +127,19 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
       }
 
 	         if(run_t.panel_lock==0){
-//			  POWER_ON();
-//			  FP_POWER_ON()  ;
-//			  BACKLIGHT_ON();
-			  if(rx_times !=syspara_t.fp_rx_times){
-			  	    rx_times =syspara_t.fp_rx_times;
-			  		syspara_t.handler_read_data_flag++;
-			        syspara_t.PS_wakeup_flag=1;
-			  }
-			  else{
-			      syspara_t.PS_wakeup_flag=0;
+			  POWER_ON();
+			  FP_POWER_ON()  ;
+			  BACKLIGHT_ON();
+			 
+			   syspara_t.PS_wakeup_flag=1;
+			
 
 			  }
          }
 
   }
 
-}
+
 
   
    

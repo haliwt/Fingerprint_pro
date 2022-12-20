@@ -605,8 +605,12 @@ void RunCommand_Unlock_Fingerprint(void)
    	}
 
 	//fingerprint open lock doing 
-   if(getImage != syspara_t.handler_read_data_flag || run_t.Confirm_newPassword==1){
-	  getImage = syspara_t.handler_read_data_flag;
+  // if(getImage != syspara_t.handler_read_data_flag || run_t.Confirm_newPassword==1){
+	  //getImage = syspara_t.handler_read_data_flag;
+	if(FP_INPUT_KEY()==1)
+		  HAL_Delay(5);
+		
+	if(FP_INPUT_KEY()==1){
   
    switch(syspara_t.FP_RunCmd_Lable){
 
@@ -733,7 +737,10 @@ void Fingerprint_NewClinet_Login_Fun(void)
   // uint8_t ps_getImage;
    run_t.gTimer_8s=0;
     
-      //  if(syspara_t.PS_login_times>4)syspara_t.PS_login_times=0;
+    if(FP_INPUT_KEY()==1)
+		  HAL_Delay(5);
+		
+	if(FP_INPUT_KEY()==1){
     switch(syspara_t.PS_login_times){
 
 		case 0: //input 1 times syspara_t.PS_read_template=0;
@@ -915,7 +922,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		
         break;
      }
-       
+		}  
 }
 
 /**********************************************************************
