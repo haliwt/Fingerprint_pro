@@ -233,7 +233,6 @@ uint8_t Scan_Key(void)
                         Buzzer_ShortSound();
                         BUZZER_OFF(); //BUZZER_OFF(); 
                         run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
-                        run_t.eeprom_Reset_flag =1; //WT.EDIT 2022.10.26
                         run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         ERR_LED_OFF();
                         while(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0);

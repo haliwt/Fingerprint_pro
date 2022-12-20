@@ -145,7 +145,7 @@ switch(run_t.backlight_Cmd_lable){
 
      case backlight_led_off:
          
-        OK_LED_OFF();
+       OK_LED_OFF();
 		ERR_LED_OFF();
 		PS_LED_ALL_OFF();
 	    BACKLIGHT_OFF();
@@ -267,44 +267,47 @@ static void Works_IndicateLed(void)
 				 
 			}
 			else{
-				PS_Green_Led_ON();
+				if((FP_INPUT_KEY()==0 && syspara_t.PS_wakeup_flag==0) && syspara_t.ps_pre_detector==0)
+				    PS_Green_Led_ON();
 
 			}
 		break;
 
-		case works_ok_blink:
+		case works_ok_blink: //05
 		     run_t.gTimer_8s=0;
+		    if((FP_INPUT_KEY()==0 && syspara_t.PS_wakeup_flag==0) && syspara_t.ps_pre_detector==0){
 			 if(cnt0==0){
 			 	cnt0++;
 			 
 			   PS_Green_Led_OFF();
 			   ERR_LED_OFF();
 			 }
-			 run_t.input_newPassword_over_number=0;
-			 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
-			 
-			 if(run_t.gTimer_led_blink_500ms < 6 ){
+			
+				 run_t.input_newPassword_over_number=0;
+				 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
+				 
+				 if(run_t.gTimer_led_blink_500ms < 6 ){
 
-			 	
-			    PS_Green_Led_ON();
-				OK_LED_ON();
+				 	
+				    PS_Green_Led_ON();
+					OK_LED_ON();
 
-			 }
-			 else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){//500.WT.EDIT 2022.10.31
-			 	
+				 }
+				 else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){//500.WT.EDIT 2022.10.31
+				 	
 
-				PS_Green_Led_OFF();
-				OK_LED_OFF();
-			 }
+					PS_Green_Led_OFF();
+					OK_LED_OFF();
+				 }
 
-			 if(run_t.gTimer_led_blink_500ms> 10){ //1000.WT.EDIT 2022.10.31
-			 	run_t.gTimer_led_blink_500ms=0;
-			 	run_t.clearEeeprom_count++;
-			 	if(run_t.inputNewPassword_Enable ==1)
-			 		run_t.inputNewPwd_OK_led_blank_times++;
-			 }
-
-			 if((run_t.inputNewPassword_Enable ==1 && run_t.eeprom_Reset_flag ==0)){//WT.EDIT 2022.10.08
+				 if(run_t.gTimer_led_blink_500ms> 10){ //1000.WT.EDIT 2022.10.31
+				 	run_t.gTimer_led_blink_500ms=0;
+				 	run_t.clearEeeprom_count++;
+				 	if(run_t.inputNewPassword_Enable ==1)
+				 		run_t.inputNewPwd_OK_led_blank_times++;
+				 }
+          
+			 if(run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.08
 
 			 	if(run_t.inputNewPwd_OK_led_blank_times >9){
 			 	run_t.inputNewPwd_OK_led_blank_times=0;
@@ -323,7 +326,7 @@ static void Works_IndicateLed(void)
 				cnt0 = 0;
                  run_t.works_led_lable= works_ok_led_off;
 			 }
-			 
+			}
 		break;
 
 		case works_ok_led_off:

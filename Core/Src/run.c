@@ -531,10 +531,7 @@ void RunCheck_Mode(uint16_t dat)
 					temp = InputNumber_ToSpecialNumbers((TouchKey_Numbers) dat); //input Numbers
 					if(run_t.Numbers_counter > 20) run_t.Numbers_counter =20;
 					virtualPwd[run_t.Numbers_counter-1]=temp;
-				
-				    
-					 
-				     if(run_t.Numbers_counter < 7){//run_t.inputNewPasswordTimes
+					if(run_t.Numbers_counter < 7){//run_t.inputNewPasswordTimes
 
 					  if(run_t.inputNewPasswordTimes ==0 && run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.14
 						 read_numbers = OverNumbers_Password_Handler();
@@ -1123,10 +1120,7 @@ unsigned char  InputNumber_ToSpecialNumbers(TouchKey_Numbers number)
 	  	 
 
 	  break;
-
-
-
-	 }
+	}
 
 	return temp;
 
