@@ -57,7 +57,7 @@ typedef struct __RUN_T{
 	
   
 	//touchkey 
-
+	uint8_t touchkey_first;
    uint8_t inputNewPassword_Enable;
 	uint8_t   getSpecial_1_key;
 	uint8_t   getSpecial_2_key;

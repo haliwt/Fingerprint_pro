@@ -143,7 +143,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
             Start_PowerOn_Handler();
             run_t.lowPower_flag=0;
 	   }
-	   else if(run_t.panel_lock==0 && run_t.factory_test ==0 && run_t.inputNewPassword_Enable==0){
+	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
 
         sidekey = Scan_Key();
 	    SideKey_Fun(sidekey);
@@ -152,12 +152,9 @@ __HAL_RCC_PWR_CLK_ENABLE();
 
 	 	CheckPassword_Lock_Handler();
 		Buzzer_Sound_Handler();
-        
  		DisplayLed_Handler();
-		if(run_t.inputNewPassword_Enable==0){
-	 		RunMotor_Definite_Handler(); //definite motor
-	 		Standby_Model_Handler();
-		}
+ 		RunMotor_Definite_Handler(); //definite motor
+ 		Standby_Model_Handler();
 	 
 	 }
  

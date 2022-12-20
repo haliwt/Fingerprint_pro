@@ -553,7 +553,8 @@ static uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor
 void RunCommand_Unlock_Fingerprint(void)
 {
 	SearchResult seach;
-  static uint8_t getImage=0xff;
+     static uint8_t getImage=0xff,readData;
+	 uint16_t ReadAddress;
 
   
 
@@ -570,7 +571,8 @@ void RunCommand_Unlock_Fingerprint(void)
             syspara_t.ps_serch_getimage=0xff;
 			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
             syspara_t.PS_wakeup_flag=0;
-            syspara_t.FP_RunCmd_Lable = 0xff;   
+            syspara_t.FP_RunCmd_Lable = 0xff;  
+			HAL_Delay(500);
 	 }
 	}
    else{
@@ -579,9 +581,28 @@ void RunCommand_Unlock_Fingerprint(void)
       syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
    	  syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
      if(syspara_t.ps_readEeprom_data >0) syspara_t.FP_RunCmd_Lable = FP_SEARCH;//syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
-     else  syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
-   }
-    
+     else{
+
+	    if(FP_INPUT_KEY()==1)
+			HAL_Delay(200);
+		
+		if(FP_INPUT_KEY()==1){
+			
+        ReadAddress = ADMINI;
+        EEPROM_Read_Byte(ReadAddress,&readData,1);
+	    if(readData==0){
+		  syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
+		}
+		else{
+			 run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
+            syspara_t.PS_wakeup_flag=0;
+		    syspara_t.FP_RunCmd_Lable = 0xff;
+			 
+			}
+   		}
+	   
+     	}
+   	}
 
 	//fingerprint open lock doing 
    if(getImage != syspara_t.handler_read_data_flag || run_t.Confirm_newPassword==1){
@@ -659,7 +680,6 @@ void RunCommand_Unlock_Fingerprint(void)
 		   run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
 		   run_t.error_times=0; //clear error input fingerprint of times 
 		   syspara_t.FP_RunCmd_Lable = 0xff;
-		   HAL_Delay(400);
 
 	 break;
 
