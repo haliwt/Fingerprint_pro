@@ -601,7 +601,7 @@ void Lock_Open_Order(void)
 
     	  if(run_t.Confirm_newPassword ==1){ //prepare new password 
 			
-			
+			     PS_Green_Led_ON();
 				run_t.inputNewPassword_Enable =1; //Input Administrator password is OK
 				run_t.motor_return_homePosition= 0;
 				run_t.Numbers_counter =0 ;
@@ -624,6 +624,9 @@ void Lock_Open_Order(void)
               syspara_t.ps_serch_genchar =0xff;
               syspara_t.ps_serach_result=0xff;
 			  run_t.inputNewPwd_OK_led_blank_times=0;
+			  	syspara_t.fp_rx_times++;
+				syspara_t.uart1_rx_data= 0;
+			  
 			
 		}
 		else{ //runing open lock 
@@ -645,7 +648,8 @@ void Lock_Open_Order(void)
 				syspara_t.ps_serch_getimage=0xff;
 				syspara_t.ps_serch_genchar =0xff;
 				syspara_t.ps_serach_result=0xff;
-				//syspara_t.handler_read_data_flag++;
+				syspara_t.fp_rx_times++;
+				syspara_t.uart1_rx_data= 0;
 
 			}
             else{
@@ -658,11 +662,11 @@ void Lock_Open_Order(void)
                 run_t.Motor_RunCmd_Label=motor_run_start;
                 run_t.motorRunCount=0;
 				 
-			    	run_t.Numbers_counter =0 ; //WT.EDIT 2022.10.28
+			       run_t.Numbers_counter =0 ; //WT.EDIT 2022.10.28
 				   run_t.passwordsMatch = 0;
 				   run_t.inputDeepSleep_times =0;
 				   run_t.buzzer_sound_lable = sound_excute;
-				
+				    PS_Green_Led_ON();
 					   
 			       for(i=0;i<6;i++){
 				  	   pwd1[i]=0;
@@ -718,6 +722,8 @@ void Lock_Open_Order(void)
              syspara_t.ps_serch_getimage=0xff;
                 syspara_t.ps_serch_genchar =0xff;
                 syspara_t.ps_serach_result=0xff;
+                syspara_t.fp_rx_times++;
+				syspara_t.uart1_rx_data= 0;
       run_t.open_lock_lable=open_lock_null;
 	break;
 

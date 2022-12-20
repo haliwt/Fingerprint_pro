@@ -242,6 +242,7 @@ static void Works_IndicateLed(void)
 
 		case works_ok_led_on:
 			run_t.gTimer_8s =0;
+	        PS_Green_Led_ON();
 			ERR_LED_OFF();
 			OK_LED_OFF();
 		    run_t.input_newPassword_over_number=0;
@@ -265,16 +266,11 @@ static void Works_IndicateLed(void)
                 run_t.works_led_lable=works_ok_blink;
 				 
 			}
-			else{
-				if((FP_INPUT_KEY()==0 && syspara_t.PS_wakeup_flag==0) && syspara_t.ps_pre_detector==0)
-				    PS_Green_Led_ON();
-
-			}
+			
 		break;
 
 		case works_ok_blink: //05
 		     run_t.gTimer_8s=0;
-		    if((FP_INPUT_KEY()==0 && syspara_t.PS_wakeup_flag==0) && syspara_t.ps_pre_detector==0){
 			 if(cnt0==0){
 			 	cnt0++;
 			 
@@ -325,7 +321,7 @@ static void Works_IndicateLed(void)
 				cnt0 = 0;
                  run_t.works_led_lable= works_ok_led_off;
 			 }
-			}
+			
 		break;
 
 		case works_ok_led_off:

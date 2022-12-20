@@ -659,6 +659,7 @@ void RunCommand_Unlock_Fingerprint(void)
 		   run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
 		   run_t.error_times=0; //clear error input fingerprint of times 
 		   syspara_t.FP_RunCmd_Lable = 0xff;
+		   HAL_Delay(400);
 
 	 break;
 
