@@ -28,7 +28,7 @@ volatile static uint8_t transOngoingFlag;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
    
-    static uint8_t temp=0,run_temp,adjust_second_times=0xff;
+    static uint8_t run_temp;
 
 	if(huart->Instance==USART1)
     {	      
@@ -37,19 +37,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             if(UART1_RX_DataBuf[0]==0x55){
 				
 				syspara_t.ps_pre_detector=1; //ahead of detector of fingerprint
-				syspara_t.uart1_rx_data= 0;
-				if(adjust_second_times != syspara_t.fp_rx_times){
-                      adjust_second_times=syspara_t.fp_rx_times;
-					  temp=1;
-				}
-				else{
-                   temp=0;
-				}
+				
             }
 
 
-		    if(temp==1){
-			   if(UART1_RX_DataBuf[0]==0xEF) run_temp= 1;
+		   
+		    if(UART1_RX_DataBuf[0]==0xEF) run_temp= 1;
 
 			if(run_temp==1){
           
@@ -61,7 +54,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
 				  syspara_t.ps_pre_detector=0;
-				  syspara_t.fp_rx_times++;
 				  run_temp=0;
                       
                 
@@ -72,7 +64,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
 				  syspara_t.ps_pre_detector=0;
-				   syspara_t.fp_rx_times++;
+				 
 				 
                    run_temp=0;
             }
@@ -82,16 +74,17 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
                   syspara_t.uart1_rx_data= 1;
 				  syspara_t.ps_pre_detector=0;
-				   syspara_t.fp_rx_times++;
+	
 				    run_temp=0;
                 
             }
 			}
         }
-       }
-        HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1); 
+     
+       
 
-         }
+        }
+	 HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1); 
   }
 
 
