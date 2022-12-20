@@ -130,10 +130,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			  POWER_ON();
 			  FP_POWER_ON()  ;
 			  BACKLIGHT_ON();
+			  syspara_t.PS_wakeup_flag=1;
 			 
-			   syspara_t.PS_wakeup_flag=1;
-			
-
 			  }
          }
 

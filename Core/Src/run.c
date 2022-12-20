@@ -138,7 +138,7 @@ void SavePassword_To_EEPROM(void)
 
 		  }
         
-        
+         run_t.gTimer_8s=0;
 
 		EEPROM_Read_Byte(run_t.userId,&run_t.readEepromData,1);
 		HAL_Delay(5);

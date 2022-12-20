@@ -37,7 +37,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             if(UART1_RX_DataBuf[0]==0x55){
 				
 				syspara_t.ps_pre_detector=1; //ahead of detector of fingerprint
-				
             }
 
 
