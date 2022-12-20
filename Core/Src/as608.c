@@ -737,10 +737,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
   // uint8_t ps_getImage;
    run_t.gTimer_8s=0;
     
-//    if(FP_INPUT_KEY()==1)
-//		  HAL_Delay(5);
-//		
-//	if(FP_INPUT_KEY()==1){
+
     switch(syspara_t.PS_login_times){
 
 		case 0: //input 1 times syspara_t.PS_read_template=0;
