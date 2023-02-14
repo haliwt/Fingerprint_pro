@@ -53,7 +53,8 @@ typedef struct __RUN_T{
 
 	//lower power ref
 	volatile uint8_t backlight_on_of_flag;
-	unsigned char inputDeepSleep_times;
+	volatile uint8_t inputStandby_state_flag;
+	volatile uint8_t  inputDeepSleep_times;
 	
   
 	//touchkey 
@@ -73,7 +74,7 @@ typedef struct __RUN_T{
 
     //led ref
     uint8_t backlight_run_flag;
-	uint8_t backlight_Cmd_lable;
+	volatile uint8_t backlight_Cmd_lable;
 	uint8_t inputNewPwd_OK_led_blank_times;
 	uint8_t works_led_lable;
 

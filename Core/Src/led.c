@@ -482,6 +482,7 @@ void Standby_Model_Handler()
 		run_t.touchkey_first =0; //WT.EDIT 2022.09.26
 		run_t.gTimer_10s=0;
 		run_t.backlight_on_of_flag=0;
+		run_t.inputStandby_state_flag = 1;
 		ps_sleep=PS_Sleep();
 		Panel_LED_Off();
 		POWER_OFF();
