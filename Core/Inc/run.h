@@ -48,11 +48,11 @@ typedef struct __RUN_T{
    //power ref
    unsigned char powerOn;
 	unsigned char error_times;
-	unsigned char panel_lock;
+	volatile uint8_t error_times_panel_lock_flag;
 	uint8_t ADC_times;
 
 	//lower power ref
-	uint8_t lowPower_flag;
+	volatile uint8_t backlight_on_of_flag;
 	unsigned char inputDeepSleep_times;
 	
   
@@ -86,23 +86,23 @@ typedef struct __RUN_T{
 	uint8_t buzzer_sound_lable;
 
 	//pass word ref
-   unsigned char Numbers_counter;
-	unsigned char passwordsMatch;
+   uint8_t Numbers_counter;
+	uint8_t passwordsMatch;
    uint8_t password_unlock_model;
    uint8_t input_newPassword_over_number;
-   unsigned char Confirm_newPassword;
-	unsigned char inputNewPasswordTimes;
+   uint8_t Confirm_newPassword;
+	uint8_t inputNewPasswordTimes;
 	uint8_t clear_inputNumbers_newpassword;
 	
 	//factory ref
-   unsigned char factory_test;
+   uint8_t factory_test;
 
    //eeprom ref
-   unsigned char eepromAddress;
+   uint8_t eepromAddress;
    uint8_t  saveEEPROM_fail_flag ; //WT.EDIT 2022.10.06	
 
 	uint8_t  clearEeeprom_count;
-	unsigned char clearEeprom;
+	uint8_t clearEeprom;
 	uint8_t readEepromData;
 
 	//run ref
@@ -112,10 +112,10 @@ typedef struct __RUN_T{
    
 	//timging
 
-	unsigned char gTimer_10s;
-	unsigned char gTimer_8s;
-	unsigned char gTimer_60s;
-	unsigned char gTimer_ADC;
+	uint8_t gTimer_10s;
+	uint8_t gTimer_8s;
+	uint8_t gTimer_60s;
+	uint8_t gTimer_ADC;
 	uint8_t  gTimer_input_standby_cnt;
 	
 	uint8_t  gTimer_input_error_times_60s;

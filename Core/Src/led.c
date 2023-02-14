@@ -48,7 +48,7 @@ void DisplayLed_Handler(void)
 	BackLight_Fun();
 	Works_IndicateLed();
 
-	if(run_t.panel_lock ==1){
+	if(run_t.error_times_panel_lock_flag ==1){
 		      Panel_LED_Off();
          	
               ERR_LED_ON();
@@ -57,7 +57,7 @@ void DisplayLed_Handler(void)
          	  run_t.gTimer_input_standby_cnt=0;
          	  run_t.gTimer_8s=0;
              if(run_t.gTimer_input_error_times_60s > 5){
-			   run_t.panel_lock =0;
+			   run_t.error_times_panel_lock_flag =0;
 			   run_t.error_times = 0;
                run_t.works_led_lable= works_error_led_off;
 	      }
@@ -102,7 +102,7 @@ void DisplayLed_Handler(void)
       run_t.backlight_Cmd_lable=backlight_led_off;
 	  run_t.Confirm_newPassword=0;
    	  Panel_LED_Off();
-
+      run_t.gTimer_8s =0; 
    }
   
 
@@ -122,8 +122,11 @@ static void BackLight_Fun(void)
 switch(run_t.backlight_Cmd_lable){
      
      case backlight_led_on:
-		if(run_t.panel_lock==0){
+		if(run_t.error_times_panel_lock_flag==0){
+		
+		 FP_POWER_ON()  ; //WT.EDIT 2023.02.14
 		 BACKLIGHT_ON();
+		 PS_Blue_Led_ON();
         
 		if(run_t.gTimer_8s > 8){
 
@@ -137,8 +140,9 @@ switch(run_t.backlight_Cmd_lable){
 		else{
            BACKLIGHT_OFF();
 		   PS_LED_ALL_OFF();
+		   
 
-           run_t.lowPower_flag=0;
+           run_t.backlight_on_of_flag=0;
 		}
 		
 		run_t.backlight_run_flag=1;
@@ -146,18 +150,17 @@ switch(run_t.backlight_Cmd_lable){
 
      case backlight_led_off:
          
-       OK_LED_OFF();
+       	OK_LED_OFF();
 		ERR_LED_OFF();
 		PS_LED_ALL_OFF();
 	    BACKLIGHT_OFF();
 
        run_t.gTimer_8s=0;
-	  // syspara_t.handler_read_data_flag++;
 	   syspara_t.PS_login_times=0;
 	   syspara_t.PS_wakeup_flag=0;
 	   run_t.Confirm_newPassword = 0;
 
-        run_t.lowPower_flag=0;
+        run_t.backlight_on_of_flag=0;
 	    syspara_t.PS_login_times=0;	//fingerprint input times 
 		Panel_LED_Off();
 		HAL_ADC_Stop(&hadc1);
@@ -177,15 +180,15 @@ switch(run_t.backlight_Cmd_lable){
 		run_t.touchkey_first ++; //WT.EDIT 2022.10.19 ->touch key delay times 
 
 		for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
-		*(pwd2 + i)=0;//pwd2[i]=0;
-		*(Readpwd+i)=0;
-		*(pwd1+i)=0;//pwd1[i]=0;
+			*(pwd2 + i)=0;//pwd2[i]=0;
+			*(Readpwd+i)=0;
+			*(pwd1+i)=0;//pwd1[i]=0;
 
 		}
 
 		run_t.gTimer_input_standby_cnt=0;
-        run_t.backlight_Cmd_lable = backlight_led_confirm;
-		run_t.backlight_run_flag=1;
+        run_t.backlight_run_flag=1;
+		run_t.backlight_Cmd_lable = backlight_led_confirm;
      break;
 
 
@@ -198,6 +201,7 @@ switch(run_t.backlight_Cmd_lable){
 		  else{
 
 		     run_t.gTimer_input_standby_cnt=0;
+
 
 		  }
 
@@ -477,7 +481,7 @@ void Standby_Model_Handler()
 		run_t.backlight_run_flag=0;
 		run_t.touchkey_first =0; //WT.EDIT 2022.09.26
 		run_t.gTimer_10s=0;
-		run_t.lowPower_flag=0;
+		run_t.backlight_on_of_flag=0;
 		ps_sleep=PS_Sleep();
 		Panel_LED_Off();
 		POWER_OFF();

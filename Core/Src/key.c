@@ -33,24 +33,21 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 	if(GPIO_Pin == KEY_INPUT_Pin){
 
-	 if(run_t.panel_lock==0){
-		 POWER_ON();
+	 if(run_t.error_times_panel_lock_flag==0){
+		POWER_ON();
         FP_POWER_ON()  ;
-         BACKLIGHT_ON();
-	 	}
+        BACKLIGHT_ON();
+	  }
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 	
-		if(run_t.lowPower_flag==0){
+		if(run_t.backlight_on_of_flag==0){
 			SystemClock_Config();
 			HAL_ResumeTick();
 			HAL_TIM_Base_Start_IT(&htim14);//
-
-
-			
 			POWER_ON();
 			FP_POWER_ON()  ;
 			BACKLIGHT_ON();
-			run_t.lowPower_flag++;
+			run_t.backlight_on_of_flag++;
 		
 			run_t.backlight_Cmd_lable =0xff;	 	
 			
@@ -70,7 +67,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
    if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
-      if(run_t.panel_lock==0){
+      if(run_t.error_times_panel_lock_flag==0){
        POWER_ON();
        FP_POWER_ON()  ;
 	   BACKLIGHT_ON();
@@ -78,14 +75,14 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
-      if(run_t.lowPower_flag==0){
+      if(run_t.backlight_on_of_flag==0){
 			SystemClock_Config();
 			HAL_ResumeTick();
 			HAL_TIM_Base_Start_IT(&htim14);//
 
 			POWER_ON();
 			FP_POWER_ON()  ;
-			run_t.lowPower_flag++;
+			run_t.backlight_on_of_flag++;
 			
 			run_t.buzzer_sound_lable=sound_key;//Buzzer_KeySound();
 			
@@ -100,8 +97,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
   if(GPIO_Pin==FP_INT_INPUT_Pin){
   	
  
-		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-     if(run_t.lowPower_flag==0){
+	 __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+     if(run_t.backlight_on_of_flag==0){
 
 		
 		SystemClock_Config();
@@ -116,24 +113,22 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			Buzzer_KeySound();
 
 		///}
-		
-	    run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
       
-		run_t.lowPower_flag++;
+		run_t.backlight_on_of_flag++;
 	    run_t.backlight_Cmd_lable =0xff;
 	    run_t.gTimer_8s=0;
 		run_t.inputDeepSleep_times =0;
 	      
       }
 
-	         if(run_t.panel_lock==0){
-			  POWER_ON();
-			  FP_POWER_ON()  ;
-			  BACKLIGHT_ON();
-			  syspara_t.PS_wakeup_flag=1;
-			 
-			  }
-         }
+	if(run_t.error_times_panel_lock_flag==0){
+		POWER_ON();
+		FP_POWER_ON()  ;
+		BACKLIGHT_ON();
+		syspara_t.PS_wakeup_flag=1;
+
+		}
+	}
 
   }
 

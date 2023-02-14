@@ -136,14 +136,11 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE END WHILE */
         
     /* USER CODE BEGIN 3 */
-
-
-	
-	   if(run_t.powerOn ==0){
+       if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
-            run_t.lowPower_flag=0;
+            run_t.backlight_on_of_flag=0;
 	   }
-	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
+	   else if(run_t.error_times_panel_lock_flag==0 && run_t.factory_test ==0){
 
         sidekey = Scan_Key();
 	    SideKey_Fun(sidekey);

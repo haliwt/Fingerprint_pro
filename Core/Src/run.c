@@ -300,11 +300,11 @@ void RunCheck_Mode(uint16_t dat)
          if(k1 != run_t.getSpecial_2_key){
 	         k1 = run_t.getSpecial_2_key;
 
-           run_t.getSpecial_1_key++;//n1++
+           	run_t.getSpecial_1_key++;//n1++
 		     run_t.getNumbers_key++;//n2++;
 		     spec=1;
 			 
-	
+	     run_t.passwordsMatch = 1;//WT.EDIT .2023.02.14
 		   
          if(run_t.Confirm_newPassword ==0){
 				run_t.buzzer_sound_lable=sound_key;//run_t.buzzer_key_sound_flag =1; 
@@ -334,7 +334,7 @@ void RunCheck_Mode(uint16_t dat)
                 if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
 	                run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
 	                run_t.gTimer_input_error_times_60s =0;
-	                run_t.panel_lock=1;
+	                run_t.error_times_panel_lock_flag=1;
 					run_t.gTimer_8s=0;
 
                 }
@@ -590,7 +590,7 @@ void RunCommand_Unlock_Keyboard(void)
 void Lock_Open_Order(void)
 {
 	
-    uint8_t i; 
+ uint8_t i; 
  if(run_t.detection_input_flag==1){
 		run_t.detection_input_flag=0;
     switch(run_t.open_lock_lable){
@@ -696,7 +696,7 @@ void Lock_Open_Order(void)
 			if(run_t.error_times > 4){
 				run_t.gTimer_10s_start=0;
 				run_t.gTimer_input_error_times_60s =0;
-				run_t.panel_lock=1;
+				run_t.error_times_panel_lock_flag=1;
 				run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
                 //run_t.works_led_lable =  works_error_blink;
 
@@ -785,7 +785,7 @@ static void Read_Administrator_Password(void)
 					HAL_Delay(5);
 					
 
-                    if(run_t.Numbers_counter > 6){
+                    if(run_t.Numbers_counter > 6){ //6//WT.EDIT 2023.02.14
  
                         value = BF_Search(virtualPwd,Readpwd);
 					}
@@ -799,8 +799,7 @@ static void Read_Administrator_Password(void)
 						run_t.gTimer_8s =0;//
 						run_t.open_lock_lable = open_lock_success;
 
-
-						  for(i=0;i<6;i++){
+                        for(i=0;i<6;i++){
 	                        pwd1[i]=0;
 	                        pwd2[i]=0;
 	                        Readpwd[i]=0;
