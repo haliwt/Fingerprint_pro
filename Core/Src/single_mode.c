@@ -76,7 +76,7 @@ void CheckPassword_Lock_Handler(void)
     
 
 	if(run_t.error_times_panel_lock_flag==0 && run_t.factory_test==0){
-	//keyboard password lock
+
     if(run_t.passwordsMatch==0){ //&& run_t.readI2C_data ==1 && run_t.factory_test ==0){
 	  	TouchKey_Handler();
 

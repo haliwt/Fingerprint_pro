@@ -978,7 +978,7 @@ void ReadPassword_EEPROM_SaveData(void)
 
 			EEPROM_Read_Byte(ReadAddress + 0X01,Readpwd,6);
 			//	HAL_Delay(5);
-			if(run_t.Numbers_counter > 6){
+			if(run_t.Numbers_counter > 4){ //6 ,//WT.EDIT 2023.02.27 over four numbers is virtical  
 
 			value = BF_Search(virtualPwd,Readpwd);
 			}
