@@ -30,7 +30,7 @@ void Buzzer_KeySound(void)
 	while(m--){
 
    HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-   delay_us(650);//550//700//600//500//460//
+   delay_us(460);//4000//350//__delay_us(300);;//__delay_us(800);//delayUS(300);
  
 
   }
@@ -56,12 +56,12 @@ void Buzzer_LongSound(void)
 {
     #ifdef STM32L010F4P6_IC
 
-	unsigned int m=500;//400
+	unsigned int m=600;//400
 	while(m--){
 
 	   HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
-	   delay_us(650);//650//600
-    
+	   delay_us(460);//(600)__delay_us(300);//delayUS(600);
+     //delay_us(300);
      
     }
 	#else 
@@ -85,13 +85,13 @@ void Buzzer_ShortSound(void)
 
    #ifdef STM32L010F4P6_IC
    
-	unsigned int m=100;
+	unsigned int m=200;
 	
 
 	 while(m--){
 
 	   HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
-	  delay_us(650);//__delay_us(300);//delayUS(600);
+	  delay_us(460);//__delay_us(300);//delayUS(600);
 
 
 
@@ -124,7 +124,7 @@ static void Buzzer_ErrorSound(void)
 	while(m--){
 
   HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
-  delay_us(650);//4000//350//__delay_us(300);;//__delay_us(800);//delayUS(300);
+  delay_us(460);//4000//350//__delay_us(300);;//__delay_us(800);//delayUS(300);
  
 
   }
@@ -152,12 +152,12 @@ static void Buzzer_High_Sound(void)
 {
      
 
-	 unsigned int m=300;//300
+	 unsigned int m=250;//300
 	
   
       while(m--){
           HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
-          delay_us(650);//480
+          delay_us(480);//480
          
        }
 
@@ -178,7 +178,7 @@ static void Buzzer_High_Sound_2(void)
 
      while(m--){
          HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin );//BEEP=!BEEP;
-         delay_us(650);//__delay_us(500);//delayUS(99);
+         delay_us(480);//__delay_us(500);//delayUS(99);
       }
 	 #else 
 	    

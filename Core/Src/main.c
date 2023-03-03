@@ -119,8 +119,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
   
   TouchKey_Run_Handler(TouchKey);
  
-  // HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,sizeof(UART1_RX_DataBuf));
-    __HAL_UART_ENABLE_IT(&huart1,UART_IT_RXNE);  //read USART_ISR :RXNE(BIT5) ->hardware by be set and clear
+   HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1);
   /* USER CODE END 2 */
     syspara_t.ps_serch_getimage=0xff;
 	 syspara_t.ps_serch_genchar=0xff;
@@ -137,11 +136,14 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE END WHILE */
         
     /* USER CODE BEGIN 3 */
-       if(run_t.powerOn ==0){
+
+
+	
+	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
-            run_t.backlight_on_of_flag=0;
+            run_t.lowPower_flag=0;
 	   }
-	   else if(run_t.error_times_panel_lock_flag==0 && run_t.factory_test ==0){
+	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
 
         sidekey = Scan_Key();
 	    SideKey_Fun(sidekey);

@@ -48,13 +48,12 @@ typedef struct __RUN_T{
    //power ref
    unsigned char powerOn;
 	unsigned char error_times;
-	volatile uint8_t error_times_panel_lock_flag;
+	unsigned char panel_lock;
 	uint8_t ADC_times;
 
 	//lower power ref
-	volatile uint8_t backlight_on_of_flag;
-	volatile uint8_t inputStandby_state_flag;
-	volatile uint8_t  inputDeepSleep_times;
+	uint8_t lowPower_flag;
+	unsigned char inputDeepSleep_times;
 	
   
 	//touchkey 
@@ -74,7 +73,7 @@ typedef struct __RUN_T{
 
     //led ref
     uint8_t backlight_run_flag;
-	volatile uint8_t backlight_Cmd_lable;
+	uint8_t backlight_Cmd_lable;
 	uint8_t inputNewPwd_OK_led_blank_times;
 	uint8_t works_led_lable;
 
@@ -87,23 +86,23 @@ typedef struct __RUN_T{
 	uint8_t buzzer_sound_lable;
 
 	//pass word ref
-   uint8_t Numbers_counter;
-	uint8_t passwordsMatch;
+   unsigned char Numbers_counter;
+	unsigned char passwordsMatch;
    uint8_t password_unlock_model;
    uint8_t input_newPassword_over_number;
-   uint8_t Confirm_newPassword;
-	uint8_t inputNewPasswordTimes;
+   unsigned char Confirm_newPassword;
+	unsigned char inputNewPasswordTimes;
 	uint8_t clear_inputNumbers_newpassword;
 	
 	//factory ref
-   uint8_t factory_test;
+   unsigned char factory_test;
 
    //eeprom ref
-   uint8_t eepromAddress;
+   unsigned char eepromAddress;
    uint8_t  saveEEPROM_fail_flag ; //WT.EDIT 2022.10.06	
 
 	uint8_t  clearEeeprom_count;
-	uint8_t clearEeprom;
+	unsigned char clearEeprom;
 	uint8_t readEepromData;
 
 	//run ref
@@ -113,10 +112,10 @@ typedef struct __RUN_T{
    
 	//timging
 
-	uint8_t gTimer_10s;
-	uint8_t gTimer_8s;
-	uint8_t gTimer_60s;
-	uint8_t gTimer_ADC;
+	unsigned char gTimer_10s;
+	unsigned char gTimer_8s;
+	unsigned char gTimer_60s;
+	unsigned char gTimer_ADC;
 	uint8_t  gTimer_input_standby_cnt;
 	
 	uint8_t  gTimer_input_error_times_60s;

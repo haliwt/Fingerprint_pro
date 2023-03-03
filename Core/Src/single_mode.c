@@ -75,14 +75,14 @@ void CheckPassword_Lock_Handler(void)
 {
     
 
-	if(run_t.error_times_panel_lock_flag==0 && run_t.factory_test==0){
-
+	if(run_t.panel_lock==0 && run_t.factory_test==0){
+	//keyboard password lock
     if(run_t.passwordsMatch==0){ //&& run_t.readI2C_data ==1 && run_t.factory_test ==0){
 	  	TouchKey_Handler();
 
-     }
-	
-	//fingerprint lock input 
+     }//fingerprint lock input 
+	 
+	 
 	 if((FP_INPUT_KEY()==1  || syspara_t.ps_pre_detector==1 ) && run_t.inputNewPassword_Enable ==0 && run_t.passwordsMatch ==0 ){
 	 	fp_cnt++;
 
@@ -92,8 +92,7 @@ void CheckPassword_Lock_Handler(void)
 		run_t.detection_input_flag=1;
      
 	 }//keyboard password input 
-	 
-     if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0){
+     else if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0){
 		  
 		  run_t.passwordsMatch=0;
 		  syspara_t.PS_wakeup_flag=0;
@@ -193,7 +192,10 @@ static void Save_To_EeepromNewPwd(void)
 void TouchKey(void)
 {
 	 if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
-         KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
+         //if(I2C_Simple_Read_From_Device(SC12B_ADDR,SC_Data,2) ==DONE){
+			
+
+		 KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
 				RunCheck_Mode(KeyValue); 
 	            if(KeyValue ==0){
 

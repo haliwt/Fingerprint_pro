@@ -22,14 +22,12 @@ unsigned char BF_Search(uint8_t *virtual,uint8_t *pattern)
                  i++;
 				 j++;
 		         m++;
-				 if(m == 6) break;
+				 if(m == 6) return 1;
 				 else if(m==5){
 				 	n=5;
-					break;
 				 }
 				 else if(m==4){
 				 	n =4;
-				    break;
 				 }
 
 		  }
@@ -44,11 +42,8 @@ unsigned char BF_Search(uint8_t *virtual,uint8_t *pattern)
 
 
 	}
-    if(n==6){
-	   return 1;
 
-	}
-	else if(n ==5){
+	if(n ==5){
          return 1;
 
 	}
