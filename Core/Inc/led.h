@@ -18,6 +18,14 @@ typedef enum _works_led{
     standby_led
 }works_led;
 
+typedef enum{
+
+   HOLD =1,
+   RELEASE =!HOLD
+
+}release;
+
+
 
 
 #define  POWER_ON()         HAL_GPIO_WritePin(POWER_GPIO_Port ,POWER_Pin ,GPIO_PIN_SET)        // (PORTCbits.RC0= 1)

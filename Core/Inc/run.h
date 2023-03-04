@@ -18,14 +18,9 @@
 #define ADMIN_SAVE_ADD         0x80  //administrator of be save 
 #define USER_SAVE_ADD_1        0X81
 #define USER_SAVE_ADD_2        0x82
-enum Signal {                   /* enumeration for CParser signals */
-     TOUCH_KEY_SIG,IN_NUMBER_SIG,  ZERO_SIG
-};
 
 
-enum State {                     /* enumeration for CParser states */
-   INPUTKEY, MODIFYPSWD, EXIT
-};
+extern uint8_t virtualPwd[20];
 
 //new FPC board
 typedef enum 
@@ -42,6 +37,14 @@ typedef enum _open_state{
 
 }open_state;
 
+typedef enum _tk_sate{
+   INPUT_NORMAL_NUMBERS,
+   INPUT_NEW_PWD,
+ 
+   }touchkey_state_t;
+
+
+
 
 typedef struct __RUN_T{
 
@@ -50,19 +53,27 @@ typedef struct __RUN_T{
 	unsigned char error_times;
 	unsigned char panel_lock;
 	uint8_t ADC_times;
+	uint8_t pwd_fp_label;
+	
 
 	//lower power ref
 	uint8_t lowPower_flag;
 	unsigned char inputDeepSleep_times;
+
+	//label
 	
   
 	//touchkey 
 	uint8_t touchkey_first;
-   uint8_t inputNewPassword_Enable;
+   	uint8_t 	inputNewPassword_Enable;
 	uint8_t   getSpecial_1_key;
 	uint8_t   getSpecial_2_key;
 	uint8_t   getNumbers_key;
 	uint8_t NumbersKey_pressedNumbers;
+	uint8_t enter_key ;
+	uint8_t confirm_key_label;
+	uint8_t cancel_key_label;
+	
 
 	
 	//motor ref
@@ -75,21 +86,18 @@ typedef struct __RUN_T{
     uint8_t backlight_run_flag;
 	uint8_t backlight_Cmd_lable;
 	uint8_t inputNewPwd_OK_led_blank_times;
-	uint8_t works_led_lable;
-
-	//login ref
+	uint8_t works_led_label;
 
 
-	
 	//buzzer sound
 
-	uint8_t buzzer_sound_lable;
+	uint8_t buzzer_sound_label;
 
 	//pass word ref
    unsigned char Numbers_counter;
-	unsigned char passwordsMatch;
+
    uint8_t password_unlock_model;
-   uint8_t input_newPassword_over_number;
+ 
    unsigned char Confirm_newPassword;
 	unsigned char inputNewPasswordTimes;
 	uint8_t clear_inputNumbers_newpassword;
@@ -106,23 +114,24 @@ typedef struct __RUN_T{
 	uint8_t readEepromData;
 
 	//run ref
-	uint8_t detection_input_flag;
+
 	uint8_t open_lock_lable;
 
    
 	//timging
+    uint8_t gTimer_motor_reverse;
 
 	unsigned char gTimer_10s;
 	unsigned char gTimer_8s;
 	unsigned char gTimer_60s;
 	unsigned char gTimer_ADC;
-	uint8_t  gTimer_input_standby_cnt;
+
 	
 	uint8_t  gTimer_input_error_times_60s;
 	uint8_t gTimer_10s_start;
 	uint8_t gTimer_led_blink_500ms;
 	
-uint16_t 	motorRunCount;
+	uint16_t 	motorRunCount;
 	
 
 	uint32_t userId;
@@ -130,34 +139,47 @@ uint16_t 	motorRunCount;
 	
 }RUN_T;
 
+typedef struct _tag_pwd_fpStruct{
 
-extern RUN_T run_t;
+   void (*Pwd_Handler)(void);
+   void (*Fp_Handler)(void);
+
+
+}pwd_fp_t;
+
+extern RUN_T run_t;    //password struct 
+extern RUN_T fp_t;     //fingerprint struct 
+
+extern pwd_fp_t pwd_fun_t;
+extern pwd_fp_t fp_fun_t;
+
 extern uint8_t pwd1[6];
 extern uint8_t pwd2[6];
 extern uint8_t Readpwd[6];
 
 
 
-
+extern void (*Pwd_fun)(void);
+extern void (*fp_fun)(void);
 extern void (*RunChed_KeyMode)(uint16_t keydat);
 void RunCheck_Mode(uint16_t dat);
 void RunCommand_Unlock_Keyboard(void);
 
 
 
-void SavePassword_To_EEPROM(void);
+
 
 void CParserDispatch(void);
 
 
 void RunCheck_KeyMode_Handler(void(*keymode_handler)(uint16_t keydat));
 
-void ReadPassword_EEPROM_SaveData(void);
+
 
 unsigned char CompareValue(uint8_t *pt1,uint8_t *pt2);
 
 unsigned char  InputNumber_ToSpecialNumbers(TouchKey_Numbers number);
-void Lock_Open_Order(void);
+
 uint8_t OverNumbers_Password_Handler(void);
 
 #endif 

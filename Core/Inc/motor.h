@@ -38,6 +38,7 @@ void Motor_Stop(void);
 void RunMotor_Definite_Handler(void); 
 
 
+void Motor_Reverse_State(void);
 
 
 

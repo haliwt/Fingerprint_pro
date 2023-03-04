@@ -8,11 +8,13 @@
 #include "delay.h"
 #include "tim.h"
 #include "as608.h"
+#include "lock.h"
  uint16_t KeyValue;
 uint8_t fp_cnt;
 
 static void Save_To_EeepromNewPwd(void);
-static void UnLock_Aand_SaveData_Handler(void);
+static void SaveData_EEPROM_Handler(void);
+
 
 void (*TouchKey_Handler)(void);
 void (*FP_ReadData_Handler)(void);
@@ -35,9 +37,9 @@ void Start_PowerOn_Handler(void)
 			run_t.gTimer_10s_start=0;
 			run_t.gTimer_input_error_times_60s =0;
 		
-			run_t.buzzer_sound_lable = sound_key;//run_t.buzzer_key_sound_flag =1;
+			run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		   run_t.factory_test = 1;
-			run_t.works_led_lable=factory_led_test;
+			run_t.works_led_label=factory_led_test;
               
 			  POWER_ON();
 			  FP_POWER_ON(); //FP_power
@@ -48,7 +50,7 @@ void Start_PowerOn_Handler(void)
  if(run_t.powerOn ==0){
 
 				run_t.powerOn++;
-				run_t.passwordsMatch =0;
+			
 				run_t.password_unlock_model =POWER_ON_MODEL; // 4: power on is motor 1/4 angle
 				run_t.motor_return_homePosition=0; //
 				run_t.gTimer_8s=0;
@@ -74,38 +76,117 @@ void Start_PowerOn_Handler(void)
 void CheckPassword_Lock_Handler(void)
 {
     
+    switch(run_t.pwd_fp_label){
 
-	if(run_t.panel_lock==0 && run_t.factory_test==0){
-	//keyboard password lock
-    if(run_t.passwordsMatch==0){ //&& run_t.readI2C_data ==1 && run_t.factory_test ==0){
-	  	TouchKey_Handler();
-
-     }//fingerprint lock input 
-	 
-	 
-	 if((FP_INPUT_KEY()==1  || syspara_t.ps_pre_detector==1 ) && run_t.inputNewPassword_Enable ==0 && run_t.passwordsMatch ==0 ){
-	 	fp_cnt++;
-
+       case PWD_ID:
 	  
-		FP_ReadData_Handler();
+			TouchKey_Handler();
+            run_t.gTimer_8s=0;//clear zero
+            switch(run_t.enter_key){
 
-		run_t.detection_input_flag=1;
-     
-	 }//keyboard password input 
-     else if(run_t.passwordsMatch ==1 && run_t.inputNewPassword_Enable==0){
-		  
-		  run_t.passwordsMatch=0;
-		  syspara_t.PS_wakeup_flag=0;
+			   case KEY_FAIL:
+					run_t.pwd_fp_label = DISPOSE_KEY_FAIL;
+			   break;
 
-          RunCommand_Unlock_Keyboard();
-		  
-         run_t.detection_input_flag=1;
+			   case KEY_SUCCESS:
+					run_t.pwd_fp_label = DISPOSE_STEP_COMPARE;
+			   break;
+
+			   case KEY_SOUND:
+					run_t.pwd_fp_label = DISPOSE_BUZZER_SOUND;
+			   break;
+
+			   case KEY_LOCK_60S:
+			   	    run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
+			   break;
+
+			   case KEY_NULL:
+			   	  run_t.pwd_fp_label = DISPOSE_KEY_FAIL;
+
+			   break;
+
+
+			}
+				
+           
+	   break;
+
+	   case FP_ID:
+	   	 
+		   FP_ReadData_Handler();
+	     
+	       run_t.pwd_fp_label = DISPOSE_STEP_COMPARE;
+	   break;
+
+	   case DISPOSE_STEP_COMPARE:
+	   	 
+		  RunCommand_Unlock_Keyboard();
+		  switch(run_t.open_lock_lable){
+
+		     case open_lock_success :
+			 	 Open_Lock_Success_Fun();
+		       if(run_t.password_unlock_model==STORE_MODEL_EEPROM){
+					run_t.pwd_fp_label = DISPOSE_SAVE_DATA;
+		       	}
+			   else if(run_t.password_unlock_model == motor_run_start){
+
+                   run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
+			    }
+			  break;
+		  	  
+
+			 case open_lock_fail:
+			 	 Open_Lock_Fail_Fun();
+				 if(run_t.password_unlock_model==KEY_LOCK_60S){
+				 	
+				 	run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
+				 } 
+				 else if(run_t.password_unlock_model ==open_lock_null){
+
+                      run_t.pwd_fp_label = DISPOSE_NULL;
+				 }
+                
+			 break;
+			}
 		 
-    }
+	   break;
 
-    Lock_Open_Order();
-    UnLock_Aand_SaveData_Handler();
-  }
+	   case DISPOSE_SAVE_DATA:
+	      SaveData_EEPROM_Handler();
+
+           run_t.pwd_fp_label = DISPOSE_NULL;
+	   break;
+
+	   case DISPOSE_MOTOR_RUN:
+
+	   	 RunMotor_Definite_Handler(); //definite motor
+          run_t.pwd_fp_label = DISPOSE_NULL;
+	   break;
+
+       case DISPOSE_KEY_FAIL:
+	   	    run_t.works_led_label = works_error_blink;
+			run_t.buzzer_sound_label = sound_fail;
+
+        run_t.pwd_fp_label = DISPOSE_NULL;
+	   break;
+
+	   case DISPOSE_KEY_LOCK_60S:
+        run_t.panel_lock =1;
+	    run_t.pwd_fp_label = DISPOSE_NULL;
+	   break;
+
+	   case DISPOSE_NULL:
+
+	     Motor_Reverse_State();
+
+	   break;
+
+	   default:
+
+	   break;
+
+	}
+   
 }
 
 /**************************************************************************
@@ -116,13 +197,13 @@ void CheckPassword_Lock_Handler(void)
 	*Return Ref:NO
 	*
 **************************************************************************/
-static void UnLock_Aand_SaveData_Handler(void)
+static void SaveData_EEPROM_Handler(void)
 {
    switch(run_t.password_unlock_model){
 
     case STORE_MODEL_EEPROM:
         run_t.inputDeepSleep_times=0;
-		run_t.passwordsMatch=0  ;
+
 	   run_t.gTimer_8s=0;
 	     if(syspara_t.PS_wakeup_flag==0)
 		     Save_To_EeepromNewPwd();

@@ -44,69 +44,56 @@ void Panel_LED_Off(void)
 void DisplayLed_Handler(void)
 {
 
-    
-	BackLight_Fun();
-	Works_IndicateLed();
 
-	if(run_t.panel_lock ==1){
-		      Panel_LED_Off();
-         	
-              ERR_LED_ON();
-         	 
-         	 run_t.inputDeepSleep_times =0;
-         	  run_t.gTimer_input_standby_cnt=0;
-         	  run_t.gTimer_8s=0;
-             if(run_t.gTimer_input_error_times_60s > 5){
-			   run_t.panel_lock =0;
-			   run_t.error_times = 0;
-               run_t.works_led_lable= works_error_led_off;
-	      }
-     }
+    switch(run_t.works_led_label){
+
+      case works_ok_blink :
+
+	  break;
+
+	  case  backlight_led_on:
+         if(run_t.gTimer_8s > 8){
+		 	 run_t.gTimer_8s =0;
+             run_t.Confirm_newPassword = RELEASE; // be related to "Ref must be" -> exit set new pwd.   
+             run_t.works_led_label = backlight_led_off;
+          }
+
+	  break;
+
+	  case works_ok_led_on:
+
+	  break;
+
+	  case backlight_led_off:
+
+	       OK_LED_OFF();
+		   ERR_LED_OFF();
+	  	   BACKLIGHT_OFF();
+		   PS_LED_ALL_OFF();
+	       run_t.gTimer_8s =0;
+	  	    run_t.works_led_label = standby_led ;
+
+	  break;
+
+	  case standby_led :
+	  	 if(run_t.gTimer_8s > 8){
+            run_t.gTimer_8s =0;
+            Standby_Model_Handler();
+
+		 }
+	  	
+
+	  break;
+
+	  default:
+
+	  break; 
 
 
 
-
-	
-	if(run_t.gTimer_ADC >10 ){
-   	
-          run_t.gTimer_ADC=0;
-		
-		     POWER_ON();
-			adcx=Get_Adc_Average(10);
-			//adcx =Get_Adc();
-			temp=(float)adcx*(3.3/4096); //3.111
-            // temp=(float)adcx*(2.7/4096);
-	         temp = temp *1000; //31.11V
-	        adcVale =(uint16_t)(temp);
-			
-			if(adcVale < 1500 ){ // low 3.3V is alarm
-			    run_t.ADC_times++; //WT.EDIT 2022.09.09
-			   if(run_t.ADC_times > 3 ){
-			   	run_t.ADC_times = 4;
-			      BAT_LED_ON();
-			   }
-
-			}
-			// else{
-			    run_t.ADC_times = 0;
-				BAT_LED_OFF();
-				HAL_ADC_Stop(&hadc1);  
-                
-			}
-		
-	
-   
-
-   if(run_t.gTimer_8s > 8 && (run_t.backlight_run_flag==0 || run_t.backlight_Cmd_lable ==0xff ) && run_t.clearEeprom ==0\
-   		&& run_t.inputNewPassword_Enable ==0){
-      run_t.backlight_Cmd_lable=backlight_led_off;
-	  run_t.Confirm_newPassword=0;
-   	  Panel_LED_Off();
-
-   }
-  
-
+    }
 }
+
 /****************************************************************************
 *
 *Function Name:void BackLight_Fun(void)
@@ -131,7 +118,7 @@ switch(run_t.backlight_Cmd_lable){
           run_t.gTimer_8s=0;
 		}
 		else{
-             run_t.gTimer_input_standby_cnt=0;
+           
 		}
 		}
 		else{
@@ -163,7 +150,7 @@ switch(run_t.backlight_Cmd_lable){
 		HAL_ADC_Stop(&hadc1);
 	
       
-		run_t.passwordsMatch =0 ;
+	
 		run_t.powerOn =3;
 		run_t.motor_return_homePosition=0;
 
@@ -183,7 +170,6 @@ switch(run_t.backlight_Cmd_lable){
 
 		}
 
-		run_t.gTimer_input_standby_cnt=0;
         run_t.backlight_Cmd_lable = backlight_led_confirm;
 		run_t.backlight_run_flag=1;
      break;
@@ -197,7 +183,7 @@ switch(run_t.backlight_Cmd_lable){
 		 }
 		  else{
 
-		     run_t.gTimer_input_standby_cnt=0;
+		
 
 		  }
 
@@ -206,15 +192,7 @@ switch(run_t.backlight_Cmd_lable){
 
     case standby_led:
         
-	   if(run_t.gTimer_input_standby_cnt>0){
-
-	   		  run_t.inputDeepSleep_times =2;
-	   }
-	   else{
-          run_t.inputDeepSleep_times =0;
-
-	   }
-	   
+	
 		run_t.backlight_run_flag=1;
 	break;
 
@@ -238,31 +216,31 @@ static void Works_IndicateLed(void)
 {
 	static uint16_t cnt0,cnt;
     static uint8_t cntrecoder;
-	switch(run_t.works_led_lable){
+	switch(run_t.works_led_label){
 
 		case works_ok_led_on:
 			run_t.gTimer_8s =0;
 			ERR_LED_OFF();
 			OK_LED_OFF();
-		    run_t.input_newPassword_over_number=0;
+		
 			run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 			 //erase EEPRO data 
 			 if(run_t.clearEeprom==1){
 				 run_t.clearEeprom = 0;
 				 run_t.gTimer_8s =0;
-				 run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1 ;
+				 run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1 ;
 				  ClearEEPRO_Data();
 				  Del_FR();//fingerprint be deteleted
 				   run_t.gTimer_8s =0;
 			    
 				  run_t.inputDeepSleep_times =0;//WT.EDIT 2022.10.26
-				  run_t.gTimer_input_standby_cnt=0;
+				 
 
 				   run_t. clearEeeprom_count=0;
 		            Del_FR();//fingerprint be deteleted
 		         run_t.gTimer_led_blink_500ms=0;
 		        run_t.clearEeeprom_count=0;
-                run_t.works_led_lable=works_ok_blink;
+                run_t.works_led_label=works_ok_blink;
 				 
 			}
 			else{
@@ -282,7 +260,7 @@ static void Works_IndicateLed(void)
 			   ERR_LED_OFF();
 			 }
 			
-				 run_t.input_newPassword_over_number=0;
+				
 				 run_t.gTimer_8s=0; //WT.EDIT 2022.10.14
 				 
 				 if(run_t.gTimer_led_blink_500ms < 6 ){
@@ -312,7 +290,7 @@ static void Works_IndicateLed(void)
 			 	run_t.inputNewPwd_OK_led_blank_times=0;
 				cnt0 = 0;
 			 	run_t.inputNewPassword_Enable =0;
-			 	run_t.works_led_lable= works_ok_led_off;//run_t.works_led_lable=works_null;
+			 	run_t.works_led_label= works_ok_led_off;//run_t.works_led_label=works_null;
 			
 			 	}
 
@@ -323,7 +301,7 @@ static void Works_IndicateLed(void)
 			 if(run_t.clearEeeprom_count >2 &&  run_t.inputNewPassword_Enable ==0){
 			 	run_t.clearEeeprom_count=0;
 				cnt0 = 0;
-                 run_t.works_led_lable= works_ok_led_off;
+                 run_t.works_led_label= works_ok_led_off;
 			 }
 			}
 		break;
@@ -333,7 +311,7 @@ static void Works_IndicateLed(void)
 			 ERR_LED_OFF();
 		     PS_LED_ALL_OFF();
 			 BACKLIGHT_OFF();
-		     run_t.works_led_lable= works_null;
+		     run_t.works_led_label= works_null;
 			 run_t.password_unlock_model=0;
 
 		break;
@@ -347,9 +325,9 @@ static void Works_IndicateLed(void)
 			run_t.password_unlock_model=0;
 		
 			run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
-			run_t.inputNewPasswordTimes =0;//WT.EDIT .2022.10.07
+	
 			HAL_Delay(500);
-            run_t.works_led_lable= works_null;
+            run_t.works_led_label= works_null;
 
         
 
@@ -359,7 +337,7 @@ static void Works_IndicateLed(void)
 		    OK_LED_OFF();	
             ERR_LED_OFF();
 		    PS_LED_ALL_OFF();
-            run_t.works_led_lable= works_null;
+            run_t.works_led_label= works_null;
 		break;
 
 		case works_error_blink:
@@ -376,7 +354,7 @@ static void Works_IndicateLed(void)
 			
 
 			run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
-			run_t.inputNewPasswordTimes =0;//WT.EDIT .2022.10.07
+	
 
 			OK_LED_OFF();
 
@@ -402,12 +380,12 @@ static void Works_IndicateLed(void)
 
 			run_t.saveEEPROM_fail_flag =0;
 		
-			run_t.input_newPassword_over_number=0;
+		
 
 			ERR_LED_OFF();
 			PS_LED_ALL_OFF();
 			cnt=0;
-		    run_t.works_led_lable= works_null;
+		    run_t.works_led_label= works_null;
 
 			}
 
@@ -428,7 +406,7 @@ static void Works_IndicateLed(void)
 			ERR_LED_OFF();
 			BAT_LED_OFF();
             FP_POWER_OFF();
-             run_t.works_led_lable= works_null;
+             run_t.works_led_label= works_null;
 			}
 			
 
@@ -439,7 +417,7 @@ static void Works_IndicateLed(void)
 			OK_LED_OFF();
 		    ERR_LED_OFF();
 			BACKLIGHT_OFF();
-            run_t.works_led_lable= 0xff;
+            run_t.works_led_label= 0xff;
             run_t.backlight_Cmd_lable=backlight_led_off;
 		break;
 
@@ -507,37 +485,37 @@ void Standby_Model_Handler()
 *Retrun Ref:NO
 *
 ****************************************************************************/
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-
-    static unsigned char t0,t1;
-
-	if(htim->Instance==TIM14){
-
-	t0++;
-    t1++;
-
-
-	if(t1>9){ //10ms x10=100ms
-        t1=0;
-        run_t.motorRunCount++;
-	    run_t.gTimer_led_blink_500ms++;
-	}
-    if(t0>99){ //10*100 =1000ms "1s"
-       t0=0;
-	  run_t.gTimer_10s_start++;
-	  run_t.gTimer_8s++;
-	  run_t.gTimer_10s ++;
-	   run_t.gTimer_ADC ++;
-	  
-	   if(run_t.gTimer_10s_start>9){ //10s
-	   	 run_t.gTimer_10s_start=0;
-	   	 run_t.gTimer_input_standby_cnt++;
-		run_t.gTimer_input_error_times_60s++;
-	   }
-	
-    } 
-	}
-
-}
+//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+//{
+//
+//    static unsigned char t0,t1;
+//
+//	if(htim->Instance==TIM14){
+//
+//	t0++;
+//    t1++;
+//
+//
+//	if(t1>9){ //10ms x10=100ms
+//        t1=0;
+//        run_t.motorRunCount++;
+//	    run_t.gTimer_led_blink_500ms++;
+//	}
+//    if(t0>99){ //10*100 =1000ms "1s"
+//       t0=0;
+//	  run_t.gTimer_10s_start++;
+//	  run_t.gTimer_8s++;
+//	  run_t.gTimer_10s ++;
+//	   run_t.gTimer_ADC ++;
+//	  
+//	   if(run_t.gTimer_10s_start>9){ //10s
+//	   	 run_t.gTimer_10s_start=0;
+//	   	 run_t.gTimer_input_standby_cnt++;
+//		run_t.gTimer_input_error_times_60s++;
+//	   }
+//	
+//    } 
+//	}
+//
+//}
 

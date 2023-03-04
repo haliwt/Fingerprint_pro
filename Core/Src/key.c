@@ -9,7 +9,6 @@
 #include "touchkey.h"
 #include "single_mode.h"
 #include "usart.h"
-#include "cmd_link.h"
 #include "adc.h"
 #include "at24c02.h"
 #include "delay.h"
@@ -31,13 +30,14 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
     
 
-	if(GPIO_Pin == KEY_INPUT_Pin){
-
+	if(GPIO_Pin == KEY_INPUT_Pin){ //administrator KEY 
+        
 	 if(run_t.panel_lock==0){
 		 POWER_ON();
         FP_POWER_ON()  ;
          BACKLIGHT_ON();
 	 	}
+	     run_t.pwd_fp_label = ADMINISTRATOR_ID;
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 	
 		if(run_t.lowPower_flag==0){
@@ -75,7 +75,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
        FP_POWER_ON()  ;
 	   BACKLIGHT_ON();
       }
-
+         if(run_t.pwd_fp_label !=ADMINISTRATOR_ID)run_t.pwd_fp_label = PWD_ID;
+		 
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
       if(run_t.lowPower_flag==0){
@@ -87,7 +88,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			FP_POWER_ON()  ;
 			run_t.lowPower_flag++;
 			
-			run_t.buzzer_sound_lable=sound_key;//Buzzer_KeySound();
+			run_t.buzzer_sound_label=sound_key;//Buzzer_KeySound();
 			
 			run_t.inputDeepSleep_times =0;
 			run_t.backlight_Cmd_lable =0xff;
@@ -99,7 +100,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    //fingerprint 
   if(GPIO_Pin==FP_INT_INPUT_Pin){
   	
- 
+	if(run_t.pwd_fp_label !=ADMINISTRATOR_ID)run_t.pwd_fp_label = FP_ID ;
 		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
      if(run_t.lowPower_flag==0){
 
@@ -294,13 +295,11 @@ void  SideKey_Fun(uint8_t keyvalue)
      
 	 if(keyvalue == 0x01){
                
-		run_t.Confirm_newPassword = 1;
-		syspara_t.PS_wakeup_flag=0;
+		run_t.Confirm_newPassword = 1; // be related to "Ref must be"
 		run_t.inputDeepSleep_times =0;
-		run_t.gTimer_input_standby_cnt=0;
+	
 		run_t.inputNewPassword_Enable =0;
-		run_t.gTimer_8s=0;
-		run_t.inputNewPasswordTimes =0;
+
         run_t.password_unlock_model=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
@@ -312,15 +311,21 @@ void  SideKey_Fun(uint8_t keyvalue)
 		OK_LED_OFF();//WT.EDIT .2022.10.31
 		ERR_LED_OFF();
 		PS_Blue_Led_ON();
-	
+
+		run_t.pwd_fp_label = DISPOSE_ADM_RELEASE_KEY;  //释放管理员ID .
+		run_t.works_led_label = DISPOSE_ADM_RELEASE_KEY;
+		run_t.gTimer_8s=0; //start counter timer .
+	  
 	        
        }
 	 
       if(keyvalue== 0x81){
 	  	
+		run_t.clearEeprom = 1; //// be related to "Ref must be"
+
 		syspara_t.PS_wakeup_flag=0;
-        run_t.works_led_lable=works_ok_led_on;
-        run_t.clearEeprom = 1;
+        run_t.works_led_label=works_ok_led_on;
+        
 		run_t.inputDeepSleep_times =0;
         run_t.gTimer_8s=0;
 

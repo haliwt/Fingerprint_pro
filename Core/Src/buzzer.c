@@ -223,24 +223,24 @@ void Buzzer_Fail_Sound(void)
 void Buzzer_Sound_Handler(void)
 {
     
-   switch(run_t.buzzer_sound_lable){
+   switch(run_t.buzzer_sound_label){
 
       case sound_key:
           Buzzer_KeySound();
         
-          run_t.buzzer_sound_lable=sound_over;
+          run_t.buzzer_sound_label=sound_over;
       break;
 
       case sound_fail:
           Buzzer_Fail_Sound();
 		
-          run_t.buzzer_sound_lable=sound_over;
+          run_t.buzzer_sound_label=sound_over;
       break;
 
       case sound_new_pwd_the_first:
            Buzzer_High_Sound();
 	
-            run_t.buzzer_sound_lable=sound_over;
+            run_t.buzzer_sound_label=sound_over;
       break;
 
       case sound_new_pwd_the_second:
@@ -248,7 +248,7 @@ void Buzzer_Sound_Handler(void)
         HAL_Delay(50);
         Buzzer_KeySound();
 	
-        run_t.buzzer_sound_lable=sound_over;
+        run_t.buzzer_sound_label=sound_over;
       break;
 
       case sound_high:
@@ -256,21 +256,21 @@ void Buzzer_Sound_Handler(void)
           HAL_Delay(50);
         Buzzer_High_Sound_2();
 	
-         run_t.buzzer_sound_lable=sound_over;
+         run_t.buzzer_sound_label=sound_over;
 
       break;
 
       case sound_excute:
         Buzzer_LongSound();
 		
-        run_t.buzzer_sound_lable=sound_over;
+        run_t.buzzer_sound_label=sound_over;
 
       break;
 
       case sound_over:
 
         BUZZER_OFF();
-        run_t.buzzer_sound_lable=0xff;
+        run_t.buzzer_sound_label=0xff;
         
       break;
 

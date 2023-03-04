@@ -1,4 +1,5 @@
-#include "cmd_link.h"
+#include "interrupt_manager.h"
+#include "run.h"
 #include "usart.h"
 #include "as608.h"
 #include "usart.h"
@@ -86,7 +87,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	 HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1); 
   }
 
-
 /********************************************************************************
 **
 *Function Name:void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
@@ -103,6 +103,48 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 //      // transOngoingFlag=0; //UART Transmit interrupt flag =0 ,RUN
 
 //	}
+
+}
+
+/****************************************************************************
+*
+*Function Name:void HAL_TIM_PeriodElapsedHalfCpltCallback(TIM_HandleTypeDef *htim)
+*Function : half -> 16bit, TIM2 timing time is 10ms 
+*Input Ref: NO
+*Retrun Ref:NO
+*
+****************************************************************************/
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+
+    static unsigned char t0,t1;
+
+	if(htim->Instance==TIM14){
+
+	t0++;
+    t1++;
+    run_t.gTimer_motor_reverse++ ;
+
+	if(t1>9){ //10ms x10=100ms
+        t1=0;
+        run_t.motorRunCount++;
+	    run_t.gTimer_led_blink_500ms++;
+	}
+    if(t0>99){ //10*100 =1000ms "1s"
+       t0=0;
+	  run_t.gTimer_10s_start++;
+	  run_t.gTimer_8s++;
+	  run_t.gTimer_10s ++;
+	   run_t.gTimer_ADC ++;
+	  
+	   if(run_t.gTimer_10s_start>9){ //10s
+	   	 run_t.gTimer_10s_start=0;
+	   	
+		run_t.gTimer_input_error_times_60s++;
+	   }
+	
+    } 
+	}
 
 }
 

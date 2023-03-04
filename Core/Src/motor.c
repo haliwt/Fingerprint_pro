@@ -102,7 +102,7 @@ void RunMotor_Definite_Handler(void) //definite motor
            
             run_t.Numbers_counter =0 ;
             run_t.eepromAddress=0;
-            run_t.passwordsMatch = 0;
+         
             run_t.password_unlock_model =0;
             run_t.error_times=0;
 
@@ -110,7 +110,6 @@ void RunMotor_Definite_Handler(void) //definite motor
             ERR_LED_OFF();
             OK_LED_ON();
 			
-           // Buzzer_LongSound(); //WT.EDIT 2022.10.06
             Motor_CCW_Run();//open passwordlock 
                      
             run_t.Motor_RunCmd_Label=motor_run_underway;
@@ -142,12 +141,13 @@ void RunMotor_Definite_Handler(void) //definite motor
              
         break;
 
-        case morot_reverse :
+        case morot_reverse : //home position
 			 run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
 			 PS_Blue_Led_ON();
 			 OK_LED_OFF();
 		    
             run_t.motor_return_homePosition=1;//motor runing flag 
+            run_t.gTimer_motor_reverse=0;
             Motor_CW_Run();// Close
             run_t.Motor_RunCmd_Label=motor_stop;
             run_t.motorRunCount=0;
@@ -192,6 +192,32 @@ void RunMotor_Definite_Handler(void) //definite motor
 
         }
        }
+
+
+         Motor_CW_Run();// Close 
+		 HAL_Delay(530);//WT.EDIT 2022.09.19
+		 Motor_Stop();
+		 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
+		 run_t.password_unlock_model=0;
+	     run_t.gTimer_8s=0;
+		 Panel_LED_Off();
 }
                 
-        
+void Motor_Reverse_State(void)
+{
+     if(run_t.motor_return_homePosition==1){
+
+		 Motor_CW_Run();// Close 
+		 //HAL_Delay(530);//WT.EDIT 2022.09.19
+		
+		 if(run_t.gTimer_motor_reverse > 53){
+		 	run_t.gTimer_motor_reverse =0;
+		      Motor_Stop();
+			 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
+			 run_t.password_unlock_model=0;
+		     run_t.gTimer_8s=0;
+			 Panel_LED_Off();
+		 	}
+        }
+
+}

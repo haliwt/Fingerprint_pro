@@ -14,12 +14,12 @@
 #include "delay.h" 	
 #include "usart.h"
 #include "as608.h"
-#include "cmd_link.h"
 #include "at24c02.h"
 #include "run.h"
 #include "led.h"
 #include "buzzer.h"
 #include "single_mode.h"
+#include "interrupt_manager.h"
 SysPara syspara_t;
 
 uint8_t ps_buffer[50];
@@ -859,7 +859,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 							run_t.motor_return_homePosition=0;
 							run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
 							Buzzer_LongSound();
-							//run_t.buzzer_sound_lable=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
+							//run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
 							run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08
 
 							run_t.password_unlock_model =0;
@@ -875,7 +875,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 							Buzzer_Fail_Sound();
 							 OK_LED_OFF() ;
 					         ERR_LED_ON();
-							 run_t.works_led_lable = works_error_blink;
+							 run_t.works_led_label = works_error_blink;
 							 return ;
 							
 						}

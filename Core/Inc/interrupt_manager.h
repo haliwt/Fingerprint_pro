@@ -1,5 +1,5 @@
-#ifndef __CMD_LINK_H_
-#define __CMD_LINK_H_
+#ifndef __INTERRUPT_MANAGER_H_
+#define __INTERRUPT_MANAGER_H_
 #include "main.h"
 
 
@@ -11,11 +11,6 @@ extern uint8_t  USART1_RX_BUF[USART1_MAX_RECV_LEN]; 		//½ÓÊÕ»º³å,×î´�
 extern uint8_t  USART1_TX_BUF[USART1_MAX_SEND_LEN]; 		//·¢ËÍ»º³å,×î´óUSART3_MAX_SEND_LEN×Ö½Ú
 extern uint8_t  UART1_RX_DataBuf[1];
 extern uint16_t USART1_RX_STA;   						//½ÓÊÕÊý¾Ý×´Ì¬
-
-
-
-
-
 
 
 

@@ -37,9 +37,9 @@
 
 #include "as608.h"
 #include "usart.h"
-#include "cmd_link.h"
 #include "as608.h"
 #include "at24c02.h"
+#include "interrupt_manager.h"
 
 /* USER CODE END Includes */
 
@@ -149,12 +149,12 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	    SideKey_Fun(sidekey);
              
 	   	}
-
-	 	CheckPassword_Lock_Handler();
-		Buzzer_Sound_Handler();
+        if(run_t.panel_lock==0){
+	 	  CheckPassword_Lock_Handler();
+		  Buzzer_Sound_Handler();
+        }
  		DisplayLed_Handler();
- 		RunMotor_Definite_Handler(); //definite motor
- 		Standby_Model_Handler();
+
 	 
 	 }
  
