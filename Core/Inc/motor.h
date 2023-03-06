@@ -40,6 +40,7 @@ void RunMotor_Definite_Handler(void);
 
 void Motor_Reverse_State(void);
 
+void Motor_StartRun(void);
 
 
 

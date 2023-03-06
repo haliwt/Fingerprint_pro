@@ -127,7 +127,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	if(t1>9){ //10ms x10=100ms
         t1=0;
-        
+        run_t.motorRunCount++; 
 	    run_t.gTimer_led_blink_500ms++;
 	}
     if(t0>99){ //10*100 =1000ms "1s"
@@ -136,7 +136,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  run_t.gTimer_8s++;
 	  run_t.gTimer_60s ++;
 	   run_t.gTimer_ADC ++;
-	  run_t.motorRunCount++; 
+	  
 	  
 	   if(run_t.gTimer_10s_start>9){ //10s
 	   	 run_t.gTimer_10s_start=0;

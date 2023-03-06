@@ -77,6 +77,35 @@ void Motor_Stop(void)
         
    }
 
+ /****************************************************************************
+*
+*Function Name:void RunMotor_Definite_Handler(void) 
+*Function : run is main 
+*Input Ref: NO
+*Retrun Ref:NO
+*
+****************************************************************************/
+void Motor_StartRun(void)
+{
+	    PS_Green_Led_ON();
+            run_t.motor_return_homePosition=1;//motor runing flag 
+            syspara_t.handler_read_data_flag++;
+           
+            run_t.Numbers_counter =0 ;
+            run_t.eepromAddress=0;
+         
+            run_t.password_unlock_model =0;
+            run_t.error_times=0;
+
+            run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
+            ERR_LED_OFF();
+            OK_LED_ON();
+			
+            Motor_CCW_Run();//open passwordlock 
+
+
+}
+
 /****************************************************************************
 *
 *Function Name:void RunMotor_Definite_Handler(void) 
@@ -108,15 +137,15 @@ void RunMotor_Definite_Handler(void) //definite motor
             run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
             ERR_LED_OFF();
             OK_LED_ON();
-			
+			run_t.Motor_RunCmd_Label=motor_run_underway;
             Motor_CCW_Run();//open passwordlock 
                      
-            run_t.Motor_RunCmd_Label=motor_run_underway;
+            
         break;
 
         case motor_run_underway: //2
             //MOTOR open run ->stop Position 
-            if(run_t.motorRunCount < 3){//100ms *300=3s
+            if(run_t.motorRunCount < 25){//100ms *300=3s
                 run_t.gTimer_8s =0;//WT.EDIT 2022.10.06
                 run_t.motor_return_homePosition=1;//WT.EDIT 2022.08.18
                
@@ -128,7 +157,7 @@ void RunMotor_Definite_Handler(void) //definite motor
         break;
 
         case motor_run_half_stop: //3
-            if(run_t.motorRunCount < 2){ //100ms * 10
+            if(run_t.motorRunCount < 11){ //100ms * 10
               Motor_Stop();
               run_t.motor_return_homePosition=1;//motor runing flag 
             
@@ -143,35 +172,29 @@ void RunMotor_Definite_Handler(void) //definite motor
         case morot_reverse : //5 //home position
 			 run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
 			 PS_Blue_Led_ON();
-			// OK_LED_OFF();
-		    if( run_t.motorRunCount < 3){
-		            run_t.motor_return_homePosition=1;//motor runing flag 
-		            run_t.gTimer_motor_reverse=0;
-		            Motor_CW_Run();// Close
-		           
-		     }
-			 else{
-
-				 run_t.Motor_RunCmd_Label=motor_stop;
-		         run_t.motorRunCount=0;
-
-			 }
+			 OK_LED_OFF();
+		    
+            run_t.motor_return_homePosition=1;//motor runing flag 
+            Motor_CW_Run();// Close
+            run_t.Motor_RunCmd_Label=motor_stop;
+            run_t.motorRunCount=0;
 
         break;
 
         case motor_stop: //6
-            if(run_t.motorRunCount >5 && adjust_ref <6 ){//15 //100ms x 10 =1s motor stop 1s 
+            if(run_t.motorRunCount >20 && adjust_ref <6 ){//15 //100ms x 10 =1s motor stop 1s 
                
                 adjust_ref++;
 				Motor_Stop();
 			    stop_flag =1;
             }
-			else if(run_t.motorRunCount >4) {
+			else if(run_t.motorRunCount >23) {
         		adjust_ref=0;
 				Motor_Stop();
 			    stop_flag=1;
                 
 			}
+			
 			
   
 
@@ -198,14 +221,6 @@ void RunMotor_Definite_Handler(void) //definite motor
         }
    
 
-
-//         Motor_CW_Run();// Close 
-//		 HAL_Delay(530);//WT.EDIT 2022.09.19
-//		 Motor_Stop();
-//		 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
-//		 run_t.password_unlock_model=0;
-//	     run_t.gTimer_8s=0;
-//		 Panel_LED_Off();
 }
                 
 
