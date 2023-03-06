@@ -91,12 +91,12 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PA12 FP_WAKE_UP  */
   GPIO_InitStruct.Pin = GPIO_PIN_12;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;//GPIO_MODE_IT_RISING_FALLING ;//GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode =GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull =GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 2, 0);
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
 
 }

@@ -31,13 +31,8 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
     
 
 	if(GPIO_Pin == KEY_INPUT_Pin){ //administrator KEY 
-        
-	 if(run_t.panel_lock==0){
-		 POWER_ON();
-        FP_POWER_ON()  ;
-         BACKLIGHT_ON();
-	 	}
-	     run_t.pwd_fp_label = ADMINISTRATOR_ID;
+       run_t.pwd_fp_label = ADMINISTRATOR_ID; 
+	    
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 	
 		if(run_t.lowPower_flag==0){
@@ -70,12 +65,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
    if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
-      if(run_t.panel_lock==0){
-       POWER_ON();
-       FP_POWER_ON()  ;
-	   BACKLIGHT_ON();
-      }
-         if(run_t.pwd_fp_label !=ADMINISTRATOR_ID)run_t.pwd_fp_label = PWD_ID;
+    
+        run_t.pwd_fp_label = PWD_ID;
 		 
        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
@@ -100,7 +91,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    //fingerprint 
   if(GPIO_Pin==FP_INT_INPUT_Pin){
   	
-	if(run_t.pwd_fp_label !=ADMINISTRATOR_ID)run_t.pwd_fp_label = FP_ID ;
+	run_t.pwd_fp_label = FP_ID ;
 		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
      if(run_t.lowPower_flag==0){
 
