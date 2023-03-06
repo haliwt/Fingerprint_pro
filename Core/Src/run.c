@@ -376,10 +376,7 @@ void RunCheck_Mode(uint16_t dat)
 			  case  INPUT_NORMAL_NUMBERS:
 			  	
 				temp = InputNumber_ToSpecialNumbers((TouchKey_Numbers) dat); //input Numbers
-				if(run_t.Numbers_counter > 20){
-					run_t.Numbers_counter =20;
-				 }
-				 virtualPwd[run_t.Numbers_counter-1]=temp;
+			
 				//input correct numbers
 				if(run_t.Numbers_counter < 7){//run_t.inputNewPasswordTimes
 					//alarm statement if input numbers overflow 10 numbers,input new password 
@@ -406,6 +403,11 @@ void RunCheck_Mode(uint16_t dat)
 
 				   }
 
+				if(run_t.Numbers_counter > 20){
+					run_t.Numbers_counter =20;
+				 }
+				 virtualPwd[run_t.Numbers_counter-1]=temp;
+				run_t.buzzer_sound_label = sound_key ;
 			  break;
 				default :
 				break;
