@@ -129,6 +129,7 @@ void CheckPassword_Lock_Handler(void)
 			   else if(run_t.password_unlock_model == motor_run_start){
 
                    run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
+				   run_t.Motor_RunCmd_Label = motor_run_start;
 			    }
                 else if(run_t.password_unlock_model==DISPOSE_NULL)
                     run_t.pwd_fp_label = DISPOSE_NULL;
@@ -163,7 +164,8 @@ void CheckPassword_Lock_Handler(void)
 	   case DISPOSE_MOTOR_RUN: //9
 
 	   	 RunMotor_Definite_Handler(); //definite motor
-          run_t.pwd_fp_label = DISPOSE_NULL;
+	   	 if(run_t.Motor_RunCmd_Label==morot_reverse)
+              run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
        case DISPOSE_KEY_FAIL: //10

@@ -129,7 +129,7 @@ typedef struct __RUN_T{
 	uint8_t gTimer_10s_start;
 	uint8_t gTimer_led_blink_500ms;
 	
-	uint16_t 	motorRunCount;
+	uint8_t 	motorRunCount;
 	
 
 	uint32_t userId;

@@ -117,7 +117,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 
         case motor_run_underway:
             //MOTOR open run ->stop Position 
-            if(run_t.motorRunCount < 25){//100ms *300=3s
+            if(run_t.motorRunCount < 10){//100ms *300=3s
                 run_t.gTimer_8s =0;//WT.EDIT 2022.10.06
                 run_t.motor_return_homePosition=1;//WT.EDIT 2022.08.18
                
@@ -194,13 +194,13 @@ void RunMotor_Definite_Handler(void) //definite motor
        }
 
 
-         Motor_CW_Run();// Close 
-		 HAL_Delay(530);//WT.EDIT 2022.09.19
-		 Motor_Stop();
-		 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
-		 run_t.password_unlock_model=0;
-	     run_t.gTimer_8s=0;
-		 Panel_LED_Off();
+//         Motor_CW_Run();// Close 
+//		 HAL_Delay(530);//WT.EDIT 2022.09.19
+//		 Motor_Stop();
+//		 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
+//		 run_t.password_unlock_model=0;
+//	     run_t.gTimer_8s=0;
+//		 Panel_LED_Off();
 }
                 
 
