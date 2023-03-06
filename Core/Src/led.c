@@ -259,7 +259,7 @@ void DisplayLed_Handler(void)
 
 		break;
 
-		case works_null:
+		case works_null: //7
             PS_LED_ALL_OFF();
 			OK_LED_OFF();
 		    ERR_LED_OFF();

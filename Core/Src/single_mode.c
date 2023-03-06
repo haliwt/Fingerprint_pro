@@ -97,9 +97,9 @@ void CheckPassword_Lock_Handler(void)
 			   	    run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
 			   break;
 
-			   case KEY_NULL:
-			   	  run_t.pwd_fp_label = DISPOSE_KEY_FAIL;
-
+			   case KEY_NULL: //4
+			   	
+                   return ;
 			   break;
 
 
