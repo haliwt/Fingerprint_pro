@@ -89,9 +89,8 @@ void RunMotor_Definite_Handler(void) //definite motor
 {
 
   static uint8_t adjust_ref,stop_flag;
-  if(run_t.motor_doing_flag==1){//open lock doing
 
-        run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
+
 
       switch(run_t.Motor_RunCmd_Label){
 
@@ -115,9 +114,9 @@ void RunMotor_Definite_Handler(void) //definite motor
             run_t.Motor_RunCmd_Label=motor_run_underway;
         break;
 
-        case motor_run_underway:
+        case motor_run_underway: //2
             //MOTOR open run ->stop Position 
-            if(run_t.motorRunCount < 10){//100ms *300=3s
+            if(run_t.motorRunCount < 3){//100ms *300=3s
                 run_t.gTimer_8s =0;//WT.EDIT 2022.10.06
                 run_t.motor_return_homePosition=1;//WT.EDIT 2022.08.18
                
@@ -128,12 +127,12 @@ void RunMotor_Definite_Handler(void) //definite motor
             }
         break;
 
-        case motor_run_half_stop:
-            if(run_t.motorRunCount < 11){ //100ms * 10
+        case motor_run_half_stop: //3
+            if(run_t.motorRunCount < 2){ //100ms * 10
               Motor_Stop();
-               run_t.motor_return_homePosition=1;//motor runing flag 
+              run_t.motor_return_homePosition=1;//motor runing flag 
             
-                }
+             }
              else{ 
                  run_t.motorRunCount=0;
                 run_t.Motor_RunCmd_Label=morot_reverse;
@@ -141,27 +140,33 @@ void RunMotor_Definite_Handler(void) //definite motor
              
         break;
 
-        case morot_reverse : //home position
+        case morot_reverse : //5 //home position
 			 run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
 			 PS_Blue_Led_ON();
-			 OK_LED_OFF();
-		    
-            run_t.motor_return_homePosition=1;//motor runing flag 
-            run_t.gTimer_motor_reverse=0;
-            Motor_CW_Run();// Close
-            run_t.Motor_RunCmd_Label=motor_stop;
-            run_t.motorRunCount=0;
+			// OK_LED_OFF();
+		    if( run_t.motorRunCount < 3){
+		            run_t.motor_return_homePosition=1;//motor runing flag 
+		            run_t.gTimer_motor_reverse=0;
+		            Motor_CW_Run();// Close
+		           
+		     }
+			 else{
+
+				 run_t.Motor_RunCmd_Label=motor_stop;
+		         run_t.motorRunCount=0;
+
+			 }
 
         break;
 
-        case motor_stop:
-            if(run_t.motorRunCount >20 && adjust_ref <6 ){//15 //100ms x 10 =1s motor stop 1s 
+        case motor_stop: //6
+            if(run_t.motorRunCount >5 && adjust_ref <6 ){//15 //100ms x 10 =1s motor stop 1s 
                
                 adjust_ref++;
 				Motor_Stop();
 			    stop_flag =1;
             }
-			else if(run_t.motorRunCount >23) {
+			else if(run_t.motorRunCount >4) {
         		adjust_ref=0;
 				Motor_Stop();
 			    stop_flag=1;
@@ -191,7 +196,7 @@ void RunMotor_Definite_Handler(void) //definite motor
         break;    
 
         }
-       }
+   
 
 
 //         Motor_CW_Run();// Close 
