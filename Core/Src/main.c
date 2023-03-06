@@ -116,10 +116,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim14);//
   ICman_Init_SET(SC12B_ADDR);
-  
-  TouchKey_Run_Handler(TouchKey);
- 
-   HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1);
+  HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1);
   /* USER CODE END 2 */
     syspara_t.ps_serch_getimage=0xff;
 	 syspara_t.ps_serch_genchar=0xff;
@@ -128,6 +125,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
      syspara_t.PS_wakeup_flag=0;
      syspara_t.PS_login_times=0;
      syspara_t.PS_clear_ps_success=0xff;
+      TouchKey_Run_Handler(TouchKey);
 	 Fingerprint_ReadData_Handler(RunCommand_Unlock_Fingerprint);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

@@ -273,7 +273,7 @@ void DisplayLed_Handler(void)
              if(run_t.panel_lock ==1){
                 if(run_t.gTimer_60s > 60){
 				   run_t.gTimer_60s=0;
-
+                   run_t.error_times=0;
 				   run_t.panel_lock=0;
 
 

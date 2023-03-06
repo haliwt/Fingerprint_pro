@@ -438,7 +438,7 @@ void SavePassword_To_EEPROM(void)
 		        run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.10.14
 		        OK_LED_ON(); //WT.EDIT 2022.10.28
 				ERR_LED_OFF();
-                  run_t.gTimer_8s=7;
+                  run_t.gTimer_8s=4;
 				
 			
 		
@@ -478,163 +478,7 @@ void SavePassword_To_EEPROM(void)
 	}
  }
 
-/****************************************************************************
-	*
-	*Function Name:void Lock_Open_Order(void)
-	*Function : excute open and don't open lock 
-	*Input Ref: NO
-	*Retrun Ref:NO
-	*
-****************************************************************************/
-void Lock_Open_Order(void)
-{
-	
-    uint8_t i; 
 
-    switch(run_t.open_lock_lable){
-
-    	 case open_lock_success:
-            ERR_LED_OFF();
-		    OK_LED_ON();
-
-    	  if(run_t.Confirm_newPassword ==1){ //prepare new password 
-			
-			
-				run_t.inputNewPassword_Enable =1; // // be related to "Ref must be"
-				run_t.motor_return_homePosition= 0;
-				run_t.Numbers_counter =0 ;
-				run_t.eepromAddress=0;
-	
-			    syspara_t.PS_login_times=0;
-				
-				
-				run_t.inputDeepSleep_times =0;
-			
-				run_t.error_times=0;
-			
-				run_t.gTimer_8s =0;
-				
-                run_t.buzzer_sound_label =sound_high;
-                run_t.inputNewPwd_OK_led_blank_times=0;
-			   // run_t.works_led_label = works_ok_blink; //
-			    run_t.works_led_label =  works_ok_blink;
-				
-			  run_t.password_unlock_model=STORE_MODEL_EEPROM;// permit to save new password
-			  syspara_t.ps_serch_getimage=0xff;
-              syspara_t.ps_serch_genchar =0xff;
-              syspara_t.ps_serach_result=0xff;
-			  run_t.inputNewPwd_OK_led_blank_times=0;
-			  syspara_t.handler_read_data_flag++;
-			
-		}
-		else{ //runing open lock 
-		    if(run_t.motor_return_homePosition==1){//WT.EDIT 2022.10.28
-				run_t.buzzer_sound_label =sound_excute;//Buzzer_LongSound(); //WT.EDIT 2022.10.06
-				ERR_LED_OFF();
-				OK_LED_ON();
-				
-
-				run_t.Numbers_counter =0 ;
-				
-				run_t.inputDeepSleep_times =0;
-				for(i=0;i<6;i++){
-					pwd1[i]=0;
-					Readpwd[i]=0;
-					pwd2[i]=0;
-
-				}
-				syspara_t.ps_serch_getimage=0xff;
-				syspara_t.ps_serch_genchar =0xff;
-				syspara_t.ps_serach_result=0xff;
-				syspara_t.handler_read_data_flag++;
-
-			}
-            else{
-		   	    
-                syspara_t.ps_serch_getimage=0xff;
-                syspara_t.ps_serch_genchar =0xff;
-                syspara_t.ps_serach_result=0xff;
-                
-                run_t.motor_doing_flag=1;
-                run_t.Motor_RunCmd_Label=motor_run_start;
-                run_t.motorRunCount=0;
-				 
-			    	run_t.Numbers_counter =0 ; //WT.EDIT 2022.10.28
-			
-				   run_t.inputDeepSleep_times =0;
-				   run_t.buzzer_sound_label = sound_excute;
-				
-					   
-			       for(i=0;i<6;i++){
-				  	   pwd1[i]=0;
-					   Readpwd[i]=0;
-					   pwd2[i]=0;
-				
-				  	}
-			   
-
-               }
-
- 
-	     }
-
-
-       run_t.open_lock_lable=open_lock_null;
-   break;
-
-   case open_lock_fail:
-			OK_LED_OFF();
-			ERR_LED_ON();
-
-			run_t.Confirm_newPassword =0; //release administrator shet input new password flag.
-
-            syspara_t.handler_read_data_flag++;
-			run_t.Numbers_counter = 0;
-			run_t.eepromAddress=0;
-
-			syspara_t.PS_login_times=0xff; //WT.EDIT 2022.12.17
-		
-			run_t.error_times ++ ; //input times 5 ,
-			if(run_t.error_times > 4){
-				run_t.gTimer_10s_start=0;
-				run_t.gTimer_input_error_times_60s =0;
-				run_t.panel_lock=1;
-				run_t.gTimer_60s=0;
-				run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
-                run_t.works_led_label =  works_error_blink;
-				
-
-			}
-			
-			run_t.inputNewPassword_Enable =0;
-			run_t.buzzer_sound_label =sound_fail;//run_t.buzzer_fail_sound_flag=1;
-
-			run_t.clear_inputNumbers_newpassword=0; //WT.EDIT 2022.10.14
-
-			run_t.Numbers_counter =0; //WT.EDIT 2022.10.14
-			
-			for(i=0;i<6;i++){
-			pwd1[i]=0;
-			Readpwd[i]=0;
-			pwd2[i]=0;
-
-			}
-		    run_t.works_led_label =  works_error_blink;
-             syspara_t.ps_serch_getimage=0xff;
-                syspara_t.ps_serch_genchar =0xff;
-                syspara_t.ps_serach_result=0xff;
-      run_t.open_lock_lable=open_lock_null;
-	break;
-
-	case open_lock_null:
-		run_t.open_lock_lable=0xff;
-
-	break;
-
-	
-
-   }
-}
 
 void Open_Lock_Success_Fun(void)
 {
@@ -657,7 +501,6 @@ void Open_Lock_Success_Fun(void)
 		//buzzer sound 
         run_t.buzzer_sound_label =sound_high;
 	    //led display 
-		// run_t.works_led_label = works_ok_blink; //
 		run_t.works_led_label = works_ok_blink;
 		run_t.inputNewPwd_OK_led_blank_times=0;
 
@@ -680,7 +523,7 @@ void Open_Lock_Success_Fun(void)
 			run_t.gTimer_8s =0;
 
 			run_t.Numbers_counter =0 ;
-
+            run_t.error_times=0;
 			
 			for(i=0;i<6;i++){
 			pwd1[i]=0;
@@ -692,16 +535,15 @@ void Open_Lock_Success_Fun(void)
 			syspara_t.ps_serch_genchar =0xff;
 			syspara_t.ps_serach_result=0xff;
 			syspara_t.handler_read_data_flag++;
-			run_t.password_unlock_model = 0xff;
+			run_t.password_unlock_model = DISPOSE_NULL;
 		}
 		else{
 
 			syspara_t.ps_serch_getimage=0xff;
 			syspara_t.ps_serch_genchar =0xff;
 			syspara_t.ps_serach_result=0xff;
-
+            run_t.error_times=0;
 			run_t.motor_doing_flag=1;
-			//run_t.Motor_RunCmd_Label=motor_run_start;
 			
 			run_t.motorRunCount=0;
 
@@ -752,6 +594,7 @@ void Open_Lock_Fail_Fun(void)
 		run_t.gTimer_60s=0;
 		run_t.works_led_label =works_error_blink;
         run_t.password_unlock_model = KEY_LOCK_60S;
+		return ;
 	}
     else{
 		run_t.inputNewPassword_Enable =0;

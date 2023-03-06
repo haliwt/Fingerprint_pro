@@ -84,7 +84,7 @@ void CheckPassword_Lock_Handler(void)
             run_t.gTimer_8s=0;//clear zero
             switch(run_t.enter_key){
 
-			   case KEY_FAIL:
+			   case KEY_FAIL://01
 					run_t.pwd_fp_label = DISPOSE_KEY_FAIL;
 			   break;
 
@@ -93,13 +93,14 @@ void CheckPassword_Lock_Handler(void)
 			   break;
 
 
-			   case KEY_LOCK_60S:
+			   case KEY_LOCK_60S://03
 			   	    run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
 			   break;
 
 			   case KEY_NULL: //4
-			   	
-                   return ;
+			       run_t.pwd_fp_label =PWD_ID;
+			   	   run_t.open_lock_lable=0;
+                   
 			   break;
 
 
@@ -129,11 +130,13 @@ void CheckPassword_Lock_Handler(void)
 
                    run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
 			    }
+                else if(run_t.password_unlock_model==DISPOSE_NULL)
+                    run_t.pwd_fp_label = DISPOSE_NULL;
 			  
 			  break;
 		  	  
 
-			 case open_lock_fail:
+			 case open_lock_fail: //2
 			 	 Open_Lock_Fail_Fun();
 				 if(run_t.password_unlock_model==KEY_LOCK_60S){
 				 	
