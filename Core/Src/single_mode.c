@@ -88,7 +88,7 @@ void CheckPassword_Lock_Handler(void)
 					run_t.pwd_fp_label = DISPOSE_KEY_FAIL;
 			   break;
 
-			   case KEY_SUCCESS:
+			   case KEY_SUCCESS: //2
 					run_t.pwd_fp_label = DISPOSE_STEP_COMPARE;
 			   break;
 
@@ -115,7 +115,7 @@ void CheckPassword_Lock_Handler(void)
 	       run_t.pwd_fp_label = DISPOSE_STEP_COMPARE;
 	   break;
 
-	   case DISPOSE_STEP_COMPARE:
+	   case DISPOSE_STEP_COMPARE://4
 	   	 
 		  RunCommand_Unlock_Keyboard();
 		  switch(run_t.open_lock_lable){
@@ -160,19 +160,19 @@ void CheckPassword_Lock_Handler(void)
           run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
-       case DISPOSE_KEY_FAIL:
+       case DISPOSE_KEY_FAIL: //10
 	   	    run_t.works_led_label = works_error_blink;
 			run_t.buzzer_sound_label = sound_fail;
 
         run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
-	   case DISPOSE_KEY_LOCK_60S:
+	   case DISPOSE_KEY_LOCK_60S://11
         run_t.panel_lock =1;
 	    run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
-	   case DISPOSE_NULL:
+	   case DISPOSE_NULL: //13
 
 	     Motor_Reverse_State();
 

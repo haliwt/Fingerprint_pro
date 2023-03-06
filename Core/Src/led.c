@@ -290,16 +290,14 @@ void DisplayLed_Handler(void)
 		break;
 
 		 case standby_led :
-		 	
-		    standby_cnt++;
-		  if(standby_cnt > 2){
-		  	  standby_cnt =0;
-		  	 if(run_t.gTimer_60s > 8){
-	            run_t.gTimer_60s =0;
+            
+		
+		  	 if(run_t.gTimer_8s > 8){
+	            run_t.gTimer_8s =0;
 	            Standby_Model_Handler();
 
 			 }
-		  }
+		  
          break;
 
 		 default:

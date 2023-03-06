@@ -90,41 +90,41 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.gTimer_8s=0;
 						if(run_t.clear_inputNumbers_newpassword ==2){ //the second times cancel input new password action.
 
-							run_t.clear_inputNumbers_newpassword=0;
-							run_t.inputNewPassword_Enable=0;
-							run_t.Confirm_newPassword=0;
-							run_t.inputNewPasswordTimes =0;
-							run_t.Numbers_counter =0 ;
+						run_t.clear_inputNumbers_newpassword=0;
+						run_t.inputNewPassword_Enable=0;
+						run_t.Confirm_newPassword=0;
+						run_t.inputNewPasswordTimes =0;
+						run_t.Numbers_counter =0 ;
 
-							for(i=0;i<6;i++){
-							   pwd1[i]=0;
-							   Readpwd[i]=0;
-						}
+						for(i=0;i<6;i++){
+						pwd1[i]=0;
+						Readpwd[i]=0;
+					}
 
-						OK_LED_OFF();
-						ERR_LED_OFF();
-						run_t.enter_key = KEY_NULL;
-						return ;
+					OK_LED_OFF();
+					ERR_LED_OFF();
+					run_t.enter_key = KEY_NULL;
+					return ;
 
-						}
-						if(run_t.clear_inputNumbers_newpassword ==1){//the first administrator password
-							
+					}
+					if(run_t.clear_inputNumbers_newpassword ==1){//the first administrator password
 
-							for(i=0;i<6;i++){
-							pwd2[i]=0;
-							pwd1[i]=0;
-							}
-							run_t.inputNewPasswordTimes =0; //WT.EDIT 2022.10.14
-                            run_t.Numbers_counter =0 ;
-						
-							//run_t.password_unlock_model=STORE_MODEL_EEPROM; //run_t.open_lock_success=STORE_MODEL;//3;
-							run_t.Confirm_newPassword=1; //
-							run_t.inputNewPwd_OK_led_blank_times=0;
-						    run_t.enter_key = KEY_NULL;
-							return ;
 
-						}
-					
+						for(i=0;i<6;i++){
+						pwd2[i]=0;
+						pwd1[i]=0;
+					}
+					run_t.inputNewPasswordTimes =0; //WT.EDIT 2022.10.14
+					run_t.Numbers_counter =0 ;
+
+					//run_t.password_unlock_model=STORE_MODEL_EEPROM; //run_t.open_lock_success=STORE_MODEL;//3;
+					run_t.Confirm_newPassword=1; //
+					run_t.inputNewPwd_OK_led_blank_times=0;
+					run_t.enter_key = KEY_NULL;
+					return ;
+
+					}
+
 					}
 					else
 						run_t.cancel_key_label = 1;
@@ -153,7 +153,7 @@ void RunCheck_Mode(uint16_t dat)
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
 
 
-        if(special2 != run_t.getSpecial_2_key && key_pressed ==0){
+        if(special2 != run_t.getSpecial_2_key ){
 	         special2 = run_t.getSpecial_2_key;
 
            run_t.getSpecial_1_key++;//n1++
@@ -170,7 +170,7 @@ void RunCheck_Mode(uint16_t dat)
 					run_t.buzzer_sound_label = sound_key;  
 					run_t.pwd_fp_label = 
                     run_t.gTimer_8s=0;
-				    
+				    run_t.enter_key = KEY_NULL;
 					return ;
 				 }
 
@@ -186,22 +186,13 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.gTimer_60s=0;
 						run_t.gTimer_8s=0;
 						run_t.enter_key = KEY_LOCK_60S;
-
-						}
-
-					run_t.enter_key = KEY_FAIL ;
-					run_t.buzzer_sound_label =sound_fail;
-                    run_t.gTimer_8s=0;
-					return ;
+						run_t.buzzer_sound_label =sound_fail;
+		                  
+						return ;
+					}
 				 
 				}
 
-
-				 run_t.confirm_key_label = 1;
-
-				 
-							
-		       break;
 
 			   case 1:
 			   	
@@ -244,8 +235,6 @@ void RunCheck_Mode(uint16_t dat)
 			   break;
 
 			}
-		
-		}
 	 
       break;
 
@@ -346,10 +335,12 @@ void RunCheck_Mode(uint16_t dat)
 		
    break;
 		  
-
+   
 	}  
+	default :
+	break;
 
-	
+   	}
 	 if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0){
 		numbers_key =run_t.getNumbers_key;
            key_pressed =0;
@@ -409,14 +400,13 @@ void RunCheck_Mode(uint16_t dat)
 				 virtualPwd[run_t.Numbers_counter-1]=temp;
 				run_t.buzzer_sound_label = sound_key ;
 			  break;
-				default :
-				break;
+				
 
 			}
 
 			}
+
 }
-
 /****************************************************************************
 *
 *Function Name:void RunCheck_Mode(unsigned int dat)
