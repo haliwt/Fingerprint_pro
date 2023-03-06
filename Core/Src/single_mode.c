@@ -129,6 +129,7 @@ void CheckPassword_Lock_Handler(void)
 
                    run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
 			    }
+			  
 			  break;
 		  	  
 
@@ -142,7 +143,9 @@ void CheckPassword_Lock_Handler(void)
 
                       run_t.pwd_fp_label = DISPOSE_NULL;
 				 }
-                
+			
+
+			
 			 break;
 			}
 		 

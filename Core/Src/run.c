@@ -76,7 +76,7 @@ void RunCheck_Mode(uint16_t dat)
       
 		 run_t.getSpecial_2_key++;//n1++;
 		 run_t.getNumbers_key++;//n2++;
-		
+		 key_pressed=0;
 	 
 		  run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		  run_t.gTimer_8s=0;  //LED turn on holde times
@@ -158,8 +158,8 @@ void RunCheck_Mode(uint16_t dat)
 	         special2 = run_t.getSpecial_2_key;
 
            run_t.getSpecial_1_key++;//n1++
-		    run_t.getNumbers_key++;//n2++;
-		    
+		   run_t.getNumbers_key++;//n2++;
+		     key_pressed=0;
 			 
 	       run_t.gTimer_8s=0;
 
@@ -190,7 +190,7 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.buzzer_sound_label =sound_fail;
 		                  
 						return ;
-					}
+					   }
 				 
 				}
 
@@ -211,7 +211,7 @@ void RunCheck_Mode(uint16_t dat)
                     run_t.buzzer_sound_label =sound_key;
 					run_t.Numbers_counter=0;
 					run_t.gTimer_8s=0;
-
+                  
 
 				}
 				else if(run_t.motor_return_homePosition==0){ // return home position
@@ -342,7 +342,8 @@ void RunCheck_Mode(uint16_t dat)
 	break;
 
    	}
-	 if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0){
+    //check numbers key.
+	if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0 ){
 		numbers_key =run_t.getNumbers_key;
            key_pressed =0;
 			run_t.NumbersKey_pressedNumbers=1;

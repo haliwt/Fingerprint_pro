@@ -43,14 +43,8 @@ void Read_Administrator_Password(void)
 			   case 2:
 					 ReadAddress = USER_2;
 			   break;
-
-			   default:
-
-			   break;
 	
-			  
-	
-		   }
+			  }
 
       
 	   if(run_t.eepromAddress <3){
@@ -89,7 +83,7 @@ void Read_Administrator_Password(void)
                       		}
 						
                         
-						return ;
+						//return ;
 
 					}
 					else{
@@ -105,7 +99,7 @@ void Read_Administrator_Password(void)
 			                        Readpwd[i]=0;
 
 		                         }
-								 return ;
+								// return ;
 		                        
 		                   }
 						
@@ -149,7 +143,7 @@ void Read_Administrator_Password(void)
 
                       }
 						syspara_t.PS_login_times=0;
-						return ;
+						//return ;
 
 					}
 					else{
@@ -163,7 +157,7 @@ void Read_Administrator_Password(void)
 
                       }
 						 syspara_t.PS_login_times=0;
-						 return ;
+						// return ;
 						
 					}
 				 }
