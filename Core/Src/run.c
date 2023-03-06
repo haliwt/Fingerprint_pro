@@ -150,6 +150,7 @@ void RunCheck_Mode(uint16_t dat)
 		  }
        	}
 	   break;
+	   //confirm Key 
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
 
 
@@ -235,10 +236,10 @@ void RunCheck_Mode(uint16_t dat)
 			   break;
 
 			}
-	 
+       }
       break;
 
-	 
+	//numbers key
 	case KEY_0:
 		run_t.getNumbers_key++;
 	    touchkey_key_id[0]=0;
@@ -336,7 +337,7 @@ void RunCheck_Mode(uint16_t dat)
    break;
 		  
    
-	}  
+	
 	default :
 	break;
 
