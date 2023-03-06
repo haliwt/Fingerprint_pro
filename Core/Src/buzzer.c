@@ -231,7 +231,7 @@ void Buzzer_Sound_Handler(void)
           run_t.buzzer_sound_label=sound_over;
       break;
 
-      case sound_fail:
+      case sound_fail: //2
           Buzzer_Fail_Sound();
 		
           run_t.buzzer_sound_label=sound_over;
@@ -267,7 +267,7 @@ void Buzzer_Sound_Handler(void)
 
       break;
 
-      case sound_over:
+      case sound_over: //7
 
         BUZZER_OFF();
         run_t.buzzer_sound_label=0xff;

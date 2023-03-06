@@ -165,7 +165,6 @@ void RunCheck_Mode(uint16_t dat)
                case 0 :
                 if(run_t.Numbers_counter ==0){ //only has entery_key 
 
-					run_t.enter_key = KEY_SOUND;
 					run_t.buzzer_sound_label = sound_key;  
                     run_t.gTimer_8s=0;
 				    
@@ -187,7 +186,7 @@ void RunCheck_Mode(uint16_t dat)
 						}
 
 					run_t.enter_key = KEY_FAIL ;
-					run_t.buzzer_sound_label =sound_fail;//run_t.buzzer_fail_sound_flag=1;
+					run_t.buzzer_sound_label =sound_fail;
                     run_t.gTimer_8s=0;
 					return ;
 				 
@@ -213,7 +212,7 @@ void RunCheck_Mode(uint16_t dat)
 					}
 
 					run_t.enter_key =KEY_SUCCESS;
-
+                    run_t.buzzer_sound_label =sound_key;
 					run_t.Numbers_counter=0;
 					run_t.gTimer_8s=0;
 
@@ -233,6 +232,7 @@ void RunCheck_Mode(uint16_t dat)
 					run_t.buzzer_sound_label =sound_key;//run_t.buzzer_key_sound_flag =1; 
 
 					run_t.enter_key =KEY_SUCCESS;
+				    run_t.buzzer_sound_label =sound_key;
 					run_t.eepromAddress=0;
 
 				}
@@ -393,10 +393,15 @@ void RunCheck_Mode(uint16_t dat)
 					        return ;
 					
 						}
-						else
-						   pwd2[run_t.Numbers_counter-1]=temp; //the first input new password .
+						else{
+						   pwd2[run_t.Numbers_counter-1]=temp; //the first input new password
+						   run_t.buzzer_sound_label = sound_key ;
+						}
 					}
-					else  pwd1[run_t.Numbers_counter-1] =temp;
+					else{
+						pwd1[run_t.Numbers_counter-1] =temp;
+						run_t.buzzer_sound_label = sound_key ;
+					} 
 
 				   }
 

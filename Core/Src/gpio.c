@@ -80,7 +80,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pins : PB13 -KEY-SIDE*/
   GPIO_InitStruct.Pin = GPIO_PIN_13 ;   //|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;//GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;//GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
    /*Configure GPIO pins : PB8 -SC12B touch key*/

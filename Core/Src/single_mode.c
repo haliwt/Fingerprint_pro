@@ -78,7 +78,7 @@ void CheckPassword_Lock_Handler(void)
     
     switch(run_t.pwd_fp_label){
 
-       case PWD_ID:
+       case PWD_ID: //2
 	  
 			TouchKey_Handler();
             run_t.gTimer_8s=0;//clear zero
@@ -92,9 +92,6 @@ void CheckPassword_Lock_Handler(void)
 					run_t.pwd_fp_label = DISPOSE_STEP_COMPARE;
 			   break;
 
-			   case KEY_SOUND:
-					run_t.pwd_fp_label = DISPOSE_BUZZER_SOUND;
-			   break;
 
 			   case KEY_LOCK_60S:
 			   	    run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
@@ -111,7 +108,7 @@ void CheckPassword_Lock_Handler(void)
            
 	   break;
 
-	   case FP_ID:
+	   case FP_ID: //3
 	   	 
 		   FP_ReadData_Handler();
 	     
@@ -151,13 +148,13 @@ void CheckPassword_Lock_Handler(void)
 		 
 	   break;
 
-	   case DISPOSE_SAVE_DATA:
+	   case DISPOSE_SAVE_DATA: //6
 	      SaveData_EEPROM_Handler();
 
            run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
-	   case DISPOSE_MOTOR_RUN:
+	   case DISPOSE_MOTOR_RUN: //9
 
 	   	 RunMotor_Definite_Handler(); //definite motor
           run_t.pwd_fp_label = DISPOSE_NULL;
@@ -272,23 +269,21 @@ static void Save_To_EeepromNewPwd(void)
 ********************************************************/
 void TouchKey(void)
 {
-	 if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
-         //if(I2C_Simple_Read_From_Device(SC12B_ADDR,SC_Data,2) ==DONE){
-			
+   if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
+    
+    KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
+	RunCheck_Mode(KeyValue); 
+    if(KeyValue ==0){
 
-		 KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
-				RunCheck_Mode(KeyValue); 
-	            if(KeyValue ==0){
+	    run_t.NumbersKey_pressedNumbers = 0;
+	    run_t.getSpecial_1_key++;
+	    run_t.getSpecial_2_key++;
+	    run_t.getNumbers_key=0x40;
 
-	            run_t.NumbersKey_pressedNumbers = 0;
-	            run_t.getSpecial_1_key++;
-	            run_t.getSpecial_2_key++;
-	            run_t.getNumbers_key=0x40;
-
-            }
-	     
+    }
+  }     
 			  
-	 }
+	 
 }
 
 void TouchKey_Run_Handler(void (*touchkey_huandler)(void))

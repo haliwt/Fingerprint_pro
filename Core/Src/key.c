@@ -46,14 +46,18 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			FP_POWER_ON()  ;
 			BACKLIGHT_ON();
 			run_t.lowPower_flag++;
-		
-			run_t.backlight_Cmd_lable =0xff;	 	
-			
-			 run_t.gTimer_8s=0;
-			 run_t.inputDeepSleep_times =0; 
+		    run_t.gTimer_8s=0;
+			run_t.inputDeepSleep_times =0; 
 			 	
 		}
-	   	
+	   	else{
+        
+            POWER_ON();
+			FP_POWER_ON()  ;
+            BACKLIGHT_ON(); 
+
+        }
+        
 
 	}
 }
@@ -79,12 +83,19 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			FP_POWER_ON()  ;
 			run_t.lowPower_flag++;
 			
-			run_t.buzzer_sound_label=sound_key;//Buzzer_KeySound();
+			//run_t.buzzer_sound_label=sound_key;//Buzzer_KeySound();
 			
 			run_t.inputDeepSleep_times =0;
-			run_t.backlight_Cmd_lable =0xff;
 		    run_t.gTimer_8s=0;
 		}
+        else{
+        
+            POWER_ON();
+			FP_POWER_ON()  ;
+            BACKLIGHT_ON(); 
+
+        }
+        
 
  	}
   
@@ -103,34 +114,28 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		POWER_ON();
 		FP_POWER_ON()  ;
 		BACKLIGHT_ON();
-		//if(rx_times !=syspara_t.fp_rx_times){
-			//rx_times =syspara_t.fp_rx_times;
-			Buzzer_KeySound();
+        Buzzer_KeySound();
 
-		///}
-		
-	    run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
+
       
 		run_t.lowPower_flag++;
-	    run_t.backlight_Cmd_lable =0xff;
+	
 	    run_t.gTimer_8s=0;
 		run_t.inputDeepSleep_times =0;
 	      
       }
-
-	         if(run_t.panel_lock==0){
-			  POWER_ON();
+      else{
+	          POWER_ON();
 			  FP_POWER_ON()  ;
 			  BACKLIGHT_ON();
 			  syspara_t.PS_wakeup_flag=1;
 			 
-			  }
          }
 
   }
 
 
-
+}
   
    
 /*******************************************************************************
@@ -303,10 +308,10 @@ void  SideKey_Fun(uint8_t keyvalue)
 		ERR_LED_OFF();
 		PS_Blue_Led_ON();
 
-		run_t.pwd_fp_label = DISPOSE_ADM_RELEASE_KEY;  //释放管理员ID .
-		run_t.works_led_label = DISPOSE_ADM_RELEASE_KEY;
-		run_t.gTimer_8s=0; //start counter timer .
-	  
+		//run_t.pwd_fp_label = DISPOSE_ADM_RELEASE_KEY;  //释放管理员ID .
+		run_t.works_led_label = works_ok_led_on;
+		run_t.buzzer_sound_label = sound_key;
+	    run_t.gTimer_8s=0; //start counter timer 
 	        
        }
 	 
@@ -316,8 +321,7 @@ void  SideKey_Fun(uint8_t keyvalue)
 
 		syspara_t.PS_wakeup_flag=0;
         run_t.works_led_label=works_ok_led_on;
-        
-		run_t.inputDeepSleep_times =0;
+	    run_t.inputDeepSleep_times =0;
         run_t.gTimer_8s=0;
 
 		

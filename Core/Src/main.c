@@ -141,6 +141,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
+			run_t.pwd_fp_label = 0xff;
             run_t.lowPower_flag=0;
 	   }
 	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
@@ -151,11 +152,10 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	   	}
         if(run_t.panel_lock==0){
 	 	  CheckPassword_Lock_Handler();
+		  DisplayLed_Handler();
 		  Buzzer_Sound_Handler();
-        }
- 		DisplayLed_Handler();
 
-	 
+        }
 	 }
  
   
