@@ -605,8 +605,10 @@ void Lock_Open_Order(void)
 				run_t.gTimer_10s_start=0;
 				run_t.gTimer_input_error_times_60s =0;
 				run_t.panel_lock=1;
+				run_t.gTimer_60s=0;
 				run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
-                //run_t.works_led_label =  works_error_blink;
+                run_t.works_led_label =  works_error_blink;
+				
 
 			}
 			
@@ -753,7 +755,7 @@ void Open_Lock_Fail_Fun(void)
 		run_t.gTimer_10s_start=0;
 		run_t.gTimer_input_error_times_60s =0;
 		run_t.panel_lock=1;
-		
+		run_t.gTimer_60s=0;
 		run_t.works_led_label =works_error_blink;
         run_t.password_unlock_model = KEY_LOCK_60S;
 	}

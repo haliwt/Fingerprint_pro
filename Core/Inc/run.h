@@ -39,9 +39,8 @@ typedef enum _open_state{
 
 typedef enum _tk_sate{
    INPUT_NORMAL_NUMBERS,
-   INPUT_NEW_PWD,
- 
-   }touchkey_state_t;
+   INPUT_NEW_PWD
+ }touchkey_state_t;
 
 
 
@@ -121,9 +120,8 @@ typedef struct __RUN_T{
 	//timging
     uint8_t gTimer_motor_reverse;
 
-	unsigned char gTimer_10s;
-	unsigned char gTimer_8s;
 	unsigned char gTimer_60s;
+	unsigned char gTimer_8s;
 	unsigned char gTimer_ADC;
 
 	

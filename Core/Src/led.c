@@ -53,21 +53,21 @@ void DisplayLed_Handler(void)
 		    PS_Green_Led_ON();
 			 //erase EEPRO data 
 			 if(run_t.clearEeprom==1){
-				 run_t.clearEeprom = 0;
-				 run_t.gTimer_8s =0;
-				 run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1 ;
-				  ClearEEPRO_Data();
-				  Del_FR();//fingerprint be deteleted
-				   run_t.gTimer_8s =0;
-			    
-				  run_t.inputDeepSleep_times =0;//WT.EDIT 2022.10.26
-				 
+				run_t.clearEeprom = 0;
+				run_t.gTimer_8s =0;
+				run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1 ;
+				ClearEEPRO_Data();
+				Del_FR();//fingerprint be deteleted
+				run_t.gTimer_8s =0;
 
-				   run_t. clearEeeprom_count=0;
-		            Del_FR();//fingerprint be deteleted
-		         run_t.gTimer_led_blink_500ms=0;
-		        run_t.clearEeeprom_count=0;
-                run_t.works_led_label=works_ok_blink;
+				run_t.inputDeepSleep_times =0;//WT.EDIT 2022.10.26
+
+
+				run_t. clearEeeprom_count=0;
+				Del_FR();//fingerprint be deteleted
+				run_t.gTimer_led_blink_500ms=0;
+				run_t.clearEeeprom_count=0;
+				run_t.works_led_label=works_ok_blink;
 				 
 			}
 			run_t.works_led_label= works_ok_led_off;
@@ -208,17 +208,17 @@ void DisplayLed_Handler(void)
 
 			if(run_t.gTimer_led_blink_500ms < 6 ){
 
-			ERR_LED_OFF();
-			PS_Red_Led_OFF();
+				ERR_LED_OFF();
+				PS_Red_Led_OFF();
 
 			}
 			else if(run_t.gTimer_led_blink_500ms > 5 &&  run_t.gTimer_led_blink_500ms < 11){
-			ERR_LED_ON();
-			 PS_Red_Led_ON();
+				ERR_LED_ON();
+				PS_Red_Led_ON();
 			}
 			if(run_t.gTimer_led_blink_500ms > 10){
-			cntrecoder++;
-			run_t.gTimer_led_blink_500ms=0;
+				cntrecoder++;
+				run_t.gTimer_led_blink_500ms=0;
 
 			}
 		
@@ -235,6 +235,11 @@ void DisplayLed_Handler(void)
 		    run_t.works_led_label= works_null;
 
 			}
+			else{
+
+			  run_t.works_led_label= works_null;
+
+			}
 
 		break;
 
@@ -246,14 +251,14 @@ void DisplayLed_Handler(void)
 			BAT_LED_ON();
 
 			if(run_t.gTimer_input_error_times_60s > 5){
-			run_t.factory_test =0;
-			run_t.gTimer_8s=10;
-			BACKLIGHT_OFF();
-			OK_LED_OFF();
-			ERR_LED_OFF();
-			BAT_LED_OFF();
-            FP_POWER_OFF();
-            run_t.works_led_label= works_null;
+				run_t.factory_test =0;
+				run_t.gTimer_8s=10;
+				BACKLIGHT_OFF();
+				OK_LED_OFF();
+				ERR_LED_OFF();
+				BAT_LED_OFF();
+	            FP_POWER_OFF();
+	            run_t.works_led_label= works_null;
 			}
 			
 
@@ -264,19 +269,33 @@ void DisplayLed_Handler(void)
 			OK_LED_OFF();
 		    ERR_LED_OFF();
 			BACKLIGHT_OFF();
-            run_t.works_led_label= 0xff;
-            //run_t.backlight_Cmd_lable=backlight_led_off;
-            run_t.works_led_label = standby_led;
-			run_t.gTimer_8s =0;
-			standby_cnt =0;
+        
+             if(run_t.panel_lock ==1){
+                if(run_t.gTimer_60s > 60){
+				   run_t.gTimer_60s=0;
+
+				   run_t.panel_lock=0;
+
+
+				}
+				
+
+			 }
+			 else{
+	            run_t.works_led_label = standby_led;
+				run_t.gTimer_8s =0;
+				standby_cnt =0;
+			 }
+			
 		break;
 
 		 case standby_led :
+		 	
 		    standby_cnt++;
 		  if(standby_cnt > 2){
 		  	  standby_cnt =0;
-		  	 if(run_t.gTimer_8s > 8){
-	            run_t.gTimer_8s =0;
+		  	 if(run_t.gTimer_60s > 8){
+	            run_t.gTimer_60s =0;
 	            Standby_Model_Handler();
 
 			 }
@@ -287,120 +306,10 @@ void DisplayLed_Handler(void)
 		 break;
 
     
-}
-}
-/****************************************************************************
-*
-*Function Name:void BackLight_Fun(void)
-*Function : backlingh of touchky of led
-*Retrun Ref:NO
-*
-****************************************************************************/
-#if 0
-static void BackLight_Fun(void)
-{
-	uint8_t i;
-	
-
-switch(run_t.backlight_Cmd_lable){
-     
-     case backlight_led_on:
-		if(run_t.panel_lock==0){
-		 BACKLIGHT_ON();
-        
-		if(run_t.gTimer_8s > 8){
-
-          run_t.backlight_Cmd_lable = backlight_led_off;
-          run_t.gTimer_8s=0;
-		}
-		else{
-           
-		}
-		}
-		else{
-           BACKLIGHT_OFF();
-		   PS_LED_ALL_OFF();
-
-           run_t.lowPower_flag=0;
-		}
-		
-		run_t.backlight_run_flag=1;
-     break;
-
-     case backlight_led_off:
-         
-        OK_LED_OFF();
-		ERR_LED_OFF();
-		PS_LED_ALL_OFF();
-	    BACKLIGHT_OFF();
-
-       run_t.gTimer_8s=0;
-	  // syspara_t.handler_read_data_flag++;
-	   syspara_t.PS_login_times=0;
-	   syspara_t.PS_wakeup_flag=0;
-	   run_t.Confirm_newPassword = 0;
-
-        run_t.lowPower_flag=0;
-	    syspara_t.PS_login_times=0;	//fingerprint input times 
-		Panel_LED_Off();
-		HAL_ADC_Stop(&hadc1);
-	
-      
-	
-		run_t.powerOn =3;
-		run_t.motor_return_homePosition=0;
-
-		//clear new password flag
-	
-		run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.09.28
-		run_t.Numbers_counter =0;
-		run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
-
-		//wake up touch key
-		run_t.touchkey_first ++; //WT.EDIT 2022.10.19 ->touch key delay times 
-
-		for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
-		*(pwd2 + i)=0;//pwd2[i]=0;
-		*(Readpwd+i)=0;
-		*(pwd1+i)=0;//pwd1[i]=0;
-
-		}
-
-        run_t.backlight_Cmd_lable = backlight_led_confirm;
-		run_t.backlight_run_flag=1;
-     break;
-
-
-	case backlight_led_confirm:
-
-	      if(run_t.gTimer_8s >8 ){
-		    run_t.backlight_Cmd_lable = standby_led;
-
-		 }
-		  else{
-
-		
-
-		  }
-
-		run_t.backlight_run_flag=1;
-	break;
-
-    case standby_led:
-        
-	
-		run_t.backlight_run_flag=1;
-	break;
-
-     default:
-
-     break;
-
 	}
+}
 
-	
- }
-#endif 
+
 
 /************************************************************
  	*
@@ -424,11 +333,7 @@ void TouchKey_Led_Handler(void)
 void Standby_Model_Handler()
 {
  	   
-    
-		run_t.backlight_run_flag=0;
-		run_t.touchkey_first =0; //WT.EDIT 2022.09.26
-		run_t.gTimer_10s=0;
-		run_t.lowPower_flag=0;
+        run_t.lowPower_flag=0;
 		ps_sleep=PS_Sleep();
 		Panel_LED_Off();
 		POWER_OFF();
@@ -448,45 +353,4 @@ void Standby_Model_Handler()
 	
 }
 
-/****************************************************************************
-*
-*Function Name:void HAL_TIM_PeriodElapsedHalfCpltCallback(TIM_HandleTypeDef *htim)
-*Function : half -> 16bit, TIM2 timing time is 10ms 
-*Input Ref: NO
-*Retrun Ref:NO
-*
-****************************************************************************/
-//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-//{
-//
-//    static unsigned char t0,t1;
-//
-//	if(htim->Instance==TIM14){
-//
-//	t0++;
-//    t1++;
-//
-//
-//	if(t1>9){ //10ms x10=100ms
-//        t1=0;
-//        run_t.motorRunCount++;
-//	    run_t.gTimer_led_blink_500ms++;
-//	}
-//    if(t0>99){ //10*100 =1000ms "1s"
-//       t0=0;
-//	  run_t.gTimer_10s_start++;
-//	  run_t.gTimer_8s++;
-//	  run_t.gTimer_10s ++;
-//	   run_t.gTimer_ADC ++;
-//	  
-//	   if(run_t.gTimer_10s_start>9){ //10s
-//	   	 run_t.gTimer_10s_start=0;
-//	   	 run_t.gTimer_input_standby_cnt++;
-//		run_t.gTimer_input_error_times_60s++;
-//	   }
-//	
-//    } 
-//	}
-//
-//}
 

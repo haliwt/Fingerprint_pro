@@ -66,17 +66,17 @@ unsigned char CompareValue(uint8_t *pt1,uint8_t *pt2)
 ****************************************************************************/
 void RunCheck_Mode(uint16_t dat)
 {
-   unsigned char temp, i,read_numbers;
-   static unsigned char k0=0xff,k1=0xff,k2=0xff,key,spec;
+   uint8_t temp, i,read_numbers;
+   static uint8_t numbers_key=0xff,special1= 0xff,special2=0xff,key_pressed;
    switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*' ->cancel_key
 		
-       if(k0 != run_t.getSpecial_1_key){
-         k0 = run_t.getSpecial_1_key;
+       if(special1 != run_t.getSpecial_1_key){
+           special1 = run_t.getSpecial_1_key;
       
 		 run_t.getSpecial_2_key++;//n1++;
 		 run_t.getNumbers_key++;//n2++;
-		 spec=1;
+		
 	 
 		  run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		  run_t.gTimer_8s=0;  //LED turn on holde times
@@ -131,6 +131,7 @@ void RunCheck_Mode(uint16_t dat)
 					
 
 		        break;
+					
 				case 1:
 					for(i=0;i<6;i++){
 						pwd2[i]=0;
@@ -148,15 +149,16 @@ void RunCheck_Mode(uint16_t dat)
 
 		  }
        	}
+	   break;
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
 
 
-        if(k1 != run_t.getSpecial_2_key){
-	         k1 = run_t.getSpecial_2_key;
+        if(special2 != run_t.getSpecial_2_key && key_pressed ==0){
+	         special2 = run_t.getSpecial_2_key;
 
            run_t.getSpecial_1_key++;//n1++
-		     run_t.getNumbers_key++;//n2++;
-		     spec=1;
+		    run_t.getNumbers_key++;//n2++;
+		    
 			 
 	       run_t.gTimer_8s=0;
 
@@ -166,6 +168,7 @@ void RunCheck_Mode(uint16_t dat)
                 if(run_t.Numbers_counter ==0){ //only has entery_key 
 
 					run_t.buzzer_sound_label = sound_key;  
+					run_t.pwd_fp_label = 
                     run_t.gTimer_8s=0;
 				    
 					return ;
@@ -180,6 +183,7 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
 						run_t.gTimer_input_error_times_60s =0;
 						run_t.panel_lock=1;
+						run_t.gTimer_60s=0;
 						run_t.gTimer_8s=0;
 						run_t.enter_key = KEY_LOCK_60S;
 
@@ -247,95 +251,98 @@ void RunCheck_Mode(uint16_t dat)
 
 	 
 	case KEY_0:
-		key=1;
-		spec=0;
-	    touchkey_key_id[0]=0;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[0]=0;
 		run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
 	break;
 
     case KEY_1 :
-
-		key=1;
-		spec=0;
-	    touchkey_key_id[0]=1;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[0]=1;
 		run_t.gTimer_8s=0;
-	  
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+	    key_pressed = 1;
    	break;
 			
     case KEY_2:
-
-		key=1;
-		spec=0;
-	    touchkey_key_id[2]=2;
 		run_t.getNumbers_key++;
-       run_t.gTimer_8s=0;
-		
-  
+	    touchkey_key_id[2]=2;
+        run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+  		key_pressed = 1;
 	 
 	break;
 			
 	case  KEY_3:
-		key=1;
-		spec=0;
-	    touchkey_key_id[3]=3;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[3]=3;
 		run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
 	 break;
 			
 	case KEY_4:
-		key=1;
-		spec=0;
-	    touchkey_key_id[4]=4;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[4]=4;
 		run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
 		
    break;
 			
 	case KEY_5:
-		key=1;
-		spec=0;
-	    touchkey_key_id[5]=5;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[5]=5;
 		run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
 	break;
 			
 	case KEY_6:
-		key=1;
-		spec=0;
-		touchkey_key_id[6]=6;
 		run_t.getNumbers_key++;
+		touchkey_key_id[6]=6;
 		run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
           
    break;
    
    case KEY_7:
-		
-		key=1;
-		spec=0;
+   		run_t.getNumbers_key++;
 	     touchkey_key_id[7]=7;
-		run_t.getNumbers_key++;
         run_t.gTimer_8s=0;
-		
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
             
    break;
 			
 	case KEY_8:
-		key=1;
-		spec=0;
-	    touchkey_key_id[8]=8;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[8]=8;
 		run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
 
    break;
 			
 	case KEY_9:
-		key=1;
-		spec=0;
-	    touchkey_key_id[9]=9;
 		run_t.getNumbers_key++;
+	    touchkey_key_id[9]=9;
 	    run_t.gTimer_8s=0;
+		run_t.getSpecial_1_key++;
+		run_t.getSpecial_2_key++;
+		key_pressed = 1;
 		
    break;
 		  
@@ -343,15 +350,9 @@ void RunCheck_Mode(uint16_t dat)
 	}  
 
 	
-	 if(k2 != run_t.getNumbers_key && key==1 && spec ==0 && run_t.getNumbers_key !=0x40 &&run_t.NumbersKey_pressedNumbers==0){
-				
-			k2=run_t.getNumbers_key;
-			key = 0;
-			spec =1;
-			run_t.getSpecial_1_key++;//n1++
-
-			run_t.getSpecial_2_key++;//n1++;
-
+	 if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0){
+		numbers_key =run_t.getNumbers_key;
+           key_pressed =0;
 			run_t.NumbersKey_pressedNumbers=1;
 			run_t.Numbers_counter ++ ;
 
@@ -370,7 +371,7 @@ void RunCheck_Mode(uint16_t dat)
 					 return ;
 				   }
 				   
-				//break;
+			 // break;
 
 			  case  INPUT_NORMAL_NUMBERS:
 			  	

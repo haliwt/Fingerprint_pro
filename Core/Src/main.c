@@ -152,10 +152,10 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	   	}
         if(run_t.panel_lock==0){
 	 	  CheckPassword_Lock_Handler();
-		  DisplayLed_Handler();
+		  
 		  Buzzer_Sound_Handler();
-
-        }
+		}
+		DisplayLed_Handler();
 	 }
  
   
