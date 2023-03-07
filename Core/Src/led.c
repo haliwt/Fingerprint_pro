@@ -65,7 +65,8 @@ void DisplayLed_Handler(void)
 			}
 			else{
 				if(run_t.gTimer_8s >8){
-			        run_t.works_led_label= works_ok_led_off;
+			       run_t.works_led_label= works_ok_led_off;
+				
 				}
 			}
 		break;
@@ -112,31 +113,36 @@ void DisplayLed_Handler(void)
 		break;
 
 		case works_ok_led_off: //2
+		    
 
-		     if(run_t.gTimer_8s > 8){
+		     if(run_t.gTimer_8s > 8 ){
 	             OK_LED_OFF();
 				 ERR_LED_OFF();
+			  
 			     PS_LED_ALL_OFF();
-				 BACKLIGHT_OFF();
+				if(run_t.key_pressed ==0)
+				    BACKLIGHT_OFF();
+				 else
+				 	 BACKLIGHT_ON();
 
 			     run_t.works_led_label= works_null;
-					 
-				for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
-					*(pwd2 + i)=0;//pwd2[i]=0;
-					*(Readpwd+i)=0;
-					*(pwd1+i)=0;//pwd1[i]=0;
-
-				}
 
 			}
 		break;
 
 		case backlight_led_off:
+			 if(run_t.key_pressed ==0)
+				 BACKLIGHT_OFF();
+			  else
+				  BACKLIGHT_ON();
 
-			 BACKLIGHT_OFF(); 
 			 
 			 if(run_t.gTimer_8s > 8){
                  run_t.works_led_label= works_null;
+				    for(i=0;i<6;i++){
+					pwd2[i]=0;
+					pwd1[i]=0;
+				}
 			 }
 		break;
 
@@ -152,12 +158,6 @@ void DisplayLed_Handler(void)
 		
 			run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
 	        run_t.Numbers_counter =0;
-			for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
-			*(pwd2 + i)=0;//pwd2[i]=0;
-			*(Readpwd+i)=0;
-			*(pwd1+i)=0;//pwd1[i]=0;
-
-			}
 			
             run_t.works_led_label= works_null;
 
@@ -215,11 +215,11 @@ void DisplayLed_Handler(void)
 				cnt=0;
 				
 				for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
-								*(pwd2 + i)=0;//pwd2[i]=0;
-								*(Readpwd+i)=0;
-								*(pwd1+i)=0;//pwd1[i]=0;
+				*(pwd2 + i)=0;//pwd2[i]=0;
+				*(Readpwd+i)=0;
+				*(pwd1+i)=0;//pwd1[i]=0;
 				
-							}
+				}
 			    run_t.works_led_label= works_null;
 
 			}
@@ -254,7 +254,7 @@ void DisplayLed_Handler(void)
 		break;
 
 		case works_null: //7
-
+             
 		    
             PS_LED_ALL_OFF();
 			

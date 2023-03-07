@@ -67,7 +67,7 @@ unsigned char CompareValue(uint8_t *pt1,uint8_t *pt2)
 void RunCheck_Mode(uint16_t dat)
 {
    uint8_t temp, i,read_numbers;
-   static uint8_t numbers_key=0xff,special1= 0xff,special2=0xff,key_pressed,spec_1;
+   static uint8_t numbers_key=0xff,special1= 0xff,special2=0xff;
    switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*' ->cancel_key
 		
@@ -232,7 +232,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[0]=0;
 		run_t.gTimer_8s=0;
 
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 	    run_t.special_key_flag =0;
 	break;
 
@@ -241,7 +241,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[0]=1;
 		run_t.gTimer_8s=0;
 	
-	    key_pressed = 1;
+	    run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
    	break;
 			
@@ -250,7 +250,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[2]=2;
         run_t.gTimer_8s=0;
 		
-  		key_pressed = 1;
+  		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
 	 
 	break;
@@ -260,7 +260,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[3]=3;
 		run_t.gTimer_8s=0;
 
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
 	 break;
 			
@@ -269,7 +269,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[4]=4;
 		run_t.gTimer_8s=0;
 		
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
 		
    break;
@@ -279,7 +279,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[5]=5;
 		run_t.gTimer_8s=0;
 	
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
 	break;
 			
@@ -288,7 +288,7 @@ void RunCheck_Mode(uint16_t dat)
 		touchkey_key_id[6]=6;
 		run_t.gTimer_8s=0;
 		
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
           
    break;
@@ -298,7 +298,7 @@ void RunCheck_Mode(uint16_t dat)
 	     touchkey_key_id[7]=7;
         run_t.gTimer_8s=0;
 		
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
             
    break;
@@ -308,7 +308,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[8]=8;
 		run_t.gTimer_8s=0;
 		
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
 
    break;
@@ -318,7 +318,7 @@ void RunCheck_Mode(uint16_t dat)
 	    touchkey_key_id[9]=9;
 	    run_t.gTimer_8s=0;
 	
-		key_pressed = 1;
+		run_t.key_pressed = 1;
 		run_t.special_key_flag =0;
 		
    break;
@@ -330,9 +330,9 @@ void RunCheck_Mode(uint16_t dat)
 
    	}
     //check numbers key.
-	if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.special_key_flag ==0 &&run_t.NumbersKey_pressedNumbers==0){
+	if(numbers_key != run_t.getNumbers_key && run_t.key_pressed==1 && run_t.getNumbers_key !=0x40 && run_t.special_key_flag ==0 &&run_t.NumbersKey_pressedNumbers==0){
 		numbers_key =run_t.getNumbers_key;
-           key_pressed =0;
+           run_t.key_pressed  =0;
 	       run_t.special_key_flag =1;
            run_t.getSpecial_1_key++;
 		   run_t.getSpecial_2_key++;
