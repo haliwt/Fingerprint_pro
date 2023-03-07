@@ -72,6 +72,7 @@ typedef struct __RUN_T{
 	uint8_t enter_key ;
 	uint8_t confirm_key_label;
 	uint8_t cancel_key_label;
+	uint8_t special_key_flag;
 	
 
 	

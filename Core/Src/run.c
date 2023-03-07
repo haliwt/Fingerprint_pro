@@ -71,11 +71,12 @@ void RunCheck_Mode(uint16_t dat)
    switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*' ->cancel_key
 		
-       if(special1 != run_t.getSpecial_1_key){
+       if(special1 != run_t.getSpecial_1_key && run_t.special_key_flag ==0){
            special1 = run_t.getSpecial_1_key;
       
 		 run_t.getSpecial_2_key++;//n1++;
 		 run_t.getNumbers_key++;//n2++;
+		 run_t.special_key_flag =1;
 		 key_pressed=0;
 	 
 		  run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
@@ -142,11 +143,12 @@ void RunCheck_Mode(uint16_t dat)
 	   break;
 	   //confirm Key 
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
-        if(special2 != run_t.getSpecial_2_key ){
+        if(special2 != run_t.getSpecial_2_key && run_t.special_key_flag ==0){
 	         special2 = run_t.getSpecial_2_key;
 
            run_t.getSpecial_1_key++;//n1++
 		   run_t.getNumbers_key++;//n2++;
+		   run_t.special_key_flag =1;
 		     key_pressed=0;
 			 
 	       run_t.gTimer_8s=0;

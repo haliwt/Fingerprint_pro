@@ -80,7 +80,7 @@ void CheckPassword_Lock_Handler(void)
 
        case PWD_ID: //2
 	  
-			TouchKey_Handler();
+			TouchKey();//TouchKey_Handler();
             run_t.gTimer_8s=0;//clear zero
             switch(run_t.enter_key){
 
@@ -178,7 +178,7 @@ void CheckPassword_Lock_Handler(void)
 	    run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
-	   case DISPOSE_NULL: //13
+	   case DISPOSE_NULL: //14
 
 	    // Motor_Reverse_State();
 
@@ -281,12 +281,13 @@ void TouchKey(void)
     
     KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
 	RunCheck_Mode(KeyValue); 
-    if(KeyValue ==0){
+    if(KeyValue ==0 || KeyValue == 0x8000||KeyValue ==0x200){
 
 	    run_t.NumbersKey_pressedNumbers = 0;
 	    run_t.getSpecial_1_key++;
 	    run_t.getSpecial_2_key++;
 	    run_t.getNumbers_key=0x40;
+		run_t.special_key_flag =0;
 
     }
   }     
