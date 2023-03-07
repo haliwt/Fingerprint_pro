@@ -71,13 +71,13 @@ void RunCheck_Mode(uint16_t dat)
    switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*' ->cancel_key
 		
-       if(special1 != run_t.getSpecial_1_key && run_t.special_key_flag ==0){
+       if(special1 != run_t.getSpecial_1_key ){
            special1 = run_t.getSpecial_1_key;
       
 		 run_t.getSpecial_2_key++;//n1++;
 		 run_t.getNumbers_key++;//n2++;
 		 run_t.special_key_flag =1;
-		 key_pressed=0;
+		 
 	 
 		  run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		  run_t.gTimer_8s=0;  //LED turn on holde times
@@ -140,15 +140,16 @@ void RunCheck_Mode(uint16_t dat)
 
 		  }
        	}
+	    return ;
 	   break;
 	   //confirm Key 
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
-        if(special2 != run_t.getSpecial_2_key && run_t.special_key_flag !=1){
+        if(special2 != run_t.getSpecial_2_key){
 	         special2 = run_t.getSpecial_2_key;
 
            run_t.getSpecial_1_key++;//n1++
 		   run_t.getNumbers_key++;//n2++;
-		     key_pressed=0;
+		   run_t.special_key_flag =1 ;
 			 
 	       run_t.gTimer_8s=0;
 
@@ -235,27 +236,27 @@ void RunCheck_Mode(uint16_t dat)
 		run_t.getNumbers_key++;
 	    touchkey_key_id[0]=0;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+
 		key_pressed = 1;
+	    run_t.special_key_flag =0;
 	break;
 
     case KEY_1 :
 		run_t.getNumbers_key++;
 	    touchkey_key_id[0]=1;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+	
 	    key_pressed = 1;
+		run_t.special_key_flag =0;
    	break;
 			
     case KEY_2:
 		run_t.getNumbers_key++;
 	    touchkey_key_id[2]=2;
         run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+		
   		key_pressed = 1;
+		run_t.special_key_flag =0;
 	 
 	break;
 			
@@ -263,18 +264,18 @@ void RunCheck_Mode(uint16_t dat)
 		run_t.getNumbers_key++;
 	    touchkey_key_id[3]=3;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+
 		key_pressed = 1;
+		run_t.special_key_flag =0;
 	 break;
 			
 	case KEY_4:
 		run_t.getNumbers_key++;
 	    touchkey_key_id[4]=4;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+		
 		key_pressed = 1;
+		run_t.special_key_flag =0;
 		
    break;
 			
@@ -282,18 +283,18 @@ void RunCheck_Mode(uint16_t dat)
 		run_t.getNumbers_key++;
 	    touchkey_key_id[5]=5;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+	
 		key_pressed = 1;
+		run_t.special_key_flag =0;
 	break;
 			
 	case KEY_6:
 		run_t.getNumbers_key++;
 		touchkey_key_id[6]=6;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+		
 		key_pressed = 1;
+		run_t.special_key_flag =0;
           
    break;
    
@@ -301,9 +302,9 @@ void RunCheck_Mode(uint16_t dat)
    		run_t.getNumbers_key++;
 	     touchkey_key_id[7]=7;
         run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+		
 		key_pressed = 1;
+		run_t.special_key_flag =0;
             
    break;
 			
@@ -311,9 +312,9 @@ void RunCheck_Mode(uint16_t dat)
 		run_t.getNumbers_key++;
 	    touchkey_key_id[8]=8;
 		run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+		
 		key_pressed = 1;
+		run_t.special_key_flag =0;
 
    break;
 			
@@ -321,9 +322,9 @@ void RunCheck_Mode(uint16_t dat)
 		run_t.getNumbers_key++;
 	    touchkey_key_id[9]=9;
 	    run_t.gTimer_8s=0;
-		run_t.getSpecial_1_key++;
-		run_t.getSpecial_2_key++;
+	
 		key_pressed = 1;
+		run_t.special_key_flag =0;
 		
    break;
 		  
@@ -334,9 +335,15 @@ void RunCheck_Mode(uint16_t dat)
 
    	}
     //check numbers key.
-	if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0 ){
+	if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0 \
+		&& run_t.special_key_flag ==0){
 		numbers_key =run_t.getNumbers_key;
            key_pressed =0;
+           run_t.special_key_flag =1;
+
+		  	run_t.getSpecial_1_key++;
+		    run_t.getSpecial_2_key++;
+		   
 			run_t.NumbersKey_pressedNumbers=1;
 			run_t.Numbers_counter ++ ;
 

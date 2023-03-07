@@ -133,18 +133,18 @@ void RunMotor_Definite_Handler(void) //definite motor
          
             run_t.password_unlock_model =0;
             run_t.error_times=0;
-
+             
             run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
             ERR_LED_OFF();
             OK_LED_ON();
 			run_t.Motor_RunCmd_Label=motor_run_underway;
             Motor_CCW_Run();//open passwordlock 
-                     
+            run_t.motorRunCount=0;       
             
         break;
 
         case motor_run_underway: //2
-            //MOTOR open run ->stop Position 
+           run_t.gTimer_8s =0;
             if(run_t.motorRunCount < 25){//100ms *300=3s
                 run_t.gTimer_8s =0;//WT.EDIT 2022.10.06
                 run_t.motor_return_homePosition=1;//WT.EDIT 2022.08.18
@@ -157,6 +157,7 @@ void RunMotor_Definite_Handler(void) //definite motor
         break;
 
         case motor_run_half_stop: //3
+            run_t.gTimer_8s =0;
             if(run_t.motorRunCount < 11){ //100ms * 10
               Motor_Stop();
               run_t.motor_return_homePosition=1;//motor runing flag 
@@ -182,6 +183,7 @@ void RunMotor_Definite_Handler(void) //definite motor
         break;
 
         case motor_stop: //6
+             run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
             if(run_t.motorRunCount >20 && adjust_ref <6 ){//15 //100ms x 10 =1s motor stop 1s 
                
                 adjust_ref++;
@@ -195,10 +197,7 @@ void RunMotor_Definite_Handler(void) //definite motor
                 
 			}
 			
-			
-  
-
-			 if(stop_flag==1){
+			if(stop_flag==1){
 			 	stop_flag=0;
                 run_t.motor_return_homePosition=0;//motor runing flag 
               
@@ -208,7 +207,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 				PS_Green_Led_OFF();
                 run_t.motorRunCount=0;
                 syspara_t.PS_read_template=0;
-                run_t.backlight_Cmd_lable = backlight_led_off;
+                run_t.works_led_label = backlight_led_off ;//run_t.backlight_Cmd_lable = backlight_led_off;
       
             }
            

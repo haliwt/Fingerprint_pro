@@ -868,7 +868,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 							
 
 							AT24CXX_WriteOneByte((EEPROM_AS608Addr),(syspara_t.ps_readEeprom_data+1));
-							run_t.backlight_Cmd_lable = backlight_led_off; //run_t.led_blank	=1;//OK led blank three times
+							run_t.works_led_label = backlight_led_off;//run_t.backlight_Cmd_lable = backlight_led_off; //run_t.led_blank	=1;//OK led blank three times
 						
 						}
 						else{
@@ -885,7 +885,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 						OK_LED_ON() ;
 					    ERR_LED_OFF();
 						syspara_t.ps_login_new_fp_success=1;	
-					    run_t.backlight_Cmd_lable = backlight_led_off;
+					    run_t.works_led_label = backlight_led_off ;//run_t.backlight_Cmd_lable = backlight_led_off;
 					  	run_t.password_unlock_model =0;
 						
 					  return ;
@@ -897,7 +897,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 					  OK_LED_ON() ;
 					  ERR_LED_OFF();
 			          syspara_t.ps_login_new_fp_success=1;	
-					  run_t.backlight_Cmd_lable = backlight_led_off;
+					  run_t.works_led_label = backlight_led_off ;//run_t.backlight_Cmd_lable = backlight_led_off;
 					  run_t.password_unlock_model =0;
 					  return ;
 				}

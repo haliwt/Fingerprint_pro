@@ -149,6 +149,15 @@ void DisplayLed_Handler(void)
 		      }
 		break;
 
+		case backlight_led_off:
+
+			 BACKLIGHT_OFF(); 
+			 
+			 if(run_t.gTimer_8s > 8)
+                 run_t.works_led_label= works_null;
+
+		break;
+
 		case works_error_led_on: //3
 		    OK_LED_OFF();	
             ERR_LED_ON();
