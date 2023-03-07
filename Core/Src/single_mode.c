@@ -74,12 +74,12 @@ void Start_PowerOn_Handler(void)
 ********************************************************/
 void CheckPassword_Lock_Handler(void)
 {
-    
+    uint8_t temValue;
     switch(run_t.pwd_fp_label){
 
        case PWD_ID: //2
-	  
-			TouchKey();//TouchKey_Handler();
+	   
+			 TouchKey();//TouchKey_Handler();
             run_t.gTimer_8s=0;//clear zero
             switch(run_t.enter_key){
 

@@ -72,7 +72,8 @@ typedef struct __RUN_T{
 	uint8_t confirm_key_label;
 	uint8_t cancel_key_label;
 	uint8_t special_key_flag;
-	
+	uint8_t readI2C_data;
+	uint8_t touchkey_first_turn_on_led;
 
 	
 	//motor ref
@@ -108,6 +109,8 @@ typedef struct __RUN_T{
 	uint8_t  clearEeeprom_count;
 	unsigned char clearEeprom;
 	uint8_t readEepromData;
+
+	
 
 	//run ref
 
