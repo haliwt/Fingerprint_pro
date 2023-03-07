@@ -338,10 +338,7 @@ void RunCheck_Mode(uint16_t dat)
 		   run_t.getSpecial_2_key++;
 		   run_t.NumbersKey_pressedNumbers= 1;
 
-
-
-		   
-			run_t.Numbers_counter ++ ;
+		   run_t.Numbers_counter ++ ;
 			
 
 			run_t.gTimer_8s=0;

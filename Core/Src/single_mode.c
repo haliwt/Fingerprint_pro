@@ -126,11 +126,17 @@ void CheckPassword_Lock_Handler(void)
 		       if(run_t.password_unlock_model==DISPOSE_STORE_MODEL_EEPROM){
 			   	    
 					run_t.gTimer_8s =0;
-					run_t.pwd_fp_label = DISPOSE_STORE_SET_REF;
+					   if(run_t.motor_runProcess_flag==0)
+					         run_t.pwd_fp_label = DISPOSE_STORE_SET_REF;
+					   else
+					   	   run_t.pwd_fp_label = DISPOSE_COPY_ONESELF;
 		       	}
 			   else if(run_t.password_unlock_model ==DISPOSE_MOTOR_RUN ){
 
-                   run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
+				   if(run_t.motor_runProcess_flag==0)
+				       run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
+				   else
+				   	   run_t.pwd_fp_label = DISPOSE_COPY_ONESELF;
 				  
 			    }
                 else if(run_t.password_unlock_model==DISPOSE_NULL)
@@ -142,9 +148,9 @@ void CheckPassword_Lock_Handler(void)
 			 case open_lock_fail: //2
 			 	 Open_Lock_Fail_Fun();
 				 if(run_t.password_unlock_model==KEY_LOCK_60S){
-				 	
-				 	run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
-				 } 
+				 	   
+				 	   run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
+				} 
 				 else if(run_t.password_unlock_model ==open_lock_null){
 
                       run_t.pwd_fp_label = DISPOSE_NULL;
@@ -157,7 +163,7 @@ void CheckPassword_Lock_Handler(void)
 		 
 	   break;
 
-	   case DISPOSE_STORE_SET_REF:
+	   case DISPOSE_STORE_SET_REF: //6
 	   	    
 			run_t.works_led_label = works_ok_blink;
 			run_t.buzzer_sound_label = sound_new_pwd_the_first;
@@ -167,15 +173,17 @@ void CheckPassword_Lock_Handler(void)
 
 	   break;
 
-	   case DISPOSE_SAVE_DATA: //6
+	   case DISPOSE_SAVE_DATA: //7
 	       Save_To_EeepromNewPwd();
 		  run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
 	   case DISPOSE_MOTOR_RUN: //9
+	   
          run_t.pwd_fp_label =DISPOSE_NULL;
 		 run_t.buzzer_sound_label = sound_excute;
 	   	 run_t.Motor_RunCmd_Label = motor_run_start;
+		 run_t.motor_runProcess_flag = 1;
 	   
 	   break;
 
@@ -183,16 +191,23 @@ void CheckPassword_Lock_Handler(void)
 	   	    run_t.works_led_label = works_error_blink;
 			run_t.buzzer_sound_label = sound_fail;
 
-        run_t.pwd_fp_label = DISPOSE_NULL;
+        	run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
 	   case DISPOSE_KEY_LOCK_60S://11
              run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
+	   case DISPOSE_COPY_ONESELF:
+	   	   run_t.buzzer_sound_label = sound_excute;
+	   	   run_t.works_led_label = works_ok_led_on;
+	       run_t.pwd_fp_label = DISPOSE_NULL;
+
+	   break;
+
 	   case DISPOSE_NULL: //14
          
-	   
+	   run_t.pwd_fp_label= 0xff;
 
 	   break;
 
@@ -215,8 +230,9 @@ void TouchKey(void)
 {
    if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
    	    
-     HAL_Delay(10);
+    
     KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
+	HAL_Delay(5);
 	RunCheck_Mode(KeyValue); 
     if(KeyValue ==0 ){
 

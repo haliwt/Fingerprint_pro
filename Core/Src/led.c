@@ -47,11 +47,11 @@ void DisplayLed_Handler(void)
 	switch(run_t.works_led_label){
 
 		case works_ok_led_on:
-			run_t.gTimer_8s =0;
+			
 			ERR_LED_OFF();
 			OK_LED_OFF();
 		    PS_Green_Led_ON();
-			cntrecoder++ ;
+			
 			if(run_t.clearEeprom==1){
 				run_t.clearEeprom = 0;
 				run_t.gTimer_8s =0;
@@ -64,7 +64,7 @@ void DisplayLed_Handler(void)
 				 
 			}
 			else{
-				if(cntrecoder >100){
+				if(run_t.gTimer_8s >8){
 			        run_t.works_led_label= works_ok_led_off;
 				}
 			}
@@ -118,6 +118,7 @@ void DisplayLed_Handler(void)
 				 ERR_LED_OFF();
 			     PS_LED_ALL_OFF();
 				 BACKLIGHT_OFF();
+
 			     run_t.works_led_label= works_null;
 					 
 				for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
@@ -127,9 +128,7 @@ void DisplayLed_Handler(void)
 
 				}
 
-				run_t.works_led_label= works_null;
-			
-		      }
+			}
 		break;
 
 		case backlight_led_off:

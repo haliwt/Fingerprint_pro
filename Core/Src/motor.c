@@ -125,17 +125,17 @@ void RunMotor_Definite_Handler(void) //definite motor
 
         case motor_run_start:
             PS_Green_Led_ON();
+	        ERR_LED_OFF();
+            OK_LED_ON();
             run_t.motor_return_homePosition=1;//motor runing flag 
          
             run_t.Numbers_counter =0 ;
             run_t.eepromAddress=0;
          
-            run_t.password_unlock_model =0;
             run_t.error_times=0;
              
             run_t.gTimer_8s =0;//WT.EDIT.2022.10.06
-            ERR_LED_OFF();
-            OK_LED_ON();
+           
 			run_t.Motor_RunCmd_Label=motor_run_underway;
             Motor_CCW_Run();//open passwordlock 
             run_t.motorRunCount=0;       
@@ -201,6 +201,7 @@ void RunMotor_Definite_Handler(void) //definite motor
                 run_t.motor_return_homePosition=0;//motor runing flag 
               
                 run_t.Motor_RunCmd_Label= 0xff;
+				run_t.motor_runProcess_flag=0;
 				BACKLIGHT_OFF();
                 ERR_LED_OFF();
 				PS_Green_Led_OFF();

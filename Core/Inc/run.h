@@ -53,14 +53,9 @@ typedef struct __RUN_T{
 	unsigned char panel_lock;
 	uint8_t ADC_times;
 	uint8_t pwd_fp_label;
-	
-
 	//lower power ref
 	uint8_t lowPower_flag;
 
-	
-	
-  
 	//touchkey 
 	uint8_t touchkey_first;
    	uint8_t inputNewPassword_Enable;
@@ -80,6 +75,7 @@ typedef struct __RUN_T{
 	uint8_t motor_returnRun_flag;
 	uint8_t motor_return_homePosition;
 	uint8_t Motor_RunCmd_Label;
+	uint8_t motor_runProcess_flag;
 
     //led ref
 	uint8_t works_led_label;
@@ -111,9 +107,8 @@ typedef struct __RUN_T{
 
 	
 
-	//run ref
-
-	uint8_t open_lock_lable;
+    //lock and unlock
+	 uint8_t open_lock_lable;
 
    
 	//timging
@@ -123,9 +118,6 @@ typedef struct __RUN_T{
 	unsigned char gTimer_8s;
 	unsigned char gTimer_ADC;
 	uint8_t  gTimer_factory;
-
-	
-	
 
 	uint8_t gTimer_led_blink_500ms;
 	
