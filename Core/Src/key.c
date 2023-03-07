@@ -62,14 +62,14 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
     uint8_t  sc12b_flag;
 
-   if(GPIO_Pin == SC12B_INT_INPUT_Pin){
+   if(GPIO_Pin == SC12B_INT_INPUT_Pin){ //hight level
    
     
         
 		 
       __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
-       do{
+       if(run_t.lowPower_flag==0){
 			SystemClock_Config();
 			HAL_ResumeTick();
 			HAL_TIM_Base_Start_IT(&htim14);//
@@ -80,7 +80,13 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			run_t.lowPower_flag++;
 			//run_t.pwd_fp_label = PWD_ID;
 
-         }while(run_t.lowPower_flag < 3);
+         }
+         else{
+			POWER_ON();
+			FP_POWER_ON()  ;
+			BACKLIGHT_ON(); 
+
+		 }
        
 
  	}
@@ -91,7 +97,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	
 		 __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
     
-	 do{
+	  if(run_t.lowPower_flag==0){
 		SystemClock_Config();
 		HAL_ResumeTick();
 		HAL_TIM_Base_Start_IT(&htim14);//
@@ -103,7 +109,15 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	    run_t.gTimer_8s=0;
 		// run_t.pwd_fp_label = FP_ID ;
 	      
-      }while(run_t.lowPower_flag < 3);
+      }
+	  else{
+
+	          POWER_ON();
+			  FP_POWER_ON()  ;
+			  BACKLIGHT_ON(); 
+
+
+	  }
 	 
     
   }

@@ -51,6 +51,7 @@ void Start_PowerOn_Handler(void)
 				FP_POWER_ON(); //FP_power WT.EDIT 2022.11.28
 				TouchKey_Led_Handler();
 				Buzzer_KeySound();//WT.EDIT 2022.09.12
+				run_t.works_led_label=works_ok_led_on;
      } 
  }
 

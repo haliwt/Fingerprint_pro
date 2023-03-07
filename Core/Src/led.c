@@ -43,7 +43,7 @@ void DisplayLed_Handler(void)
 {
     uint8_t i;
 	static uint16_t cnt0,cnt,standby_cnt,clear_eeprom_flag;
-    static uint8_t cntrecoder;
+    static uint8_t cntrecoder,newpwd_flag;
 	switch(run_t.works_led_label){
 
 		case works_ok_led_on:
@@ -71,6 +71,25 @@ void DisplayLed_Handler(void)
 			}
 		break;
 
+		case works_ok_led_off: //2
+		    
+
+		     if(run_t.gTimer_8s > 8 ){
+	             OK_LED_OFF();
+				 ERR_LED_OFF();
+			  
+			     PS_LED_ALL_OFF();
+				if(run_t.key_pressed ==0)
+				    BACKLIGHT_OFF();
+				 else
+				 	 BACKLIGHT_ON();
+				 
+                 run_t.Confirm_newPassword =0;
+			     run_t.works_led_label= works_null;
+
+			}
+		break;
+
 		case works_ok_blink: //05
 		     run_t.gTimer_8s=0;
 			 if(cnt0==0){
@@ -80,7 +99,7 @@ void DisplayLed_Handler(void)
 			   ERR_LED_OFF();
 			 }
 			
-
+			 if(run_t.inputNewPassword_Enable ==1 )newpwd_flag=1;
 		 
 			if(run_t.gTimer_led_blink_500ms < 6 ){
 
@@ -98,8 +117,8 @@ void DisplayLed_Handler(void)
 
 			if(run_t.gTimer_led_blink_500ms> 10 ){ //1000.WT.EDIT 2022.10.31
 				run_t.gTimer_led_blink_500ms=0;
-				if(clear_eeprom_flag ==1)
-				     run_t.clearEeeprom_count++;
+				if(clear_eeprom_flag ==1 || newpwd_flag ==1)
+				    run_t.clearEeeprom_count++;
 			
 			}
           
@@ -109,26 +128,23 @@ void DisplayLed_Handler(void)
 			    clear_eeprom_flag =0;
                  run_t.works_led_label= works_ok_led_off;
 			 }
+			 if(run_t.inputNewPassword_Enable ==1 ){// exit input new password 
+		                
+				   if( run_t.clearEeeprom_count>10){
+					    newpwd_flag=0;
+					   run_t.clearEeeprom_count=0;
+					 run_t.inputNewPassword_Enable =0;
+				   
+				     OK_LED_OFF();
+					 run_t.works_led_label= works_ok_led_off;
+					 
+				  }
+                  
+			}
 		
 		break;
 
-		case works_ok_led_off: //2
-		    
-
-		     if(run_t.gTimer_8s > 8 ){
-	             OK_LED_OFF();
-				 ERR_LED_OFF();
-			  
-			     PS_LED_ALL_OFF();
-				if(run_t.key_pressed ==0)
-				    BACKLIGHT_OFF();
-				 else
-				 	 BACKLIGHT_ON();
-
-			     run_t.works_led_label= works_null;
-
-			}
-		break;
+		
 
 		case backlight_led_off:
 			 if(run_t.key_pressed ==0)
@@ -210,8 +226,9 @@ void DisplayLed_Handler(void)
 				*(pwd1+i)=0;//pwd1[i]=0;
 				
 				}
+				BACKLIGHT_ON();
 			    run_t.works_led_label= works_null;
-
+                run_t. gTimer_8s =0;
 			}
 			
 			
@@ -245,15 +262,19 @@ void DisplayLed_Handler(void)
 
 		case works_null: //7
              
-		    
-            PS_LED_ALL_OFF();
+		    if(run_t.gTimer_8s > 8){
+	            PS_LED_ALL_OFF();
+				
+				OK_LED_OFF();
+			    if(run_t.panel_lock ==0)ERR_LED_OFF();
+				else  ERR_LED_ON();
+				BACKLIGHT_OFF();
+				run_t.works_led_label = standby_led;
+				standby_cnt =0;
+				run_t.gTimer_8s =0;
+		    }
 			
-			OK_LED_OFF();
-		    if(run_t.panel_lock ==0)ERR_LED_OFF();
-			else  ERR_LED_ON();
-			BACKLIGHT_OFF();
-        
-             if(run_t.panel_lock ==1){
+            if(run_t.panel_lock ==1){
                 if(run_t.gTimer_60s > 60){
 				   run_t.gTimer_60s=0;
                    run_t.error_times=0;
@@ -263,12 +284,7 @@ void DisplayLed_Handler(void)
 
 				}
 			 }
-			 else{
-	            run_t.works_led_label = standby_led;
-				standby_cnt =0;
-				run_t.gTimer_8s =0;
-				
-			 }
+			
 			
 		break;
 
@@ -284,6 +300,8 @@ void DisplayLed_Handler(void)
 				*(pwd1+i)=0;//pwd1[i]=0;
 				
 				}
+			    run_t.Confirm_newPassword = 0;
+			    run_t.inputNewPassword_Enable=0;
 			}
 		  	else if(run_t.gTimer_8s > 8 && run_t.inputNewPassword_Enable ==0){
 	            run_t.gTimer_8s =0;
