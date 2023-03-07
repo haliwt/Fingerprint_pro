@@ -42,7 +42,7 @@ void Panel_LED_Off(void)
 void DisplayLed_Handler(void)
 {
     uint8_t i;
-	static uint16_t cnt0,cnt,standby_cnt,counter_on;
+	static uint16_t cnt0,cnt,counter_on;
     static uint8_t cntrecoder;
 	switch(run_t.works_led_label){
 
@@ -74,7 +74,7 @@ void DisplayLed_Handler(void)
 
 		case works_ok_blink: //05
 		     run_t.gTimer_8s=0;
-		    if((FP_INPUT_KEY()==0 && syspara_t.PS_wakeup_flag==0) && syspara_t.ps_pre_detector==0){
+		    if((FP_INPUT_KEY()==0 ) && syspara_t.ps_pre_detector==0){
 			 if(cnt0==0){
 			 	cnt0++;
 			 
@@ -252,15 +252,19 @@ void DisplayLed_Handler(void)
 		break;
 
 		case factory_led_test:
-			run_t.gTimer_8s=0;
-			BACKLIGHT_ON();
-			OK_LED_ON();
-			ERR_LED_ON();
-			BAT_LED_ON();
+		   if(run_t.gTimer_factory < 61 &&  run_t.factory_test ==1){
+				run_t.gTimer_8s=0;
+				run_t.panel_lock=1;
+				BACKLIGHT_ON();
+				OK_LED_ON();
+				ERR_LED_ON();
+				BAT_LED_ON();
+			}
 
-			if( counter_on> 5){
+			if(run_t.gTimer_factory > 60){
 				run_t.factory_test =0;
 				run_t.gTimer_8s=10;
+			    run_t.panel_lock=0;
 				BACKLIGHT_OFF();
 				OK_LED_OFF();
 				ERR_LED_OFF();
@@ -286,8 +290,6 @@ void DisplayLed_Handler(void)
 
 
 				}
-				
-
 			 }
 			 else{
 	            run_t.works_led_label = standby_led;

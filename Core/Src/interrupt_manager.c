@@ -135,6 +135,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  run_t.gTimer_8s++;
 	  run_t.gTimer_60s ++;
 	   run_t.gTimer_ADC ++;
+	   run_t. gTimer_factory++;
 	   }
 	
     } 

@@ -126,7 +126,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	          POWER_ON();
 			  FP_POWER_ON()  ;
 			  BACKLIGHT_ON();
-			  syspara_t.PS_wakeup_flag=1;
+		
 			 
          }
 
@@ -314,7 +314,6 @@ void  SideKey_Fun(uint8_t keyvalue)
 	  	
 		run_t.clearEeprom = 1; //// be related to "Ref must be"
 
-		syspara_t.PS_wakeup_flag=0;
         run_t.works_led_label=works_ok_led_on;
         run_t.gTimer_8s=0;
 

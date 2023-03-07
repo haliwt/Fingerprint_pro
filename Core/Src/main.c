@@ -122,7 +122,6 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	 syspara_t.ps_serch_genchar=0xff;
 	 syspara_t.ps_serach_result=0xff;
      syspara_t.ps_judeg_read_templete_flag=0XFF;
-     syspara_t.PS_wakeup_flag=0;
      syspara_t.PS_login_times=0;
      syspara_t.PS_clear_ps_success=0xff;
      // TouchKey_Run_Handler(TouchKey);
@@ -136,8 +135,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE BEGIN 3 */
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
-			run_t.pwd_fp_label = 0xff;
-            run_t.lowPower_flag=0;
+   
 	   }
 	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
 

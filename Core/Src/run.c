@@ -83,63 +83,59 @@ void RunCheck_Mode(uint16_t dat)
 		  run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		  run_t.gTimer_8s=0;  //LED turn on holde times
 		  
-		  switch(run_t.cancel_key_label){
+	       if(run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.13
 
-                case 0:
-					if(run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.13
+				run_t.clear_inputNumbers_newpassword ++;
+				run_t.gTimer_8s=0;
+				if(run_t.clear_inputNumbers_newpassword ==2){ //the second times cancel input new password action.
 
-					run_t.clear_inputNumbers_newpassword ++;
-					run_t.gTimer_8s=0;
-					if(run_t.clear_inputNumbers_newpassword ==2){ //the second times cancel input new password action.
+					run_t.clear_inputNumbers_newpassword=0;
+					run_t.inputNewPassword_Enable=0;
+					run_t.Confirm_newPassword=0;
+					run_t.inputNewPasswordTimes =0;
+					run_t.Numbers_counter =0 ;
 
-						run_t.clear_inputNumbers_newpassword=0;
-						run_t.inputNewPassword_Enable=0;
-						run_t.Confirm_newPassword=0;
-						run_t.inputNewPasswordTimes =0;
-						run_t.Numbers_counter =0 ;
-
-						for(i=0;i<6;i++){
-						    pwd1[i]=0;
-							Readpwd[i]=0;
-						}
-
-						OK_LED_OFF();
-						ERR_LED_OFF();
-						run_t.enter_key = KEY_NULL;
-						return ;			
-
-					}
-					if(run_t.clear_inputNumbers_newpassword ==1){//the first administrator password
-
-
-						for(i=0;i<6;i++){
-						pwd2[i]=0;
+					for(i=0;i<6;i++){
 						pwd1[i]=0;
-						}
-						run_t.inputNewPasswordTimes =0; //WT.EDIT 2022.10.14
-						run_t.Numbers_counter =0 ;
-
-						//run_t.password_unlock_model=STORE_MODEL_EEPROM; //run_t.open_lock_success=STORE_MODEL;//3;
-						run_t.Confirm_newPassword=1; //
-						run_t.inputNewPwd_OK_led_blank_times=0;
-						run_t.enter_key = KEY_NULL;
-						return ;
-
+						Readpwd[i]=0;
 					}
 
-					}
-				
+					OK_LED_OFF();
+					ERR_LED_OFF();
+					run_t.enter_key = KEY_NULL;
 					
-				case 1:
+
+				}
+				else if(run_t.clear_inputNumbers_newpassword ==1){//the first administrator password
+
+
 					for(i=0;i<6;i++){
 						pwd2[i]=0;
 						pwd1[i]=0;
 					}
-					run_t.cancel_key_label=0;
-					run_t.enter_key = KEY_NULL;
-				break;
+					run_t.inputNewPasswordTimes =0; //WT.EDIT 2022.10.14
+					run_t.Numbers_counter =0 ;
 
-		  }
+					//run_t.password_unlock_model=STORE_MODEL_EEPROM; //run_t.open_lock_success=STORE_MODEL;//3;
+					run_t.Confirm_newPassword=1; //
+					run_t.inputNewPwd_OK_led_blank_times=0;
+					run_t.enter_key = KEY_NULL;
+					
+
+				 }
+
+				}
+				else{
+
+
+					for(i=0;i<6;i++){
+					pwd2[i]=0;
+					pwd1[i]=0;
+					}
+					run_t.enter_key = KEY_NULL;
+
+
+		        }
        	}
 	   
 	   break;

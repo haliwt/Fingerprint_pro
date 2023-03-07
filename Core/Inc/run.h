@@ -123,6 +123,7 @@ typedef struct __RUN_T{
 	unsigned char gTimer_60s;
 	unsigned char gTimer_8s;
 	unsigned char gTimer_ADC;
+	uint8_t  gTimer_factory;
 
 	
 	

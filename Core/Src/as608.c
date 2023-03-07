@@ -560,7 +560,6 @@ void RunCommand_Unlock_Fingerprint(void)
 
     if(run_t.Confirm_newPassword==1){
 	  run_t.gTimer_8s=0;
-	  syspara_t.PS_wakeup_flag=0;
       syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
        syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
 	  if(syspara_t.ps_readEeprom_data >0){ //the first new fingerprint must be is administrator password "1234"
@@ -570,7 +569,7 @@ void RunCommand_Unlock_Fingerprint(void)
 	     
             syspara_t.ps_serch_getimage=0xff;
 			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-            syspara_t.PS_wakeup_flag=0;
+        
             syspara_t.FP_RunCmd_Lable = 0xff;  
 			HAL_Delay(500);
 	 }
@@ -595,7 +594,7 @@ void RunCommand_Unlock_Fingerprint(void)
 		}
 		else{
 			 run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-            syspara_t.PS_wakeup_flag=0;
+           
 		    syspara_t.FP_RunCmd_Lable = 0xff;
 			 
 			}
@@ -617,9 +616,9 @@ void RunCommand_Unlock_Fingerprint(void)
     
 
    	  case FP_SEARCH:
-	    if(FP_INPUT_KEY()==1 || syspara_t.PS_wakeup_flag==1){
+	    if(FP_INPUT_KEY()==1){
         run_t.gTimer_8s=0;
-		syspara_t.PS_wakeup_flag=0;
+	
         syspara_t.PS_read_template=0;
       
 			syspara_t.ps_serch_getimage=PS_GetImage();
@@ -666,7 +665,7 @@ void RunCommand_Unlock_Fingerprint(void)
 			    			
             syspara_t.ps_serch_getimage=0xff;
 		    run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-            syspara_t.PS_wakeup_flag=0;
+           
             syspara_t.FP_RunCmd_Lable = 0xff;
 			
             return ;
@@ -753,17 +752,17 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				Buzzer_KeySound();
 				HAL_Delay(300);
 				syspara_t.PS_login_times=1;
-				syspara_t.PS_wakeup_flag=0;	
+			
 			}
 			else{
 				syspara_t.PS_login_times=0;	
-				syspara_t.PS_wakeup_flag=0;	
+				
 			}
 
 			}
 			else{
 				syspara_t.PS_login_times=0;	
-				syspara_t.PS_wakeup_flag=0;	
+				
 			}
         }
     	
@@ -772,7 +771,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
         case 1: //input 2 times
 		run_t.gTimer_8s=0;
 		run_t.inputNewPwd_OK_led_blank_times=0;
-              if(syspara_t.PS_wakeup_flag==1){
+            
 				syspara_t.PS_read_template=0;
 				ps_getImage=PS_GetImage();
 
@@ -785,22 +784,22 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				Buzzer_KeySound();
 				HAL_Delay(300);
 				syspara_t.PS_login_times=2;
-				syspara_t.PS_wakeup_flag=0;	
+	
 				}
 				else{
 
 
 				syspara_t.PS_login_times=1;	
-				syspara_t.PS_wakeup_flag=0;	
+			
 				}
 
 				}
 				else{
 
 				syspara_t.PS_login_times=1;	
-				syspara_t.PS_wakeup_flag=0;	
+			
 				}
-		    }
+		
 		    
         break; 
                      
@@ -808,7 +807,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
          case 2: //input 3 times
 		 run_t.gTimer_8s=0;
 		 run_t.inputNewPwd_OK_led_blank_times=0;
-            if(syspara_t.PS_wakeup_flag==1){
+         
 			syspara_t.PS_read_template=0;
 			ps_getImage=PS_GetImage();
 
@@ -821,14 +820,14 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			Buzzer_KeySound();
 			HAL_Delay(600);
 			syspara_t.PS_login_times=3;
-			syspara_t.PS_wakeup_flag=0;	
+		
 			run_t.inputNewPwd_OK_led_blank_times=0;
 			}
 			else{
 
 			
 			syspara_t.PS_login_times=2;	
-			syspara_t.PS_wakeup_flag=0;	
+		
 			}
 
 			}
@@ -836,15 +835,15 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
 			
 			syspara_t.PS_login_times=2;	
-			syspara_t.PS_wakeup_flag=0;	
+	
 			}
-          }
+          
         break;  
 
         case 3: //input 4  times 
 		run_t.gTimer_8s=0;
 		run_t.inputNewPwd_OK_led_blank_times=0;
-            if(syspara_t.PS_wakeup_flag==1){
+           
 	        	syspara_t.PS_read_template=0;
 	            ps_regmodel=PS_RegModel();
 	           if(ps_regmodel==0){
@@ -903,14 +902,14 @@ void Fingerprint_NewClinet_Login_Fun(void)
 				}
 				
 				
-            }
+           
             
          case 5:
 		 	
          	run_t.gTimer_8s=0;
 	      	syspara_t.PS_read_template=1;
 			syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
-	        syspara_t.PS_wakeup_flag = 0;
+	  
 	        syspara_t.PS_login_times=0xff;
 			run_t.gTimer_8s=5; 
 			run_t.password_unlock_model =0;

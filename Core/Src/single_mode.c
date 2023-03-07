@@ -31,36 +31,27 @@ void Start_PowerOn_Handler(void)
 {
     
  if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0   && run_t.powerOn ==0){
-			run_t.powerOn++;
-			
-		
-		
-		
-			run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
-		   run_t.factory_test = 1;
-			run_t.works_led_label=factory_led_test;
-              
-			  POWER_ON();
-			  FP_POWER_ON(); //FP_power
-              
+	run_t.powerOn++;
+	run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
+    run_t.factory_test = 1;
+	run_t.works_led_label=factory_led_test;
       
-  }
- else{
- if(run_t.powerOn ==0){
+	  POWER_ON();
+	  FP_POWER_ON(); //FP_power
+      
+   }
+   else{
+	 if(run_t.powerOn ==0){
 
 				run_t.powerOn++;
-			
-				
-				run_t.motor_return_homePosition=0; //
+			    run_t.motor_return_homePosition=0; //
 				run_t.gTimer_8s=0;
 			 
 				POWER_ON();
 				FP_POWER_ON(); //FP_power WT.EDIT 2022.11.28
 				TouchKey_Led_Handler();
 				Buzzer_KeySound();//WT.EDIT 2022.09.12
-            syspara_t.PS_wakeup_flag=0;
-	           
-	  } 
+     } 
  }
 
 }

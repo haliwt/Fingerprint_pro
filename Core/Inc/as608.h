@@ -55,7 +55,7 @@ uint8_t 	PS_clear_ps_success;
 	uint8_t     fp_rx_times;
 
   uint8_t PS_login_flag;
-  uint8_t PS_wakeup_flag;
+
   uint8_t handler_read_data_flag;
   uint8_t ps_login_new_fp_success;
     
