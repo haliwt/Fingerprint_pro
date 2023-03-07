@@ -104,7 +104,7 @@ typedef struct __RUN_T{
 
    //eeprom ref
    unsigned char eepromAddress;
-   uint8_t  saveEEPROM_fail_flag ; //WT.EDIT 2022.10.06	
+ 
 
 	uint8_t  clearEeeprom_count;
 	unsigned char clearEeprom;

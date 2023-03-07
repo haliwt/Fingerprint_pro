@@ -65,7 +65,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 
-	static uint8_t rx_times=0xff;
+	
 
    if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
@@ -310,8 +310,9 @@ void  SideKey_Fun(uint8_t keyvalue)
       if(keyvalue== 0x81){
 	  	
 		run_t.clearEeprom = 1; //// be related to "Ref must be"
-
+       run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1 ;
         run_t.works_led_label=works_ok_led_on;
+	  
         run_t.gTimer_8s=0;
 
 		

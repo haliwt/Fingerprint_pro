@@ -15,7 +15,8 @@ typedef enum _works_led{
     backlight_led_on,
 	backlight_led_off,
     backlight_led_confirm,
-    standby_led
+    standby_led,
+    clear_eeprom_data
 }works_led;
 
 typedef enum{
