@@ -257,8 +257,10 @@ void DisplayLed_Handler(void)
 
 		    
             PS_LED_ALL_OFF();
+			
 			OK_LED_OFF();
-		    ERR_LED_OFF();
+		    if(run_t.panel_lock ==0)ERR_LED_OFF();
+			else  ERR_LED_ON();
 			BACKLIGHT_OFF();
         
              if(run_t.panel_lock ==1){
@@ -266,6 +268,7 @@ void DisplayLed_Handler(void)
 				   run_t.gTimer_60s=0;
                    run_t.error_times=0;
 				   run_t.panel_lock=0;
+				   
 
 
 				}

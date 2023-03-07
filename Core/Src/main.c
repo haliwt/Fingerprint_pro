@@ -135,7 +135,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE BEGIN 3 */
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
-   
+            
 	   }
 	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
 
