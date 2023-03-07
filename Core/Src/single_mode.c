@@ -173,16 +173,12 @@ void CheckPassword_Lock_Handler(void)
 	   break;
 
 	   case DISPOSE_KEY_LOCK_60S://11
-        run_t.panel_lock =1;
-	    run_t.pwd_fp_label = DISPOSE_NULL;
+             run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
 	   case DISPOSE_NULL: //14
-
-	    // Motor_Reverse_State();
-
-		//RunMotor_Definite_Handler(); //definite motor
-		  
+         
+	   
 
 	   break;
 

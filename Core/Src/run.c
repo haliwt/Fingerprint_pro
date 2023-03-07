@@ -155,19 +155,16 @@ void RunCheck_Mode(uint16_t dat)
 		  
 	       run_t.gTimer_8s=0;
 
-		   switch(run_t.confirm_key_label){
+		 
 
-               case 0 :
-                if(run_t.Numbers_counter ==0){ //only has entery_key 
+               if(run_t.Numbers_counter ==0){ //only has entery_key 
 
 					run_t.buzzer_sound_label = sound_key;  
                     run_t.gTimer_8s=0;
 				    run_t.enter_key = KEY_NULL;
-					return ;
+					
 				 }
-
-				
-				 if(run_t.Numbers_counter < 4 && run_t.Numbers_counter >0){//error
+                else if(run_t.Numbers_counter < 4 && run_t.Numbers_counter >0){//error
 				 
 						run_t.Numbers_counter=0;
 						run_t.error_times ++ ;
@@ -178,14 +175,11 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.enter_key = KEY_LOCK_60S;
 						run_t.buzzer_sound_label =sound_fail;
 		                  
-						return ;
+				
 					   }
 				 
 				}
-
-
-			   case 1:
-			   	
+				else{
 				if(run_t.inputNewPassword_Enable ==1){ //prepare input newpassword .WT.EDI 2022.10.13//if( run_t.Confirm_newPassword ==1){
 
 					run_t.inputNewPasswordTimes ++ ;  //recoder times
@@ -222,9 +216,10 @@ void RunCheck_Mode(uint16_t dat)
 
 				}
 				
-			   break;
-
+			  
 			}
+
+			
 		  
        }
     
