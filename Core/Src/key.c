@@ -72,7 +72,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
     
         run_t.pwd_fp_label = PWD_ID;
 		 
-    //   __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+      __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
       if(run_t.lowPower_flag==0){
 			SystemClock_Config();
@@ -94,7 +94,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
             BACKLIGHT_ON(); 
 
         }
-        __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+       
 
  	}
   
