@@ -48,7 +48,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
           
 			USART1_RX_BUF[USART1_RX_STA]=UART1_RX_DataBuf[0];	//¼ÇÂ¼½ÓÊÕµ½µÄÖµ	
 		    USART1_RX_STA++;
-			if(USART1_RX_STA ==11  && syspara_t.PS_read_template==0){
+			if(USART1_RX_STA ==11  ){
 				  USART1_RX_STA |=(1<<15);
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
@@ -58,7 +58,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                       
                 
 		    } 
-            if(USART1_RX_STA ==13  && syspara_t.PS_read_template==1){
+            if(USART1_RX_STA ==13  ){
                 USART1_RX_STA |=(1<<15);
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
@@ -68,7 +68,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				 
                    run_temp=0;
             }
-            if(USART1_RX_STA ==15  && syspara_t.PS_read_template==2){
+            if(USART1_RX_STA ==15  ){
                 USART1_RX_STA |=(1<<15);
 				  USART1_RX_STA = USART1_RX_STA & 0X8000;
 				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É

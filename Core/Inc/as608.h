@@ -61,7 +61,7 @@ uint8_t 	PS_clear_ps_success;
 	
     
   uint8_t uart1_rx_data;
-  uint8_t PS_read_template;
+
 	
   uint8_t ps_error_times_key;
   uint8_t ps_judeg_read_templete_flag;

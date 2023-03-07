@@ -51,7 +51,7 @@ void DisplayLed_Handler(void)
 			ERR_LED_OFF();
 			OK_LED_OFF();
 		    PS_Green_Led_ON();
-			 //erase EEPRO data 
+			cntrecoder++ ;
 			if(run_t.clearEeprom==1){
 				run_t.clearEeprom = 0;
 				run_t.gTimer_8s =0;
@@ -63,8 +63,11 @@ void DisplayLed_Handler(void)
 				run_t.works_led_label=works_ok_blink;
 				 
 			}
-			else
-			   run_t.works_led_label= works_ok_led_off;
+			else{
+				if(cntrecoder >100){
+			        run_t.works_led_label= works_ok_led_off;
+				}
+			}
 		break;
 
 		case works_ok_blink: //05
@@ -133,21 +136,23 @@ void DisplayLed_Handler(void)
 
 			 BACKLIGHT_OFF(); 
 			 
-			 if(run_t.gTimer_8s > 8)
+			 if(run_t.gTimer_8s > 8){
                  run_t.works_led_label= works_null;
-
+			 }
 		break;
 
 		case works_error_led_on: //3
-		    OK_LED_OFF();	
-            ERR_LED_ON();
+			ERR_LED_ON();
 		    PS_Red_Led_ON();
+		
+		    OK_LED_OFF();	
+           
+		   
 			run_t.gTimer_8s=0;
-			run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
-			run_t.password_unlock_model=0;
+			run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.0
 		
 			run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
-	        
+	        run_t.Numbers_counter =0;
 			for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
 			*(pwd2 + i)=0;//pwd2[i]=0;
 			*(Readpwd+i)=0;
@@ -162,9 +167,10 @@ void DisplayLed_Handler(void)
 		break;
 
 		case works_error_led_off: //4
+		    ERR_LED_ON();
 		    OK_LED_OFF();	
-            ERR_LED_OFF();
-		    PS_LED_ALL_OFF();
+            PS_Red_Led_ON();
+		   
             run_t.works_led_label= works_null;
 			
 			for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
@@ -176,24 +182,17 @@ void DisplayLed_Handler(void)
 		break;
 
 		case works_error_blink: //6
-			syspara_t.PS_read_template=0;
+			
+			 OK_LED_OFF();	
 			if(cnt==0){
 				cnt++;
 			   PS_Red_Led_ON();
+			   ERR_LED_ON();
 
 			}
-			//  run_t.BackLight =0;//WT.EDIT .2022.10.19
+
 			run_t.inputNewPassword_Enable =0;//WT.EDIT 2022.10.05
-			
-			run_t.password_unlock_model=0;
-			
-
 			run_t.Confirm_newPassword=0; //WT.EDIT .2022.10.07
-	
-
-			OK_LED_OFF();
-
-
 			if(run_t.gTimer_led_blink_500ms < 6 ){
 
 				ERR_LED_OFF();
@@ -210,24 +209,23 @@ void DisplayLed_Handler(void)
 
 			}
 		
-			if(cntrecoder > 2){
+			if(cntrecoder > 3){
 			   cntrecoder =0;
-
-		
-		
-
-			ERR_LED_OFF();
-			PS_LED_ALL_OFF();
-			cnt=0;
-		    run_t.works_led_label= works_null;
-
-			}
-			else{
-
-			  run_t.works_led_label= works_null;
+				ERR_LED_OFF();
+				PS_LED_ALL_OFF();
+				cnt=0;
+				
+				for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
+								*(pwd2 + i)=0;//pwd2[i]=0;
+								*(Readpwd+i)=0;
+								*(pwd1+i)=0;//pwd1[i]=0;
+				
+							}
+			    run_t.works_led_label= works_null;
 
 			}
-
+			
+			
 		break;
 
 		case factory_led_test:
@@ -257,6 +255,8 @@ void DisplayLed_Handler(void)
 		break;
 
 		case works_null: //7
+
+		    
             PS_LED_ALL_OFF();
 			OK_LED_OFF();
 		    ERR_LED_OFF();
@@ -287,11 +287,13 @@ void DisplayLed_Handler(void)
 			 	 run_t.gTimer_8s =0;
 				 standby_cnt ++;
 			}
-		  	 else if(run_t.gTimer_8s > 8){
+		  	else if(run_t.gTimer_8s > 8 && run_t.inputNewPassword_Enable ==0){
 	            run_t.gTimer_8s =0;
 	            Standby_Model_Handler();
 
-			 }
+			}
+
+			
 		  
          break;
 

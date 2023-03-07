@@ -617,7 +617,7 @@ void RunCommand_Unlock_Fingerprint(void)
 	    if(FP_INPUT_KEY()==1){
         run_t.gTimer_8s=0;
 	
-        syspara_t.PS_read_template=0;
+  
       
 			syspara_t.ps_serch_getimage=PS_GetImage();
 			if(syspara_t.ps_serch_getimage==0x00)  syspara_t.ps_serch_lable=FP_GEN_CHAR;
@@ -770,7 +770,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		run_t.gTimer_8s=0;
 	
             
-				syspara_t.PS_read_template=0;
+		
 				ps_getImage=PS_GetImage();
 
 				if(ps_getImage==0){
@@ -806,7 +806,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		 run_t.gTimer_8s=0;
 
          
-			syspara_t.PS_read_template=0;
+	
 			ps_getImage=PS_GetImage();
 
 			if(ps_getImage==0){
@@ -842,7 +842,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 		run_t.gTimer_8s=0;
 	
            
-	        	syspara_t.PS_read_template=0;
+	        
 	            ps_regmodel=PS_RegModel();
 	           if(ps_regmodel==0){
 					syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
@@ -905,7 +905,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
          case 5:
 		 	
          	run_t.gTimer_8s=0;
-	      	syspara_t.PS_read_template=1;
+	
 			syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
 	  
 	        syspara_t.PS_login_times=0xff;

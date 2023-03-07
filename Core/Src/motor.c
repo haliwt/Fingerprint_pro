@@ -205,7 +205,7 @@ void RunMotor_Definite_Handler(void) //definite motor
                 ERR_LED_OFF();
 				PS_Green_Led_OFF();
                 run_t.motorRunCount=0;
-                syspara_t.PS_read_template=0;
+            
                 run_t.works_led_label = backlight_led_off ;//run_t.backlight_Cmd_lable = backlight_led_off;
       
             }
