@@ -78,7 +78,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			FP_POWER_ON()  ;
 			BACKLIGHT_ON(); 
 			run_t.lowPower_flag++;
-			run_t.pwd_fp_label = PWD_ID;
+			//run_t.pwd_fp_label = PWD_ID;
 
          }while(run_t.lowPower_flag < 3);
        
@@ -101,7 +101,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		BACKLIGHT_ON();
         run_t.lowPower_flag++;
 	    run_t.gTimer_8s=0;
-		 run_t.pwd_fp_label = FP_ID ;
+		// run_t.pwd_fp_label = FP_ID ;
 	      
       }while(run_t.lowPower_flag < 3);
 	 
@@ -127,9 +127,14 @@ uint8_t Scan_Key(void)
    if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0 )
 	{
 		key.read &= ~0x01; // 0x1f & 0xfe =  0x1E
-		//POWER_ON();
-		//TouchKey_Led_Handler();//BACKLIGHT_2_ON();
+		
 	}
+//    else if(HAL_GPIO_ReadPin(SC12B_INT_INPUT_GPIO_Port,SC12B_INT_INPUT_Pin) ==1){
+//
+//	     key.read &= ~0x02; // 0x1f & 0xfe =  0x1D
+//
+//
+//	}
 	
 	
 	switch(key.state )
@@ -260,8 +265,10 @@ uint8_t Scan_Key(void)
 ********************************************************/
 void  SideKey_Fun(uint8_t keyvalue)
 {
-     
-	 if(keyvalue == 0x01){
+
+     switch(keyvalue){
+
+	    case 0x01:
                
 		run_t.Confirm_newPassword = 1; // be related to "Ref must be"
 	
@@ -281,19 +288,28 @@ void  SideKey_Fun(uint8_t keyvalue)
 	    run_t.gTimer_8s=0; //start counter timer 
 	
 	        
-       }
-	 
-      if(keyvalue== 0x81){
+     
+	   break;
+
+	   case 0x81:
+    
 	  	
 		run_t.clearEeprom = 1; //// be related to "Ref must be"
-       run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1 ;
+        run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1 ;
         run_t.works_led_label=works_ok_led_on;
 	  
         run_t.gTimer_8s=0;
 
 		
-       }
+       
+       break;
 
+	   
+	   	
+          
+	   
+	   
+     }
 
 
 

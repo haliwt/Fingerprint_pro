@@ -139,10 +139,8 @@ void DisplayLed_Handler(void)
 			 
 			 if(run_t.gTimer_8s > 8){
                  run_t.works_led_label= works_null;
-				    for(i=0;i<6;i++){
-					pwd2[i]=0;
-					pwd1[i]=0;
-				}
+				   
+				
 			 }
 		break;
 
@@ -161,8 +159,6 @@ void DisplayLed_Handler(void)
 			
             run_t.works_led_label= works_null;
 
-        
-
 		break;
 
 		case works_error_led_off: //4
@@ -172,12 +168,7 @@ void DisplayLed_Handler(void)
 		   
             run_t.works_led_label= works_null;
 			
-			for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
-			*(pwd2 + i)=0;//pwd2[i]=0;
-			*(Readpwd+i)=0;
-			*(pwd1+i)=0;//pwd1[i]=0;
-
-			}
+			
 		break;
 
 		case works_error_blink: //6
@@ -216,7 +207,6 @@ void DisplayLed_Handler(void)
 				
 				for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
 				*(pwd2 + i)=0;//pwd2[i]=0;
-				*(Readpwd+i)=0;
 				*(pwd1+i)=0;//pwd1[i]=0;
 				
 				}
@@ -287,7 +277,13 @@ void DisplayLed_Handler(void)
 		    
 			 if(run_t.gTimer_8s > 8 && standby_cnt ==0){
 			 	 run_t.gTimer_8s =0;
+				 
 				 standby_cnt ++;
+			   for(i=0;i<6;i++){ //WT.EDIT .2022.08.13
+				*(pwd2 + i)=0;//pwd2[i]=0;
+				*(pwd1+i)=0;//pwd1[i]=0;
+				
+				}
 			}
 		  	else if(run_t.gTimer_8s > 8 && run_t.inputNewPassword_Enable ==0){
 	            run_t.gTimer_8s =0;

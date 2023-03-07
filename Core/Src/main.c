@@ -141,11 +141,12 @@ __HAL_RCC_PWR_CLK_ENABLE();
 
         sidekey = Scan_Key();
 	    SideKey_Fun(sidekey);
-             
-	   	}
-        if(run_t.panel_lock==0){
-	 	  CheckPassword_Lock_Handler();
-		  
+
+		if(HAL_GPIO_ReadPin(FP_INT_INPUT_GPIO_Port,FP_INT_INPUT_Pin)==1)
+			 run_t.pwd_fp_label = FP_ID;
+	    else if(HAL_GPIO_ReadPin(SC12B_INT_INPUT_GPIO_Port,SC12B_INT_INPUT_Pin) ==1)
+		      run_t.pwd_fp_label = PWD_ID;
+		  CheckPassword_Lock_Handler();
 		  Buzzer_Sound_Handler();
 		  RunMotor_Definite_Handler(); //definite motor
 		}

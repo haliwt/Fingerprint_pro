@@ -75,9 +75,9 @@ void Error_Handler(void);
 #define OK_LED_Pin GPIO_PIN_12
 #define OK_LED_GPIO_Port GPIOB
 
-#define KEY_INPUT_Pin GPIO_PIN_13
-#define KEY_INPUT_GPIO_Port GPIOB
-#define KEY_INPUT_EXTI_IRQn EXTI4_15_IRQn
+#define KEY_INPUT_Pin 				GPIO_PIN_13
+#define KEY_INPUT_GPIO_Port 		GPIOB
+#define KEY_INPUT_EXTI_IRQn 		EXTI4_15_IRQn
 
 #define ERR_LED_Pin GPIO_PIN_14
 #define ERR_LED_GPIO_Port GPIOB

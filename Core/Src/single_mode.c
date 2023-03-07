@@ -70,7 +70,7 @@ void CheckPassword_Lock_Handler(void)
 
        case PWD_ID: //2
 	   
-			 TouchKey();//TouchKey_Handler();
+			TouchKey();//TouchKey_Handler();
             run_t.gTimer_8s=0;//clear zero
             switch(run_t.enter_key){
 
@@ -232,7 +232,7 @@ void TouchKey(void)
    	    
     
     KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
-	HAL_Delay(5);
+	//HAL_Delay(5);
 	RunCheck_Mode(KeyValue); 
     if(KeyValue ==0 ){
 
