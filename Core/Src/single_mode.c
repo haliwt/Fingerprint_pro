@@ -87,12 +87,12 @@ void CheckPassword_Lock_Handler(void)
 			   	    run_t.pwd_fp_label = DISPOSE_KEY_LOCK_60S;
 			   break;
 
-			   case KEY_NULL: //4
+			   case KEY_NULL: //6
 			       run_t.pwd_fp_label =DISPOSE_NULL;
                    
 			   break;
 
-			   case KEY_INPUT_NEW_PWD:
+			   case KEY_INPUT_NEW_PWD: //4
 			   	  run_t.works_led_label = works_ok_blink;
 			      run_t.buzzer_sound_label = sound_new_pwd_the_second;
 			   	  run_t.pwd_fp_label =DISPOSE_NULL;

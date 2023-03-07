@@ -31,11 +31,11 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
     
 
 	if(GPIO_Pin == KEY_INPUT_Pin){ //administrator KEY 
-       run_t.pwd_fp_label = ADMINISTRATOR_ID; 
+      
 	    
 	   __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
 	
-		if(run_t.lowPower_flag==0){
+		do{
 			SystemClock_Config();
 			HAL_ResumeTick();
 			HAL_TIM_Base_Start_IT(&htim14);//
@@ -47,16 +47,11 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			BACKLIGHT_ON();
 			run_t.lowPower_flag++;
 		    run_t.gTimer_8s=0;
+			run_t.pwd_fp_label = ADMINISTRATOR_ID; 
 		
 			 	
-		}
-	   	else{
-        
-            POWER_ON();
-			FP_POWER_ON()  ;
-            BACKLIGHT_ON(); 
-
-        }
+		}while(run_t.lowPower_flag < 3);
+	   	
         
 
 	}
@@ -65,35 +60,27 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 
-	
+    uint8_t  sc12b_flag;
 
    if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
     
-        run_t.pwd_fp_label = PWD_ID;
+        
 		 
       __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
       
-      if(run_t.lowPower_flag==0){
+       do{
 			SystemClock_Config();
 			HAL_ResumeTick();
 			HAL_TIM_Base_Start_IT(&htim14);//
 
 			POWER_ON();
 			FP_POWER_ON()  ;
+			BACKLIGHT_ON(); 
 			run_t.lowPower_flag++;
-			
-			//run_t.buzzer_sound_label=sound_key;//Buzzer_KeySound();
-			
-		    run_t.gTimer_8s=0;
-		}
-        else{
-        
-            POWER_ON();
-			FP_POWER_ON()  ;
-            BACKLIGHT_ON(); 
+			run_t.pwd_fp_label = PWD_ID;
 
-        }
+         }while(run_t.lowPower_flag < 3);
        
 
  	}
@@ -101,11 +88,10 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    //fingerprint 
   if(GPIO_Pin==FP_INT_INPUT_Pin){
   	
-	run_t.pwd_fp_label = FP_ID ;
-		  __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-     if(run_t.lowPower_flag==0){
-
-		
+	
+		 __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+    
+	 do{
 		SystemClock_Config();
 		HAL_ResumeTick();
 		HAL_TIM_Base_Start_IT(&htim14);//
@@ -113,23 +99,13 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		POWER_ON();
 		FP_POWER_ON()  ;
 		BACKLIGHT_ON();
-        Buzzer_KeySound();
-
-
-      
-		run_t.lowPower_flag++;
-	
+        run_t.lowPower_flag++;
 	    run_t.gTimer_8s=0;
+		 run_t.pwd_fp_label = FP_ID ;
 	      
-      }
-      else{
-	          POWER_ON();
-			  FP_POWER_ON()  ;
-			  BACKLIGHT_ON();
-		
-			 
-         }
-
+      }while(run_t.lowPower_flag < 3);
+	 
+    
   }
 
 
