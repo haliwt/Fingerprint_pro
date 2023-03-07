@@ -67,7 +67,7 @@ unsigned char CompareValue(uint8_t *pt1,uint8_t *pt2)
 void RunCheck_Mode(uint16_t dat)
 {
    uint8_t temp, i,read_numbers;
-   static uint8_t numbers_key=0xff,special1= 0xff,special2=0xff,key_pressed;
+   static uint8_t numbers_key=0xff,special1= 0xff,special2=0xff,key_pressed,spec_1;
    switch(dat){
 	case SPECIAL_1 ://0x40: //CIN1->'*' ->cancel_key
 		
@@ -77,7 +77,8 @@ void RunCheck_Mode(uint16_t dat)
 		 run_t.getSpecial_2_key++;//n1++;
 		 run_t.getNumbers_key++;//n2++;
 		 run_t.special_key_flag =1;
-		 
+		
+
 	 
 		  run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		  run_t.gTimer_8s=0;  //LED turn on holde times
@@ -98,14 +99,14 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.Numbers_counter =0 ;
 
 						for(i=0;i<6;i++){
-						pwd1[i]=0;
+						    pwd1[i]=0;
 							Readpwd[i]=0;
 						}
 
 						OK_LED_OFF();
 						ERR_LED_OFF();
 						run_t.enter_key = KEY_NULL;
-						return ;
+						return ;			
 
 					}
 					if(run_t.clear_inputNumbers_newpassword ==1){//the first administrator password
@@ -122,7 +123,7 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.Confirm_newPassword=1; //
 						run_t.inputNewPwd_OK_led_blank_times=0;
 						run_t.enter_key = KEY_NULL;
-						
+						return ;
 
 					}
 
@@ -140,7 +141,7 @@ void RunCheck_Mode(uint16_t dat)
 
 		  }
        	}
-	    return ;
+	   
 	   break;
 	   //confirm Key 
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
@@ -149,8 +150,9 @@ void RunCheck_Mode(uint16_t dat)
 
            run_t.getSpecial_1_key++;//n1++
 		   run_t.getNumbers_key++;//n2++;
-		   run_t.special_key_flag =1 ;
-			 
+           run_t.special_key_flag =1;
+		  
+		  
 	       run_t.gTimer_8s=0;
 
 		   switch(run_t.confirm_key_label){
@@ -159,7 +161,6 @@ void RunCheck_Mode(uint16_t dat)
                 if(run_t.Numbers_counter ==0){ //only has entery_key 
 
 					run_t.buzzer_sound_label = sound_key;  
-					run_t.pwd_fp_label = 
                     run_t.gTimer_8s=0;
 				    run_t.enter_key = KEY_NULL;
 					return ;
@@ -171,9 +172,7 @@ void RunCheck_Mode(uint16_t dat)
 						run_t.Numbers_counter=0;
 						run_t.error_times ++ ;
 						if(run_t.error_times > 4 ){ //OVER 5 error  times auto lock touchkey 60 s
-						run_t.gTimer_10s_start=0;//WT.EDIT 2022.09.20
-						run_t.gTimer_input_error_times_60s =0;
-						run_t.panel_lock=1;
+					    run_t.panel_lock=1;
 						run_t.gTimer_60s=0;
 						run_t.gTimer_8s=0;
 						run_t.enter_key = KEY_LOCK_60S;
@@ -335,17 +334,19 @@ void RunCheck_Mode(uint16_t dat)
 
    	}
     //check numbers key.
-	if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.NumbersKey_pressedNumbers==0 \
-		&& run_t.special_key_flag ==0){
+	if(numbers_key != run_t.getNumbers_key && key_pressed ==1 && run_t.getNumbers_key !=0x40 && run_t.special_key_flag ==0 &&run_t.NumbersKey_pressedNumbers==0){
 		numbers_key =run_t.getNumbers_key;
            key_pressed =0;
-           run_t.special_key_flag =1;
+	       run_t.special_key_flag =1;
+           run_t.getSpecial_1_key++;
+		   run_t.getSpecial_2_key++;
+		   run_t.NumbersKey_pressedNumbers= 1;
 
-		  	run_t.getSpecial_1_key++;
-		    run_t.getSpecial_2_key++;
+
+
 		   
-			run_t.NumbersKey_pressedNumbers=1;
 			run_t.Numbers_counter ++ ;
+			
 
 			run_t.gTimer_8s=0;
             //clear run_t.enter_key value 

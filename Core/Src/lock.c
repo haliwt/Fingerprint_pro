@@ -588,8 +588,7 @@ void Open_Lock_Fail_Fun(void)
 
 	run_t.error_times ++ ; //input times 5 ,
 	if(run_t.error_times > 4){
-		run_t.gTimer_10s_start=0;
-		run_t.gTimer_input_error_times_60s =0;
+	
 		run_t.panel_lock=1;
 		run_t.gTimer_60s=0;
 		run_t.works_led_label =works_error_blink;

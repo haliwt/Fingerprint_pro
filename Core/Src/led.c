@@ -42,7 +42,7 @@ void Panel_LED_Off(void)
 void DisplayLed_Handler(void)
 {
     uint8_t i;
-	static uint16_t cnt0,cnt,standby_cnt;
+	static uint16_t cnt0,cnt,standby_cnt,counter_on;
     static uint8_t cntrecoder;
 	switch(run_t.works_led_label){
 
@@ -258,7 +258,7 @@ void DisplayLed_Handler(void)
 			ERR_LED_ON();
 			BAT_LED_ON();
 
-			if(run_t.gTimer_input_error_times_60s > 5){
+			if( counter_on> 5){
 				run_t.factory_test =0;
 				run_t.gTimer_8s=10;
 				BACKLIGHT_OFF();

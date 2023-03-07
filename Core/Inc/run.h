@@ -122,8 +122,8 @@ typedef struct __RUN_T{
 	unsigned char gTimer_ADC;
 
 	
-	uint8_t  gTimer_input_error_times_60s;
-	uint8_t gTimer_10s_start;
+	
+
 	uint8_t gTimer_led_blink_500ms;
 	
 	uint8_t 	motorRunCount;

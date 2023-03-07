@@ -132,21 +132,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
     if(t0>99){ //10*100 =1000ms "1s"
        t0=0;
-	  run_t.gTimer_10s_start++;
 	  run_t.gTimer_8s++;
 	  run_t.gTimer_60s ++;
 	   run_t.gTimer_ADC ++;
-	  
-	  
-	   if(run_t.gTimer_10s_start>9){ //10s
-	   	 run_t.gTimer_10s_start=0;
-	   	
-		run_t.gTimer_input_error_times_60s++;
 	   }
 	
     } 
-	}
-
 }
+
+
 
 

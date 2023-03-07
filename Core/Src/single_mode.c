@@ -33,8 +33,8 @@ void Start_PowerOn_Handler(void)
  if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0   && run_t.powerOn ==0){
 			run_t.powerOn++;
 			
-			run_t.gTimer_10s_start=0;
-			run_t.gTimer_input_error_times_60s =0;
+		
+		
 		
 			run_t.buzzer_sound_label = sound_key;//run_t.buzzer_key_sound_flag =1;
 		   run_t.factory_test = 1;
@@ -204,7 +204,8 @@ void CheckPassword_Lock_Handler(void)
 void TouchKey(void)
 {
    if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
-    
+   	    
+     HAL_Delay(10);
     KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
 	RunCheck_Mode(KeyValue); 
     if(KeyValue ==0 ){
