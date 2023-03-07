@@ -93,6 +93,8 @@ void CheckPassword_Lock_Handler(void)
 			   break;
 
 			   case KEY_INPUT_NEW_PWD:
+			   	  run_t.works_led_label = works_ok_blink;
+			      run_t.buzzer_sound_label = sound_new_pwd_the_second;
 			   	  run_t.pwd_fp_label =DISPOSE_NULL;
 
 			   break;
@@ -157,8 +159,8 @@ void CheckPassword_Lock_Handler(void)
 
 	   case DISPOSE_STORE_SET_REF:
 	   	    
-			run_t.works_led_label = works_ok_led_on;
-			run_t.buzzer_sound_label = sound_key;
+			run_t.works_led_label = works_ok_blink;
+			run_t.buzzer_sound_label = sound_new_pwd_the_first;
 	   	    run_t.inputNewPassword_Enable = 1;
 	        run_t.pwd_fp_label = DISPOSE_NULL;
 
