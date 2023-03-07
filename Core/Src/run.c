@@ -183,13 +183,18 @@ void RunCheck_Mode(uint16_t dat)
 					if(run_t.inputNewPasswordTimes ==1){//Confirm Key "#"
 				
 						run_t.buzzer_sound_label = sound_new_pwd_the_second;//run_t. = 2;
+						run_t.Numbers_counter=0;
+						run_t.enter_key =KEY_INPUT_NEW_PWD;
 
 					}
 
-					run_t.enter_key =KEY_SUCCESS;
-                    run_t.buzzer_sound_label =sound_key;
-					run_t.Numbers_counter=0;
-					run_t.gTimer_8s=0;
+					if(run_t.inputNewPasswordTimes ==2){
+					
+	                    run_t.buzzer_sound_label =sound_excute;
+						run_t.Numbers_counter=0;
+						run_t.gTimer_8s=0;
+						run_t.enter_key =KEY_INPUT_NEW_PWD_CONFIRM;
+					}
                   
 
 				}

@@ -10,6 +10,7 @@
 
 uint8_t origin_pwd[6]={1,2,3,4,0,0};
 
+static void SavePassword_To_EEPROM(void);
 
 
 /****************************************************************************
@@ -324,6 +325,26 @@ void ReadPassword_EEPROM_SaveData(void)
 	  
 	 }
 }
+/*******************************************************
+ * 
+ * Function Name:void Save_To_EeepromNewPwd(void)
+ * Function: start power on handler
+ * INPUT Ref:NO
+ * Return Ref:NO
+ * 
+********************************************************/
+void Save_To_EeepromNewPwd(void)
+{
+
+	
+	if(run_t.inputNewPassword_Enable ==1 && run_t.inputNewPasswordTimes !=1 ){//WT.EDIT .2022.09.28.if(run_t.adminiId==1){
+		
+		   SavePassword_To_EEPROM();
+			
+	 }
+	
+	
+}
 
 
 /****************************************************************************
@@ -334,7 +355,7 @@ void ReadPassword_EEPROM_SaveData(void)
 *Retrun Ref:NO
 *
 ****************************************************************************/
-void SavePassword_To_EEPROM(void)
+static void SavePassword_To_EEPROM(void)
 {
    static unsigned char value,eeNumbers;
    static uint8_t initvalue =0x01;
@@ -509,7 +530,7 @@ void Open_Lock_Success_Fun(void)
 		syspara_t.ps_serch_genchar =0xff;
 		syspara_t.ps_serach_result=0xff;
 		
-		syspara_t.handler_read_data_flag++;
+	
 
         run_t.password_unlock_model=DISPOSE_STORE_MODEL_EEPROM;// permit to save new password
 
@@ -534,7 +555,7 @@ void Open_Lock_Success_Fun(void)
 			syspara_t.ps_serch_getimage=0xff;
 			syspara_t.ps_serch_genchar =0xff;
 			syspara_t.ps_serach_result=0xff;
-			syspara_t.handler_read_data_flag++;
+			
 			run_t.password_unlock_model = DISPOSE_NULL;
 		}
 		else{
@@ -580,7 +601,7 @@ void Open_Lock_Fail_Fun(void)
     run_t.gTimer_8s=0;//WT.EDIT 2022.09.28
 	run_t.Confirm_newPassword =0; //release administrator shet input new password flag.
 
-	syspara_t.handler_read_data_flag++;
+	
 	run_t.Numbers_counter = 0;
 	run_t.eepromAddress=0;
 

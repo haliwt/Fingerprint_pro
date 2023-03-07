@@ -604,8 +604,6 @@ void RunCommand_Unlock_Fingerprint(void)
    	}
 
 	//fingerprint open lock doing 
-  // if(getImage != syspara_t.handler_read_data_flag || run_t.Confirm_newPassword==1){
-	  //getImage = syspara_t.handler_read_data_flag;
 	if(FP_INPUT_KEY()==1)
 		  HAL_Delay(5);
 		

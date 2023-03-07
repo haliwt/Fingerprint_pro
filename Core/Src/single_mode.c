@@ -92,6 +92,15 @@ void CheckPassword_Lock_Handler(void)
                    
 			   break;
 
+			   case KEY_INPUT_NEW_PWD:
+			   	  run_t.pwd_fp_label =DISPOSE_NULL;
+
+			   break;
+
+			   case KEY_INPUT_NEW_PWD_CONFIRM:
+                  run_t.pwd_fp_label=DISPOSE_SAVE_DATA;
+			   break;
+
 
 			}
 				
@@ -113,7 +122,9 @@ void CheckPassword_Lock_Handler(void)
 		     case open_lock_success :
 			 	 Open_Lock_Success_Fun();
 		       if(run_t.password_unlock_model==DISPOSE_STORE_MODEL_EEPROM){
-					run_t.pwd_fp_label = DISPOSE_SAVE_DATA;
+			   	    
+					run_t.gTimer_8s =0;
+					run_t.pwd_fp_label = DISPOSE_STORE_SET_REF;
 		       	}
 			   else if(run_t.password_unlock_model ==DISPOSE_MOTOR_RUN ){
 
@@ -144,8 +155,18 @@ void CheckPassword_Lock_Handler(void)
 		 
 	   break;
 
+	   case DISPOSE_STORE_SET_REF:
+	   	    
+			run_t.works_led_label = works_ok_led_on;
+			run_t.buzzer_sound_label = sound_key;
+	   	    run_t.inputNewPassword_Enable = 1;
+	        run_t.pwd_fp_label = DISPOSE_NULL;
+
+
+	   break;
+
 	   case DISPOSE_SAVE_DATA: //6
-	      SavePassword_To_EEPROM();
+	       Save_To_EeepromNewPwd();
 		  run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 

@@ -42,7 +42,7 @@ void Panel_LED_Off(void)
 void DisplayLed_Handler(void)
 {
     uint8_t i;
-	static uint16_t cnt0,cnt,counter_on;
+	static uint16_t cnt0,cnt;
     static uint8_t cntrecoder;
 	switch(run_t.works_led_label){
 
@@ -294,7 +294,7 @@ void DisplayLed_Handler(void)
 			 else{
 	            run_t.works_led_label = standby_led;
 				run_t.gTimer_8s =0;
-				standby_cnt =0;
+				
 			 }
 			
 		break;

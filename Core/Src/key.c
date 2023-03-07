@@ -290,23 +290,20 @@ void  SideKey_Fun(uint8_t keyvalue)
 		run_t.Confirm_newPassword = 1; // be related to "Ref must be"
 	
 		run_t.inputNewPassword_Enable =0;
-
-        run_t.password_unlock_model=0; 
 		run_t.Numbers_counter =0;
 		run_t.motor_return_homePosition=0;
 	    
 	    Buzzer_KeySound();
+		POWER_ON();//WT.EDIT .2022.10.06
         BACKLIGHT_ON();        
 		FP_POWER_ON();
-		POWER_ON();//WT.EDIT .2022.10.06
 		OK_LED_OFF();//WT.EDIT .2022.10.31
 		ERR_LED_OFF();
 		PS_Blue_Led_ON();
 
-		//run_t.pwd_fp_label = DISPOSE_ADM_RELEASE_KEY;  //释放管理员ID .
 		run_t.works_led_label = works_ok_led_on;
-		run_t.buzzer_sound_label = sound_key;
 	    run_t.gTimer_8s=0; //start counter timer 
+	
 	        
        }
 	 
