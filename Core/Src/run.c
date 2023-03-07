@@ -143,12 +143,11 @@ void RunCheck_Mode(uint16_t dat)
 	   break;
 	   //confirm Key 
 		case SPECIAL_2://0x200: //CIN10 '#' ->confirm 
-        if(special2 != run_t.getSpecial_2_key && run_t.special_key_flag ==0){
+        if(special2 != run_t.getSpecial_2_key && run_t.special_key_flag !=1){
 	         special2 = run_t.getSpecial_2_key;
 
            run_t.getSpecial_1_key++;//n1++
 		   run_t.getNumbers_key++;//n2++;
-		   run_t.special_key_flag =1;
 		     key_pressed=0;
 			 
 	       run_t.gTimer_8s=0;

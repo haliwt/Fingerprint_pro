@@ -857,7 +857,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 							syspara_t.PS_login_times=5;
 							run_t.Confirm_newPassword =0;//WT.EIDT 2022.09.12
 							run_t.motor_return_homePosition=0;
-							run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
+						
 							Buzzer_LongSound();
 							//run_t.buzzer_sound_label=sound_excute;//run_t.buzzer_longsound_flag =1;//WT.EDIT 2022.10.28
 							run_t.inputNewPassword_Enable =0; //WT.EDIT 2022.12.08

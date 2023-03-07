@@ -47,7 +47,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			BACKLIGHT_ON();
 			run_t.lowPower_flag++;
 		    run_t.gTimer_8s=0;
-			run_t.inputDeepSleep_times =0; 
+		
 			 	
 		}
 	   	else{
@@ -85,7 +85,6 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			
 			//run_t.buzzer_sound_label=sound_key;//Buzzer_KeySound();
 			
-			run_t.inputDeepSleep_times =0;
 		    run_t.gTimer_8s=0;
 		}
         else{
@@ -121,7 +120,6 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		run_t.lowPower_flag++;
 	
 	    run_t.gTimer_8s=0;
-		run_t.inputDeepSleep_times =0;
 	      
       }
       else{
@@ -204,7 +202,6 @@ uint8_t Scan_Key(void)
 					do{
                         buzzertimes++;
 						run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
-						run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         Buzzer_KeySound();
                         BUZZER_OFF(); 
                         ERR_LED_OFF();
@@ -224,7 +221,6 @@ uint8_t Scan_Key(void)
                         Buzzer_ShortSound();
                         BUZZER_OFF(); //BUZZER_OFF(); 
                         run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
-                        run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         ERR_LED_OFF();
                         while(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0);
                         key.value = key.value|0x80;
@@ -292,7 +288,6 @@ void  SideKey_Fun(uint8_t keyvalue)
 	 if(keyvalue == 0x01){
                
 		run_t.Confirm_newPassword = 1; // be related to "Ref must be"
-		run_t.inputDeepSleep_times =0;
 	
 		run_t.inputNewPassword_Enable =0;
 
@@ -321,7 +316,6 @@ void  SideKey_Fun(uint8_t keyvalue)
 
 		syspara_t.PS_wakeup_flag=0;
         run_t.works_led_label=works_ok_led_on;
-	    run_t.inputDeepSleep_times =0;
         run_t.gTimer_8s=0;
 
 		

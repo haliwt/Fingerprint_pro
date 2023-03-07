@@ -255,25 +255,25 @@ void ReadPassword_EEPROM_SaveData(void)
 			//	HAL_Delay(5);
 			if(run_t.Numbers_counter > 6){
 
-			value = BF_Search(virtualPwd,Readpwd);
+				value = BF_Search(virtualPwd,Readpwd);
 			}
 			else
-			value = CompareValue(Readpwd,pwd1);
+				value = CompareValue(Readpwd,pwd1);
 
 
 			if(value==1)//if(strcmp(pwd1,pwd2)==0)
 			{
-			readFlag[0]=0;
+				readFlag[0]=0;
 
-			run_t.open_lock_lable = open_lock_success;
-			return ;
+				run_t.open_lock_lable = open_lock_success;
+				return ;
 
 			}
 			else{
-			if(run_t.Confirm_newPassword ==1){
-			readFlag[0]=0;
-			run_t.open_lock_lable = open_lock_fail;
-			return ;
+				if(run_t.Confirm_newPassword ==1){
+				readFlag[0]=0;
+				run_t.open_lock_lable = open_lock_fail;
+				return ;
 			}
 			//n_t.eepromAddress++ ;	
 			}
@@ -424,7 +424,6 @@ void SavePassword_To_EEPROM(void)
 				 EEPROM_Write_Byte((run_t.userId + 0x01),pwd1,6);
 				 HAL_Delay(5);
 
-	            run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
 				run_t.inputNewPasswordTimes =0;
 			
 				run_t.Numbers_counter =0;
@@ -460,7 +459,6 @@ void SavePassword_To_EEPROM(void)
 				run_t.buzzer_sound_label=sound_fail;//run_t.buzzer_fail_sound_flag=1; //WT.EDIT 2022.10.06	
 			
 				run_t.saveEEPROM_fail_flag =1; //WT.EDIT 2022.10.06	
-				run_t.inputDeepSleep_times =0; //WT.EDIT 2022.09.20
 				
 				run_t.clear_inputNumbers_newpassword=0;//WT.EDIT 2022.10.14
 
@@ -478,8 +476,14 @@ void SavePassword_To_EEPROM(void)
 	}
  }
 
-
-
+/*******************************************************************
+	*
+	*Function Name: void Open_Lock_Success_Fun(void)
+	*Function : open drawer is success
+	*Input Ref:No
+	*Return Ref:No
+	*
+*******************************************************************/
 void Open_Lock_Success_Fun(void)
 {
 	uint8_t i; 
@@ -498,10 +502,6 @@ void Open_Lock_Success_Fun(void)
 
 		syspara_t.PS_login_times=0;
 		run_t.error_times=0;
-		//buzzer sound 
-        run_t.buzzer_sound_label =sound_high;
-	    //led display 
-		run_t.works_led_label = works_ok_blink;
 		run_t.inputNewPwd_OK_led_blank_times=0;
 
 		
@@ -511,13 +511,13 @@ void Open_Lock_Success_Fun(void)
 		
 		syspara_t.handler_read_data_flag++;
 
-        run_t.password_unlock_model=STORE_MODEL_EEPROM;// permit to save new password
+        run_t.password_unlock_model=DISPOSE_STORE_MODEL_EEPROM;// permit to save new password
 
 	  break;
 
 	  case 0:
 		if(run_t.motor_return_homePosition==1){//WT.EDIT 2022.10.28,motor runing to home
-			run_t.buzzer_sound_label =sound_excute;//Buzzer_LongSound(); //WT.EDIT 2022.10.06
+
 			ERR_LED_OFF();
 			OK_LED_ON();
 			run_t.gTimer_8s =0;
@@ -543,34 +543,34 @@ void Open_Lock_Success_Fun(void)
 			syspara_t.ps_serch_genchar =0xff;
 			syspara_t.ps_serach_result=0xff;
             run_t.error_times=0;
-			run_t.motor_doing_flag=1;
-			
-			run_t.motorRunCount=0;
 
 			run_t.Numbers_counter =0 ; //WT.EDIT 2022.10.28
 
-			run_t.inputDeepSleep_times =0;
-			run_t.buzzer_sound_label = sound_excute;
-
-
-			for(i=0;i<6;i++){
+		    for(i=0;i<6;i++){
 			pwd1[i]=0;
 			Readpwd[i]=0;
 			pwd2[i]=0;
 
 		    }
-			run_t.password_unlock_model = motor_run_start;
+			run_t.password_unlock_model = DISPOSE_MOTOR_RUN;
 
 
 		}
 
      break;
 
-		}
+	}
 
 
 }
-
+/*******************************************************************
+	*
+	*Function Name: void Open_Lock_Fail_Fun(void)
+	*Function : open drawer is fail
+	*Input Ref:No
+	*Return Ref:No
+	*
+*******************************************************************/
 void Open_Lock_Fail_Fun(void)
 {
 	uint8_t i; 

@@ -2,10 +2,7 @@
 #define   __SINGLE_MODE_H_
 #include "main.h"
 
-typedef enum{
-  POWER_ON_MODEL=0x01,STORE_MODEL_EEPROM,EXIT_STORE_MODEL   
 
-}open_model;
 
 typedef enum{
 
@@ -22,6 +19,7 @@ typedef enum{
    DISPOSE_KEY_FAIL,
    DISPOSE_KEY_LOCK_60S,
    DISPOSE_WKES_LED_STATE,
+   DISPOSE_STORE_MODEL_EEPROM,
    DISPOSE_NULL
 
  }pwd_fp_eunum_t;

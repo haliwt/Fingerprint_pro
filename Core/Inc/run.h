@@ -57,9 +57,8 @@ typedef struct __RUN_T{
 
 	//lower power ref
 	uint8_t lowPower_flag;
-	unsigned char inputDeepSleep_times;
 
-	//label
+	
 	
   
 	//touchkey 
@@ -77,7 +76,6 @@ typedef struct __RUN_T{
 
 	
 	//motor ref
-   uint8_t motor_doing_flag;
 	uint8_t motor_returnRun_flag;
 	uint8_t motor_return_homePosition;
 	uint8_t Motor_RunCmd_Label;

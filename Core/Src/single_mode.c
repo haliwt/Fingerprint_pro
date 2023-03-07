@@ -12,8 +12,7 @@
  uint16_t KeyValue;
 uint8_t fp_cnt;
 
-static void Save_To_EeepromNewPwd(void);
-static void SaveData_EEPROM_Handler(void);
+
 
 
 void (*TouchKey_Handler)(void);
@@ -51,7 +50,7 @@ void Start_PowerOn_Handler(void)
 
 				run_t.powerOn++;
 			
-				run_t.password_unlock_model =POWER_ON_MODEL; // 4: power on is motor 1/4 angle
+				
 				run_t.motor_return_homePosition=0; //
 				run_t.gTimer_8s=0;
 			 
@@ -122,10 +121,10 @@ void CheckPassword_Lock_Handler(void)
 
 		     case open_lock_success :
 			 	 Open_Lock_Success_Fun();
-		       if(run_t.password_unlock_model==STORE_MODEL_EEPROM){
+		       if(run_t.password_unlock_model==DISPOSE_STORE_MODEL_EEPROM){
 					run_t.pwd_fp_label = DISPOSE_SAVE_DATA;
 		       	}
-			   else if(run_t.password_unlock_model == motor_run_start){
+			   else if(run_t.password_unlock_model ==DISPOSE_MOTOR_RUN ){
 
                    run_t.pwd_fp_label = DISPOSE_MOTOR_RUN;
 				  
@@ -155,15 +154,15 @@ void CheckPassword_Lock_Handler(void)
 	   break;
 
 	   case DISPOSE_SAVE_DATA: //6
-	      SaveData_EEPROM_Handler();
-		   
-
-           run_t.pwd_fp_label = DISPOSE_NULL;
+	      SavePassword_To_EEPROM();
+		  run_t.pwd_fp_label = DISPOSE_NULL;
 	   break;
 
 	   case DISPOSE_MOTOR_RUN: //9
          run_t.pwd_fp_label =DISPOSE_NULL;
+		 run_t.buzzer_sound_label = sound_excute;
 	   	 run_t.Motor_RunCmd_Label = motor_run_start;
+	   
 	   break;
 
        case DISPOSE_KEY_FAIL: //10
@@ -183,6 +182,7 @@ void CheckPassword_Lock_Handler(void)
 	    // Motor_Reverse_State();
 
 		//RunMotor_Definite_Handler(); //definite motor
+		  
 
 	   break;
 
@@ -192,80 +192,6 @@ void CheckPassword_Lock_Handler(void)
 
 	}
    
-}
-
-/**************************************************************************
-	*
-	*Funtcion Name:static void UnLock_Aand_SaveData_Handler(void)
-	*Function : to special action process 
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-**************************************************************************/
-static void SaveData_EEPROM_Handler(void)
-{
-   switch(run_t.password_unlock_model){
-
-    case STORE_MODEL_EEPROM:
-        run_t.inputDeepSleep_times=0;
-
-	   run_t.gTimer_8s=0;
-	     if(syspara_t.PS_wakeup_flag==0)
-		     Save_To_EeepromNewPwd();
-	     else
-		     Fingerprint_NewClinet_Login_Fun();
-		run_t.motor_return_homePosition=0;
-	
-        
-    break;
-
-	case POWER_ON_MODEL: //Power On motor run 1/4 angle
-	  
-         Motor_CW_Run();// Close 
-		 HAL_Delay(530);//WT.EDIT 2022.09.19
-		 Motor_Stop();
-		 run_t.motor_return_homePosition=0;//WT.EDIT 2022.08.18
-		 run_t.password_unlock_model=0;
-	     run_t.gTimer_8s=0;
-		 Panel_LED_Off();
-	
-
-	break;
-
-	case EXIT_STORE_MODEL :
-           run_t.password_unlock_model = 0xff;
-	break;
-
-	default :
-
-	break;
-
-    }
-
-
-}
-/*******************************************************
- * 
- * Function Name:void Save_To_EeepromNewPwd(void)
- * Function: start power on handler
- * INPUT Ref:NO
- * Return Ref:NO
- * 
-********************************************************/
-static void Save_To_EeepromNewPwd(void)
-{
-	if(run_t.inputNewPassword_Enable ==1 && run_t.inputNewPasswordTimes !=1 ){//WT.EDIT .2022.09.28.if(run_t.adminiId==1){
-		
-		   run_t.gTimer_8s=0;
-
-		   SavePassword_To_EEPROM();
-			
-	 }
-	run_t.motor_return_homePosition=0;
-	run_t.inputDeepSleep_times =0;
-	run_t.gTimer_8s=0;
-	//run_t.BackLight =1;//WT.EDIT 2022.11.01
-	
 }
 /*******************************************************
  * 
@@ -281,7 +207,7 @@ void TouchKey(void)
     
     KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
 	RunCheck_Mode(KeyValue); 
-    if(KeyValue ==0 || KeyValue == 0x8000||KeyValue ==0x200){
+    if(KeyValue ==0 || KeyValue == 0x8000){
 
 	    run_t.NumbersKey_pressedNumbers = 0;
 	    run_t.getSpecial_1_key++;

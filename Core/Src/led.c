@@ -60,7 +60,6 @@ void DisplayLed_Handler(void)
 				Del_FR();//fingerprint be deteleted
 				run_t.gTimer_8s =0;
 
-				run_t.inputDeepSleep_times =0;//WT.EDIT 2022.10.26
 
 
 				run_t. clearEeeprom_count=0;

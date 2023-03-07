@@ -201,7 +201,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 			 if(stop_flag==1){
 			 	stop_flag=0;
                 run_t.motor_return_homePosition=0;//motor runing flag 
-                run_t.motor_doing_flag=0;
+              
                 run_t.Motor_RunCmd_Label= 0xff;
 				BACKLIGHT_OFF();
                 ERR_LED_OFF();
