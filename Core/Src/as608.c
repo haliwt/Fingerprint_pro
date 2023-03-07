@@ -739,7 +739,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
 		case 0: //input 1 times syspara_t.PS_read_template=0;
 		run_t.gTimer_8s=0;
-	    run_t.inputNewPwd_OK_led_blank_times=0;
+	 
 		   if(FP_INPUT_KEY()==1){
 			ps_getImage=PS_GetImage();
 			if(ps_getImage==0){
@@ -768,7 +768,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
         case 1: //input 2 times
 		run_t.gTimer_8s=0;
-		run_t.inputNewPwd_OK_led_blank_times=0;
+	
             
 				syspara_t.PS_read_template=0;
 				ps_getImage=PS_GetImage();
@@ -804,7 +804,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
                      
          case 2: //input 3 times
 		 run_t.gTimer_8s=0;
-		 run_t.inputNewPwd_OK_led_blank_times=0;
+
          
 			syspara_t.PS_read_template=0;
 			ps_getImage=PS_GetImage();
@@ -819,7 +819,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 			HAL_Delay(600);
 			syspara_t.PS_login_times=3;
 		
-			run_t.inputNewPwd_OK_led_blank_times=0;
+		
 			}
 			else{
 
@@ -840,7 +840,7 @@ void Fingerprint_NewClinet_Login_Fun(void)
 
         case 3: //input 4  times 
 		run_t.gTimer_8s=0;
-		run_t.inputNewPwd_OK_led_blank_times=0;
+	
            
 	        	syspara_t.PS_read_template=0;
 	            ps_regmodel=PS_RegModel();

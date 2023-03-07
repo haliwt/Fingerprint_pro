@@ -460,7 +460,7 @@ static void SavePassword_To_EEPROM(void)
 				ERR_LED_OFF();
                   run_t.gTimer_8s=4;
 				run_t.buzzer_sound_label = sound_excute ;
-			    run_t.works_led_label =  works_ok_blink;
+			    run_t.works_led_label =  works_ok_led_on;
 		
 						
 				return ;
@@ -522,7 +522,7 @@ void Open_Lock_Success_Fun(void)
 
 		syspara_t.PS_login_times=0;
 		run_t.error_times=0;
-		run_t.inputNewPwd_OK_led_blank_times=0;
+	
 
 		
 		syspara_t.ps_serch_getimage=0xff;

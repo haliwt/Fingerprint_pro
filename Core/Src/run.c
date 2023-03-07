@@ -118,7 +118,7 @@ void RunCheck_Mode(uint16_t dat)
 
 					//run_t.password_unlock_model=STORE_MODEL_EEPROM; //run_t.open_lock_success=STORE_MODEL;//3;
 					run_t.Confirm_newPassword=1; //
-					run_t.inputNewPwd_OK_led_blank_times=0;
+				
 					run_t.enter_key = KEY_NULL;
 					
 
