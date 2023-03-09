@@ -43,7 +43,8 @@ typedef enum _runcmd{
 	FP_SEARCH_FAIL,
 	FP_SEARCH_INIT,
     FP_SET_NEW_FP,
-    FP_SET_INIT
+    FP_SEARCH_OVER
+   
 }runcmd;
 
 typedef struct _syspara
@@ -57,7 +58,8 @@ uint8_t 	PS_clear_ps_success;
   uint8_t PS_login_flag;
 
   uint8_t ps_login_new_fp_success;
-    
+  uint8_t  fp_login_label  ; 
+  uint8_t  fp_open_lock_label;
 	
     
   uint8_t uart1_rx_data;
