@@ -13,6 +13,9 @@
 #include "at24c02.h"
 #include "delay.h"
 
+#include "fingerprint.h"
+
+
 
 key_types key;
 uint8_t buzzertimes;

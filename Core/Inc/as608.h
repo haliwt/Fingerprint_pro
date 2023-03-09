@@ -144,7 +144,7 @@ void Del_FR(void);
 
 void PS_Rx_InputInfo_Handler(void);
 void Fingerprint_NewClinet_Login_Fun(void);
-void RunCommand_Unlock_Fingerprint(void);
+
 uint8_t  PS_LED_ALL_OFF(void);
 
 uint8_t PS_Breath_LED(void) ;
@@ -159,6 +159,7 @@ uint8_t PS_Blue_Led_ON(void);
 uint8_t PS_Blue_Led_OFF(void);
 
 
+void PS_AutoRegister_Template(uint16_t id_nunmber);
 
 
 

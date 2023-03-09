@@ -7,6 +7,7 @@
 #include "touchkey.h"
 #include "tim.h"
 #include "as608.h"
+#include "fingerprint.h"
 
 
 

@@ -9,6 +9,7 @@
 #include "tim.h"
 #include "as608.h"
 #include "lock.h"
+#include "fingerprint.h"
  uint16_t KeyValue;
 uint8_t fp_cnt;
 
@@ -112,9 +113,10 @@ void CheckPassword_Lock_Handler(void)
 
 	   case FP_ID: //3
 	   	 
-		   FP_ReadData_Handler();
+		  // RunCommand_Unlock_Fingerprint();
+		   FP_AutoRegister_Handler();
 	     
-	       run_t.pwd_fp_label = DISPOSE_STEP_COMPARE;
+	       run_t.pwd_fp_label =DISPOSE_NULL;
 	   break;
 
 	   case DISPOSE_STEP_COMPARE://4

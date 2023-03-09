@@ -20,6 +20,7 @@
 #include "buzzer.h"
 #include "single_mode.h"
 #include "interrupt_manager.h"
+#include "fingerprint.h"
 SysPara syspara_t;
 
 uint8_t ps_buffer[50];
@@ -84,6 +85,27 @@ static void SendCheck(uint16_t check)
 	MYUSART_SendData(check>>8);
 	MYUSART_SendData(check);
 }
+
+static void SendId(uint16_t id_number)
+{
+	
+	MYUSART_SendData(id_number>>8);
+	MYUSART_SendData(id_number);
+
+}
+
+static void SendLoginTimes(uint8_t times)
+{
+	MYUSART_SendData(times);
+
+}
+static void SendRef(uint16_t ref)
+{
+    MYUSART_SendData(ref>>8);
+	MYUSART_SendData(ref);
+
+}
+
 /*******************************************************************************
 **
 *Function Name:void Subscribe_Rx_IntHandler(void)
@@ -150,7 +172,8 @@ uint8_t PS_GetImage(void)
 	Sendcmd(0x01);
      temp =  0x01+0x03+0x01;
 	SendCheck(temp);
-	data=JudgeStr(2000);
+	//data=JudgeStr(2000);
+	data[9]=USART1_RX_BUF[9];
 	if(data){
 		ensure=data[9]; //PS_GetImage confirmation Code
     }
@@ -483,6 +506,44 @@ uint8_t PS_ValidTempleteNum(uint16_t *ValidN)
 //}
 /**********************************************************************
 	*
+	*Function Name:uint8_t PS_ControlBLN(void)
+	*Function : sensor input sleep state
+	*Iinput Ref: NO
+	*Return Ref:NO
+	*
+***********************************************************************/
+void PS_AutoRegister_Template(uint16_t id_nunmber)
+{
+	uint16_t temp;
+    uint8_t  ensure;
+	uint8_t  *data;
+	SendHead();
+	SendAddr();
+	SendFlag(0x01);//package ID
+	SendLength(0x08);
+	Sendcmd(0x31); //auto register tempelet
+	SendId(id_nunmber);
+	SendLoginTimes(0x04);
+	SendRef(0x03);
+	temp = 0x01+0x08+0x31+id_nunmber+0x04+0x03;
+	SendCheck(temp);
+
+	
+	
+	data=JudgeStr(2000);
+	if(data)
+		ensure=data[9];
+	else
+		ensure=0xff;
+	
+	
+	
+
+
+}
+
+/**********************************************************************
+	*
 	*Function Name:uint8_t PS_Sleep(void)
 	*Function : sensor input sleep state
 	*Iinput Ref: NO
@@ -542,157 +603,7 @@ static uint8_t PS_ControlBLN(uint8_t fundata,uint8_t startcolor,uint8_t endcolor
 		ensure=data[9];
 	return ensure;
 }
-/**********************************************************************
-	*
-	*Function Name:void press_FR(void)
-	*Function : read fingerprint data 
-	*Iinput Ref: NO
-	*Return Ref:NO
-	*
-***********************************************************************/
-void RunCommand_Unlock_Fingerprint(void)
-{
-	SearchResult seach;
-     static uint8_t getImage=0xff,readData;
-	 uint16_t ReadAddress;
 
-  
-
-    if(run_t.Confirm_newPassword==1){
-	  run_t.gTimer_8s=0;
-      syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
-       syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-	  if(syspara_t.ps_readEeprom_data >0){ //the first new fingerprint must be is administrator password "1234"
-          syspara_t.FP_RunCmd_Lable = FP_SEARCH;
-	  }
-	  else{
-	     
-            syspara_t.ps_serch_getimage=0xff;
-			run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-        
-            syspara_t.FP_RunCmd_Lable = 0xff;  
-			HAL_Delay(500);
-	 }
-	}
-   else{
-   	
-
-      syspara_t.ps_judeg_read_templete_flag = PS_ValidTempleteNum(&syspara_t.ps_read_templete_numbers);//露脕
-   	  syspara_t.ps_readEeprom_data = AT24CXX_ReadOneByte(EEPROM_AS608Addr);
-     if(syspara_t.ps_readEeprom_data >0) syspara_t.FP_RunCmd_Lable = FP_SEARCH;//syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
-     else{
-
-	    if(FP_INPUT_KEY()==1)
-			HAL_Delay(200);
-		
-		if(FP_INPUT_KEY()==1){
-			
-        ReadAddress = ADMINI;
-        EEPROM_Read_Byte(ReadAddress,&readData,1);
-	    if(readData==0){
-		  syspara_t.FP_RunCmd_Lable = FP_SEARCH_INIT;
-		}
-		else{
-			 run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-           
-		    syspara_t.FP_RunCmd_Lable = 0xff;
-			 
-			}
-   		}
-	   
-     	}
-   	}
-
-	//fingerprint open lock doing 
-	if(FP_INPUT_KEY()==1)
-		  HAL_Delay(5);
-		
-	if(FP_INPUT_KEY()==1){
-  
-   switch(syspara_t.FP_RunCmd_Lable){
-
-    
-
-   	  case FP_SEARCH:
-	    if(FP_INPUT_KEY()==1){
-        run_t.gTimer_8s=0;
-	
-  
-      
-			syspara_t.ps_serch_getimage=PS_GetImage();
-			if(syspara_t.ps_serch_getimage==0x00)  syspara_t.ps_serch_lable=FP_GEN_CHAR;
-            else syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
-	 
-   
-	  case FP_GEN_CHAR:
-            syspara_t.ps_serch_genchar=PS_GenChar(CharBuffer1);
-	
-			if(syspara_t.ps_serch_genchar==0x00){ 
-				if(run_t.Confirm_newPassword==1){
-				     syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,2,&seach);
-				}
-				else
-				    syspara_t.ps_serach_result=PS_Search(CharBuffer1,0,45,&seach);
-
-				if(syspara_t.ps_serach_result==0x00){
-
-				syspara_t.ps_serch_getimage=0xff;
-				run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
-				run_t.error_times=0; //clear error input fingerprint of times 
-				syspara_t.FP_RunCmd_Lable = 0xff;
-				
-				return ;
-				}
-				else if(USART1_RX_BUF[9]==0X15){
-                      // HAL_Delay(1000);
-					   return ;
-			    }
-				else 
-					syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
-			}
-			else if(USART1_RX_BUF[9]==0X15){
-				// HAL_Delay(1000);
-				 return;
-       
-			}
-			else{
-		         syspara_t.FP_RunCmd_Lable=FP_SEARCH_FAIL;
-			}
-		   
-		  case FP_SEARCH_FAIL:
-			    			
-            syspara_t.ps_serch_getimage=0xff;
-		    run_t.open_lock_lable = open_lock_fail;//run_t.open_lock_fail = 1;
-           
-            syspara_t.FP_RunCmd_Lable = 0xff;
-			
-            return ;
-
-			break;
-        
-		}	
-       
-     break;
-     //search initialize password of administrator is ",1,2,3,4"
-     case FP_SEARCH_INIT:
-
-	    
-		   syspara_t.ps_serch_getimage=0xff;
-		   run_t.open_lock_lable = open_lock_success;//run_t.open_lock_success=1;
-		   run_t.error_times=0; //clear error input fingerprint of times 
-		   syspara_t.FP_RunCmd_Lable = 0xff;
-
-	 break;
-
-	 default:
-
-	 break;
-
-   	}
-
-   
-   }
-}
 /**********************************************************************
 	*
 	*Function Name:void Del_FR(void)

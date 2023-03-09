@@ -44,10 +44,6 @@ typedef enum{
 #define  ERR_LED_ON()          HAL_GPIO_WritePin(ERR_LED_GPIO_Port,ERR_LED_Pin,GPIO_PIN_RESET)//  (PORTAbits.RA0 =0)
 #define  ERR_LED_OFF()         HAL_GPIO_WritePin(ERR_LED_GPIO_Port,ERR_LED_Pin,GPIO_PIN_SET)   //  (PORTAbits.RA0 =1)
 
-#define  FP_POWER_ON()          HAL_GPIO_WritePin(FP_POWER_GPIO_Port ,FP_POWER_Pin,GPIO_PIN_SET)//  (PORTAbits.RA0 =0)
-#define  FP_POWER_OFF()         HAL_GPIO_WritePin(FP_POWER_GPIO_Port ,FP_POWER_Pin,GPIO_PIN_RESET)//  (PORTAbits.RA0 =0)
-
-#define FP_INPUT_KEY()         HAL_GPIO_ReadPin(FP_INT_INPUT_GPIO_Port  ,FP_INT_INPUT_Pin)// 
 
 
 

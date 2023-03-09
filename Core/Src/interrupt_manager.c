@@ -4,6 +4,7 @@
 #include "as608.h"
 #include "usart.h"
 #include "led.h"
+#include "single_mode.h"
 
  RX_T rx_t;
 
@@ -28,7 +29,61 @@ volatile static uint8_t transOngoingFlag;
 *******************************************************************************/
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-   
+  
+     static uint8_t run_temp ;
+	if(huart->Instance==USART1)
+    {	      
+
+	    if(run_t.pwd_fp_label == FP_ID){
+              
+        if(UART1_RX_DataBuf[0]==0xEF) run_temp= 1;
+
+			if(run_temp==1){
+          
+			USART1_RX_BUF[USART1_RX_STA]=UART1_RX_DataBuf[0];	//¼ÇÂ¼½ÓÊÕµ½µÄÖµ	
+		    USART1_RX_STA++;
+			if(USART1_RX_STA ==11  ){
+				  USART1_RX_STA |=(1<<15);
+				  USART1_RX_STA = USART1_RX_STA & 0X8000;
+	              syspara_t.uart1_rx_data= 1;
+				  
+				
+                      
+                
+		    } 
+            if(USART1_RX_STA ==13  ){
+                USART1_RX_STA |=(1<<15);
+				  USART1_RX_STA = USART1_RX_STA & 0X8000;
+				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
+                  syspara_t.uart1_rx_data= 1;
+				  syspara_t.ps_pre_detector=0;
+				 
+				 
+                   run_temp=0;
+            }
+            if(USART1_RX_STA ==15  ){
+                USART1_RX_STA |=(1<<15);
+				  USART1_RX_STA = USART1_RX_STA & 0X8000;
+				  //Ç¿ÖÆ±ê¼Ç½ÓÊÕÍê³É
+                  syspara_t.uart1_rx_data= 1;
+				  syspara_t.ps_pre_detector=0;
+	
+				    run_temp=0;
+                
+            }
+			}
+       
+     
+	    	}
+
+        }
+	 HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1); 
+
+}
+
+
+#if 0
+{
     static uint8_t run_temp;
 
 	if(huart->Instance==USART1)
@@ -86,7 +141,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         }
 	 HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1); 
   }
-
+#endif 
 /********************************************************************************
 **
 *Function Name:void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)

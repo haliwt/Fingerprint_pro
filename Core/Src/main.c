@@ -125,7 +125,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
      syspara_t.PS_login_times=0;
      syspara_t.PS_clear_ps_success=0xff;
      // TouchKey_Run_Handler(TouchKey);
-	 Fingerprint_ReadData_Handler(RunCommand_Unlock_Fingerprint);
+	
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -135,6 +135,7 @@ __HAL_RCC_PWR_CLK_ENABLE();
     /* USER CODE BEGIN 3 */
 	   if(run_t.powerOn ==0){
             Start_PowerOn_Handler();
+			PS_Empty();
             
 	   }
 	   else if(run_t.panel_lock==0 && run_t.factory_test ==0){
