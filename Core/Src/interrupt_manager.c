@@ -28,7 +28,8 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			
 			SystemClock_Config();
 			HAL_ResumeTick();
-			HAL_TIM_Base_Start_IT(&htim14);//
+            MX_GPIO_Init();
+			//HAL_TIM_Base_Start_IT(&htim14);//
             run_t.inputDeepSleep_times =0; 
 
 			POWER_ON();
@@ -65,7 +66,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
       if(run_t.lowPower_flag==0){
 			SystemClock_Config();
 			HAL_ResumeTick();
-			HAL_TIM_Base_Start_IT(&htim14);//
+             MX_GPIO_Init();
+			//HAL_TIM_Base_Start_IT(&htim14);//
 
 
             POWER_ON();
@@ -96,7 +98,8 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	 if(run_t.lowPower_flag==0){
 		SystemClock_Config();
 		HAL_ResumeTick();
-		HAL_TIM_Base_Start_IT(&htim14);//
+         MX_GPIO_Init();
+		//HAL_TIM_Base_Start_IT(&htim14);//
 
 		POWER_ON();
 		FP_POWER_ON()  ;

@@ -66,7 +66,13 @@ typedef  struct  _state_
 extern key_types key;
 
 
+typedef enum{
 
+  STATISTICAL_DATA =0x0A,
+
+
+
+}key_total;
 
 extern uint8_t virtualPwd[20];
 
@@ -74,6 +80,7 @@ extern void (*ReadDigital_Key_Numbers_Handler)(void);
 extern void (*Input_NewPwd_Digtial_Handler)(uint16_t dat);
 
 
+void KeyFiles_Init(void);
 
 uint8_t Scan_Key(void);
 
@@ -81,4 +88,6 @@ void  SideKey_Fun(uint8_t keyvalue);
 void RunCheck_Mode(uint16_t dat);
 
 void TouchKey_Handler(void);
+void ReadInput_KeyNumber_Handler(void(*read_digital_key_handler)(void));
+void Input_NewPwd_Digital_Handler(void(*input_new_digital_handler)(uint16_t data));
 #endif 

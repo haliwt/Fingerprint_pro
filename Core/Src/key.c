@@ -35,6 +35,22 @@ uint8_t key_up =1 ;
 
 static void ReadDigital_Inputkey_Fun(void);
 static void Input_NewPwd_Digital_Fun(uint16_t dat);
+/*******************************************************************************
+    *
+    * Function Name: void KeyFiles_Init(void)
+    * Function : 
+    * Input Ref: NO
+    * Return Ref: NO
+    *
+*******************************************************************************/
+void KeyFiles_Init(void)
+{
+
+	ReadInput_KeyNumber_Handler(ReadDigital_Inputkey_Fun);
+	Input_NewPwd_Digital_Handler(Input_NewPwd_Digital_Fun);
+
+
+}
 
 
 /*******************************************************************************
@@ -240,7 +256,7 @@ void RunCheck_Mode(uint16_t dat)
 {
    uint8_t  i;
   
-   static uint8_t k0=0xff,k1=0xff,k2=0xff,key;
+   static uint8_t k0=0xff,k1=0xff,k2=0xff,key,digital_numbers_run;
  
 
     switch(dat){
@@ -457,7 +473,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
+	    digital_numbers_run =1;
              
 	break;
 
@@ -466,14 +482,16 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
+		printf("k1\n");
 		
+		 digital_numbers_run =1;
 	break;
 			
     case KEY_2:
 		key=1;
 	    run_t.getNumbers_key++;
 	    run_t.keyPressed_flag =1;
-		
+		 digital_numbers_run =1;
 	 
 	break;
 			
@@ -482,22 +500,21 @@ void RunCheck_Mode(uint16_t dat)
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
 		
-	
+	 digital_numbers_run =1;
     break;
 			
 	case KEY_4:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	
+	   
 	break;
 			
 	case KEY_5:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
-			
+		 digital_numbers_run =1;
     break;
 			
 	case KEY_6:
@@ -505,40 +522,43 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
+	 digital_numbers_run =1;
     break;
 	
 	case KEY_7:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
+	 digital_numbers_run =1;
 	break;
 			
 	case KEY_8:
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	
+	    digital_numbers_run =1;
 	break;
 
 	case KEY_9:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
+		 digital_numbers_run =1;
 	break;
-		  
 
-	}  
+    }
+	
+      
+	  //if(k2 != run_t.getNumbers_key && key==1 ){
 
-	if(k2 != run_t.getNumbers_key && key==1 ){
-				
+	  while(digital_numbers_run ==1){
+		digital_numbers_run=0;	
 		k2=run_t.getNumbers_key;
 		key = 0;
 		run_t.getSpecial_1_key++;//n1++
 
 		run_t.getSpecial_2_key++;//n1++;
+	
 
 		POWER_ON();
 		run_t.backlight_label =BACKLIGHT_ON;
@@ -549,7 +569,7 @@ void RunCheck_Mode(uint16_t dat)
 		run_t.gTimer_8s=0;
 
 		run_t.confirm_button_flag =confirm_button_donot_pressed;
-		POWER_ON();
+	  
         switch(run_t.Confirm_newPassword){
 
 			case 1:
@@ -564,24 +584,29 @@ void RunCheck_Mode(uint16_t dat)
 
 			}
 			else{
+				 
 				read_digital_key = InputNumber_ToSpecialNumbers((TouchKey_Numbers)dat); //input Numbers
 				//virtual password is 20bit
+				
 				 //virtual input key numbers 
 				if(run_t.input_digital_key_number_counter < 21){
-				//if(run_t.input_digital_key_number_counter > 20)run_t.input_digital_key_number_counter =20;
+				   
 				
 				    virtualPwd[run_t.input_digital_key_number_counter-1]=read_digital_key;
 			        
 
-				ReadDigital_Key_Numbers_Handler();
+					ReadDigital_Key_Numbers_Handler();
+			     printf("numbers handler-pre\n");
 
 		   		}
+				
 		   }
 		   break;
         }
 		run_t.gTimer_8s=0;
 		
 	}
+
 }
 
 /********************************************************************
@@ -638,6 +663,7 @@ static void ReadDigital_Inputkey_Fun(void)
           }
 		else 
             pwd1[run_t.input_digital_key_number_counter-1] =read_digital_key;
+	 printf("readdigital_fun\n");
 
 	}
 
@@ -653,11 +679,11 @@ static void ReadDigital_Inputkey_Fun(void)
 ********************************************************/
 void TouchKey_Handler(void)
 {
-  
+     
 	 
 	 if(I2C_Read_From_Device(SC12B_ADDR,0x08,SC_Data,2)==DONE){
 
-	        read_key_value=Read_SC12B_KEY();
+	      //  read_key_value=Read_SC12B_KEY();
 	       KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
 		   HAL_Delay(10);
 	       while(key_up==1 &&  KeyValue !=0){
