@@ -507,7 +507,8 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	   
+	    printf("k4\n");
+		digital_numbers_run =1;
 	break;
 			
 	case KEY_5:
