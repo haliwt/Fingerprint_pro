@@ -12,6 +12,21 @@
 uint8_t ps_genChar=0xff,ps_regmodel=0xff,ps_storechar=0xff;
 uint8_t ps_getImage=0xff;
 
+
+void Fingerprint_Init(void)
+{
+
+     syspara_t.ps_serch_getimage=0xff;
+	 syspara_t.ps_serch_genchar=0xff;
+	 syspara_t.ps_serach_result=0xff;
+     syspara_t.ps_judeg_read_templete_flag=0XFF;
+  
+     syspara_t.PS_login_times=0;
+     syspara_t.PS_clear_ps_success=0xff;
+	Fingerprint_ReadData_Handler(RunCommand_Unlock_Fingerprint);
+
+}
+
 /**********************************************************************
 	*
 	*Function Name:void Fingerprint_NewClinet_Login_Fun(void)

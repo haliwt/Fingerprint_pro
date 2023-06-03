@@ -156,5 +156,32 @@ void LowPower_GPIO_Set(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
 
+    /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = SC12B_INT_INPUT_Pin;   //Touchkey
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING; //GPIO_MODE_IT_RISING_FALLING ;//GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(SC12B_INT_INPUT_GPIO_Port, &GPIO_InitStruct);
+
+   /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = FP_INT_INPUT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING ; //WT.EDIT 2022.08.20
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(FP_INT_INPUT_GPIO_Port, &GPIO_InitStruct);
+
+   /*Configure GPIO pins : PAPin PAPin */
+  GPIO_InitStruct.Pin = KEY_INPUT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING ; //WT.EDIT 2022.08.20
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(KEY_INPUT_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+//   HAL_NVIC_SetPriority(EXTI0_1_IRQn,0,0);
+//   HAL_NVIC_EnableIRQ(EXTI0_1_IRQn);
+  
+  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
+
+  
+
 }
 /* USER CODE END 2 */

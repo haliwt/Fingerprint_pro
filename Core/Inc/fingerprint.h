@@ -87,6 +87,7 @@ void Fingerprint_NewClinet_Login_Fun(void);
 
 void RunCommand_Unlock_Fingerprint(void);
 
+void Fingerprint_Init(void);
 
 
 

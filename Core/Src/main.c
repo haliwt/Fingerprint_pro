@@ -115,23 +115,18 @@ __HAL_RCC_PWR_CLK_ENABLE();
   MX_TIM14_Init();
   AT24CXX_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   Run_Init();
   //MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim14);//
   ICman_Init_SET(SC12B_ADDR);
-  
+  Fingerprint_Init();
  
    HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1);
   /* USER CODE END 2 */
-    syspara_t.ps_serch_getimage=0xff;
-	 syspara_t.ps_serch_genchar=0xff;
-	 syspara_t.ps_serach_result=0xff;
-     syspara_t.ps_judeg_read_templete_flag=0XFF;
   
-     syspara_t.PS_login_times=0;
-     syspara_t.PS_clear_ps_success=0xff;
-	 Fingerprint_ReadData_Handler(RunCommand_Unlock_Fingerprint);
+	printf("initialize is over \n");
 	 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

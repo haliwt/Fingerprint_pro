@@ -21,7 +21,7 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-
+#include <stdio.h>
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -42,7 +42,7 @@ void MX_USART1_UART_Init(void)
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 57600;//115200;//57600;//115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.StopBits = UART_STOPBITS_2;//UART_STOPBITS_1;//回到原点
   huart1.Init.Parity = UART_PARITY_NONE;
   huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
@@ -217,5 +217,28 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
+/**
+  * º¯Êý¹¦ÄÜ: ÖØ¶¨Ïòc¿âº¯Êýprintfµ½DEBUG_USARTx
+  * ÊäÈë²ÎÊý: ÎÞ
+  * ·µ »Ø Öµ: ÎÞ
+  * Ëµ    Ã÷£ºÎÞ
+  */
+int fputc(int ch, FILE *f)
+{
+  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, 0xffff);
+  return ch;
+}
 
+/**
+  * º¯Êý¹¦ÄÜ: ÖØ¶¨Ïòc¿âº¯Êýgetchar,scanfµ½DEBUG_USARTx
+  * ÊäÈë²ÎÊý: ÎÞ
+  * ·µ »Ø Öµ: ÎÞ
+  * Ëµ    Ã÷£ºÎÞ
+  */
+int fgetc(FILE * f)
+{
+  uint8_t ch = 0;
+  HAL_UART_Receive(&huart2,&ch, 1, 0xffff);
+  return ch;
+}
 /* USER CODE END 1 */
