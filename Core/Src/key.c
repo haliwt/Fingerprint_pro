@@ -68,7 +68,8 @@ uint8_t Scan_Key(void)
    if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0 )
 	{
 		key.read &= ~0x01; // 0x1f & 0xfe =  0x1E
-		
+		POWER_ON();
+		BACKLIGHT_ON();
 	}
 	
 	
@@ -87,17 +88,33 @@ uint8_t Scan_Key(void)
 			}
 			break;
 		}
+		
 		case first: //shot key times 
 		{
-			if(key.read == key.buffer) // adjust key be down  short key
+           if(key.read == key.buffer) // adjust key be down 
 			{
-				if(++key.on_time>20 && ++key.on_time < 800) //1000  0.5us -> short time key
+
+                if(run_t.thefirst_side_key==0){
+					run_t.thefirst_side_key++;
+					if(++key.on_time> 10) //1000  0.5us -> short time key
+					{
+						key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
+						key.on_time = 0;
+	                    key.state   = second;
+	                    run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
+	                 }
+					
+
+                }
+				else{
+				if(++key.on_time> 50 && ++key.on_time < 100) //1000  0.5us -> short time key
 				{
 					key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
 					key.on_time = 0;
                     key.state   = second;
-					//Buzzer_KeySound();
+                    run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
                  }
+				 }
 			}
 			else
 			{
@@ -109,7 +126,18 @@ uint8_t Scan_Key(void)
 		{
 			if(key.read == key.buffer) //again adjust key if be pressed down 
 			{
-				if(++key.on_time>1000)// 2000 = 7s long key be down
+
+			    if(run_t.thefirst_side_key==1){
+					
+
+				     if(++key.on_time>80 ){// 2000 = 7s long key be down
+				     
+					     run_t.thefirst_side_key++;
+
+				     }
+				}
+
+				if((++key.on_time>60  || run_t.thefirst_side_key==2) && run_t.thefirst_side_key!=1)// 2000 = 7s long key be down
 				{
 					
 					//key.value = key.value|0x80; //key.value = 0x01 | 0x80  =0x81  
@@ -149,7 +177,7 @@ uint8_t Scan_Key(void)
 			}
 			else if(key.read == _KEY_ALL_OFF)  // loose hand 
 			{
-				if(++key.off_time>5) //30 don't holding key dithering
+				if(++key.off_time>1) //30 don't holding key dithering
 				{
 					key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01
 					
@@ -171,7 +199,7 @@ uint8_t Scan_Key(void)
 		{
 			if(key.read == _KEY_ALL_OFF)
 			{
-				if(++key.off_time>5)//50 //100
+				if(++key.off_time>1)//50 //100
 				{
 					key.state   = start;
                   
@@ -482,7 +510,6 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k1\n");
 		
 		 digital_numbers_run =1;
 	break;
@@ -507,7 +534,6 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	    printf("k4\n");
 		digital_numbers_run =1;
 	break;
 			
@@ -597,7 +623,7 @@ void RunCheck_Mode(uint16_t dat)
 			        
 
 					ReadDigital_Key_Numbers_Handler();
-			     printf("numbers handler-pre\n");
+			   
 
 		   		}
 				
