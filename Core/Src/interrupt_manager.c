@@ -5,6 +5,8 @@
 #include "delay.h"
 #include "tim.h"
 #include "buzzer.h"
+#include "usart.h"
+#include "cmd_link.h"
 
 /*******************************************************************************
     *
@@ -28,8 +30,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			
 			SystemClock_Config();
 			HAL_ResumeTick();
-            MX_GPIO_Init();
-			//HAL_TIM_Base_Start_IT(&htim14);//
+			HAL_TIM_Base_Start_IT(&htim14);//
             run_t.inputDeepSleep_times =0; 
 
 			POWER_ON();
@@ -151,12 +152,22 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         run_t.gTimer_input_error_times_60s++;
 		run_t.inputDeepSleep_times++;
 		run_t.gTimer_total_backling_off++;
+		run_t.gTimer_usart_error ++;
 		
 	    
 
 	
 	}
 
+    if(htim->Instance==TIM17){
+		if (__HAL_TIM_GET_FLAG(&htim17, TIM_FLAG_UPDATE) != RESET)//是更新中断
+		{	 			   
+			USART1_RX_STA|=1<<15;	//标记接收完成
+			__HAL_TIM_CLEAR_FLAG(&htim17, TIM_FLAG_UPDATE);  //清除TIM17更新中断标志    
+			HAL_TIM_Base_Stop_IT(&htim17);  //关闭TIM17 
+		}	    
+
+    }
 }
 
 }

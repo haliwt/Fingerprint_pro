@@ -147,9 +147,11 @@ __HAL_RCC_PWR_CLK_ENABLE();
 	   	
        CheckPassword_UnLock_Handler();
 	   RunMotor_Definite_Handler(); //definite motor
+	  // Fingerprint_NewClinet_Login_Fun();
 	   Buzzer_Sound_Handler();
   	 
        BackLight_Control_Handler();
+	   USART1_Cmd_Error_Handler(&huart1);
 
 	  
 	}

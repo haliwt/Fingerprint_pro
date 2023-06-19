@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include <stdio.h>
+#include "tim.h"
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart1;
@@ -42,7 +43,7 @@ void MX_USART1_UART_Init(void)
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 57600;//115200;//57600;//115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
-  huart1.Init.StopBits = UART_STOPBITS_2;//UART_STOPBITS_1;//回到原点
+  huart1.Init.StopBits = UART_STOPBITS_1;//回到原点
   huart1.Init.Parity = UART_PARITY_NONE;
   huart1.Init.Mode = UART_MODE_TX_RX;
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
@@ -67,6 +68,12 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
+
+  __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+
+   MX_TIM17_Init();
+   //HAL_TIM_Base_Start_IT(&htim17);//
+    HAL_TIM_Base_Stop_IT(&htim17);//
 
   /* USER CODE END USART1_Init 2 */
 

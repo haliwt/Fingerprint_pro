@@ -79,6 +79,9 @@ typedef struct __RUN_T{
 	uint8_t keyPressed_flag;
 	uint8_t thefirst_side_key;
 
+	//usart
+	 uint8_t gTimer_usart_error ;
+
 	//lower power ref
 	uint8_t lowPower_flag;
 	uint8_t inputDeepSleep_times;

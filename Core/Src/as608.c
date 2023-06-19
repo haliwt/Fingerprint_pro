@@ -118,16 +118,16 @@ static uint8_t *JudgeStr(uint16_t waittime)
 	str[5]=AS608Addr;
     str[6]=0x07;
     str[7]='\0';
-		USART1_RX_STA=0;
-    syspara_t.uart1_rx_data= 0;
+	USART1_RX_STA=0;
+   // syspara_t.uart1_rx_data= 0;
     while(--temp_waitime)
 	{
 		delay_ms(1);
-		if(USART1_RX_STA&0X8000 || syspara_t.uart1_rx_data==1)//½ÓÊÕµ½Ò»´ÎÊý¾Ý
+		if(USART1_RX_STA&0X8000)//接收到一次数据
 		{
           
 			USART1_RX_STA=0;
-			syspara_t.uart1_rx_data= 0;
+			//syspara_t.uart1_rx_data= 0;
 			data=strstr((const char*)USART1_RX_BUF,(const char*)str);
 			if(data)
 				return (uint8_t*)data;	
@@ -137,8 +137,8 @@ static uint8_t *JudgeStr(uint16_t waittime)
    
 }
 //录入图像 PS_GetImage
-//功能:探测手指，探测到后录入指纹图像存于ImageBuffer〄1�7 
-//模块返回确认孄1�7
+//功能:探测手指，探测到后录入指纹图像存于ImageBuffer.
+//模块返回确认
 uint8_t PS_GetImage(void)
 {
   uint16_t temp;

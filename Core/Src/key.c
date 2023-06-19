@@ -501,7 +501,8 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	    digital_numbers_run =1;
+		printf("k0\n");
+	  //  digital_numbers_run =1;
              
 	break;
 
@@ -510,38 +511,41 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
-		 digital_numbers_run =1;
+		printf("k1\n");
+		// digital_numbers_run =1;
 	break;
 			
     case KEY_2:
 		key=1;
 	    run_t.getNumbers_key++;
 	    run_t.keyPressed_flag =1;
-		 digital_numbers_run =1;
-	 
+		/// digital_numbers_run =1;
+	 	printf("k2\n");
 	break;
 			
 	case  KEY_3:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		
-	 digital_numbers_run =1;
+		printf("k3\n");
+	// digital_numbers_run =1;
     break;
 			
 	case KEY_4:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		digital_numbers_run =1;
+
+		printf("k4\n");
+		//digital_numbers_run =1;
 	break;
 			
 	case KEY_5:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		 digital_numbers_run =1;
+		printf("k5\n");
+		// digital_numbers_run =1;
     break;
 			
 	case KEY_6:
@@ -549,37 +553,38 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	 digital_numbers_run =1;
+		printf("k6\n");
+	// digital_numbers_run =1;
     break;
 	
 	case KEY_7:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	 digital_numbers_run =1;
+		printf("k7\n");
+	// digital_numbers_run =1;
 	break;
 			
 	case KEY_8:
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-	    digital_numbers_run =1;
+		printf("k8\n");
+	   // digital_numbers_run =1;
 	break;
 
 	case KEY_9:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		 digital_numbers_run =1;
+		printf("k9\n");
+		// digital_numbers_run =1;
 	break;
 
     }
 	
       
-	  //if(k2 != run_t.getNumbers_key && key==1 ){
-
-	  while(digital_numbers_run ==1){
-		digital_numbers_run=0;	
+	  if(k2 != run_t.getNumbers_key && key==1 ){
 		k2=run_t.getNumbers_key;
 		key = 0;
 		run_t.getSpecial_1_key++;//n1++
@@ -712,7 +717,7 @@ void TouchKey_Handler(void)
 
 	      //  read_key_value=Read_SC12B_KEY();
 	       KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
-		   HAL_Delay(10);
+		   HAL_Delay(30);
 	       while(key_up==1 &&  KeyValue !=0){
 		   	    key_up=0;
 		   		RunCheck_Mode(KeyValue); 
