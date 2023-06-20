@@ -528,7 +528,7 @@ void BackLight_Control_Handler(void)
 				confirm_ok_counter=0; 
 	
 			if(run_t.gTimer_8s > 8){
-                run_t.gTimer_8s=6;
+                run_t.gTimer_8s=4;
 				run_t.inputDeepSleep_times=0;
 			    run_t.keyPressed_flag =0;
 				run_t.backlight_label =BACKLIGHT_AT_ONCE_OFF;

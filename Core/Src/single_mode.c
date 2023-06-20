@@ -35,7 +35,7 @@ static void Over_Input_MaxDigital_Fun(void);
 void Start_PowerOn_Handler(void)
 {
     
- if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0 && run_t.powerOn ==0){
+ if(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==0 && run_t.powerOn ==0){
  	run_t.powerOn++;
 		run_t.factory_test = 1;
 

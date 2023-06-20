@@ -21,15 +21,17 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
     
 
-	if(GPIO_Pin == KEY_INPUT_Pin){
+	if(GPIO_Pin == SIDE_KEY_INPUT_Pin){
 
 
-	// __HAL_GPIO_EXTI_CLEAR_FALLING_IT(KEY_INPUT_Pin); // 清除下降沿触发的中断标志位 // __HAL_GPIO_EXTI_CLEAR_IT(KEY_INPUT_Pin);
+	// __HAL_GPIO_EXTI_CLEAR_FALLING_IT(SIDE_KEY_INPUT_Pin); // 清除下降沿触发的中断标志位 // __HAL_GPIO_EXTI_CLEAR_IT(SIDE_KEY_INPUT_Pin);
 	
 		if(run_t.lowPower_flag==0){
 			
 			SystemClock_Config();
+			__HAL_RCC_PWR_CLK_ENABLE();
 			HAL_ResumeTick();
+            MX_GPIO_Init();
 			HAL_TIM_Base_Start_IT(&htim14);//
             run_t.inputDeepSleep_times =0; 
 
@@ -45,6 +47,11 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			  FP_POWER_ON()  ;
 			   run_t.keyPressed_flag =1;
 		    run_t.gTimer_8s=0;
+				 #if DEBUG
+
+			 printf("side_key\n");
+
+			 #endif 
 
 
 		}
@@ -62,13 +69,14 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
    
     
 
-      // __HAL_GPIO_EXTI_CLEAR_RISING_IT(SC12B_INT_INPUT_Pin)  ;//__HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+     
       
       if(run_t.lowPower_flag==0){
 			SystemClock_Config();
+			__HAL_RCC_PWR_CLK_ENABLE();
 			HAL_ResumeTick();
              MX_GPIO_Init();
-			//HAL_TIM_Base_Start_IT(&htim14);//
+			HAL_TIM_Base_Start_IT(&htim14);//
 
 
             POWER_ON();
@@ -84,6 +92,12 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	       POWER_ON();
 	       FP_POWER_ON()  ;
 		   run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
+           run_t.keyPressed_flag =1;
+		   	 #if DEBUG
+
+			 printf("pwd_key\n");
+
+			 #endif 
 		   
 	      }
 
@@ -98,9 +112,10 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
 	 if(run_t.lowPower_flag==0){
 		SystemClock_Config();
+		__HAL_RCC_PWR_CLK_ENABLE();
 		HAL_ResumeTick();
          MX_GPIO_Init();
-		//HAL_TIM_Base_Start_IT(&htim14);//
+		HAL_TIM_Base_Start_IT(&htim14);//
 
 		POWER_ON();
 		FP_POWER_ON()  ;
@@ -119,6 +134,11 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			 POWER_ON();
 			 FP_POWER_ON()  ;
 			 BACKLIGHT_ON();
+			 #if DEBUG
+
+			 printf("fp_key\n");
+
+			 #endif 
 			
 			  
 		}

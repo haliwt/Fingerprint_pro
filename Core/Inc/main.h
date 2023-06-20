@@ -75,9 +75,7 @@ void Error_Handler(void);
 #define OK_LED_Pin GPIO_PIN_12
 #define OK_LED_GPIO_Port GPIOB
 
-#define KEY_INPUT_Pin GPIO_PIN_13
-#define KEY_INPUT_GPIO_Port GPIOB
-#define KEY_INPUT_EXTI_IRQn EXTI4_15_IRQn
+
 
 #define ERR_LED_Pin GPIO_PIN_14
 #define ERR_LED_GPIO_Port GPIOB
@@ -88,14 +86,21 @@ void Error_Handler(void);
 #define FP_POWER_Pin 					GPIO_PIN_11
 #define FP_POWER_GPIO_Port 				GPIOA
 
-#define FP_INT_INPUT_Pin                   GPIO_PIN_12
-#define FP_INT_INPUT_GPIO_Port          GPIOA
-#define FP_INT_INPUT_EXTI_IRQn          EXTI4_15_IRQn
+#define SIDE_KEY_INPUT_Pin 								GPIO_PIN_13
+#define SIDE_KEY_INPUT_GPIO_Port 						GPIOB
+#define SIDE_KEY_INPUT_EXTI_IRQn 						EXTI4_15_IRQn
 
 
-#define SC12B_INT_INPUT_Pin GPIO_PIN_8
-#define SC12B_INT_INPUT_GPIO_Port GPIOB
-#define SC12B_INT_INPUT_EXTI_IRQn EXTI4_15_IRQn
+#define FP_INT_INPUT_Pin                   				GPIO_PIN_12
+#define FP_INT_INPUT_GPIO_Port        					GPIOA
+#define FP_INT_INPUT_EXTI_IRQn        					EXTI4_15_IRQn
+
+
+#define SC12B_INT_INPUT_Pin 							GPIO_PIN_8
+#define SC12B_INT_INPUT_GPIO_Port 						GPIOB
+#define SC12B_INT_INPUT_EXTI_IRQn 						EXTI4_15_IRQn
+
+
 
 
 

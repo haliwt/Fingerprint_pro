@@ -65,7 +65,7 @@ uint8_t Scan_Key(void)
 {
   unsigned char   reval = 0;
   key.read = _KEY_ALL_OFF; //0x1F 
-   if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0 )
+   if(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==0 )
 	{
 		key.read &= ~0x01; // 0x1f & 0xfe =  0x1E
 		POWER_ON();
@@ -151,8 +151,8 @@ uint8_t Scan_Key(void)
                         BUZZER_OFF(); 
                         ERR_LED_OFF();
                         PS_Blue_Led_ON();
-                        HAL_Delay(400);
-                       if(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==1){
+                        HAL_Delay(200);
+                       if(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==1){
                          buzzertimes=0;
                          return 0;
                        }
@@ -162,13 +162,13 @@ uint8_t Scan_Key(void)
                         buzzertimes=0;
                         Buzzer_ShortSound();
                         BUZZER_OFF(); 
-                        HAL_Delay(200);
+                        HAL_Delay(100);
                         Buzzer_ShortSound();
                         BUZZER_OFF(); //BUZZER_OFF(); 
                         run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
                         run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         ERR_LED_OFF();
-                        while(HAL_GPIO_ReadPin(KEY_INPUT_GPIO_Port,KEY_INPUT_Pin) ==0);
+                        while(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==0);
                         key.value = key.value|0x80;
                     }
 
@@ -717,19 +717,21 @@ void TouchKey_Handler(void)
 
 	      //  read_key_value=Read_SC12B_KEY();
 	       KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
-		   HAL_Delay(30);
+		  // HAL_Delay(10);
 	       while(key_up==1 &&  KeyValue !=0){
 		   	    key_up=0;
+      
+		  
 		   		RunCheck_Mode(KeyValue); 
 
-	       }
+	      }
 		   
 	       if( KeyValue ==0){
 		   	    key_up=1;
 	            run_t.getSpecial_1_key++;
 	            run_t.getSpecial_2_key++;
 				run_t.getNumbers_key++;
-	             
+	          
 
            }
 	     

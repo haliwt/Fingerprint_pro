@@ -2,6 +2,9 @@
 #define   __SINGLE_MODE_H_
 #include "main.h"
 
+
+#define DEBUG  1
+
 typedef enum{
   POWER_ON_MODEL=0x01,STORE_MODEL_EEPROM,EXIT_STORE_MODEL   
 
