@@ -13,6 +13,7 @@
 static void BackLight_Fun(void);
 
 static void Works_Fingerprint_IndicateLed(void);
+static void PWR_Enter_Stop(void);
 
 
 
@@ -742,25 +743,7 @@ void BackLight_Control_Handler(void)
               if(run_t.inputDeepSleep_times > 19){  //wait 30s  
 			   run_t.inputDeepSleep_times =0;
 
-			   #ifdef DEBUG_FLAG
-
-			       GPIO_Standby_Init();
-
-			   #endif 
-          		/*close tick timer low power Mode */
-		
-			    run_t.lowPower_flag=0;
-              //  __HAL_IWDG_START(__HANDLE__)
-				//HAL_SuspendTick();
-				SysTick->CTRL = 0x00;//关闭定时器
-                SysTick->VAL = 0x00;//清空val,清空定时器
-				
-				/* input low power mode "STOP"*/
-				//HAL_PWR_EnableWakeUpPin(SC12B_KEY_Pin);
-				//Sys_Enter_Standby();
-		        HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,PWR_STOPENTRY_WFI);//WFI ->wait for interrupt
-
-                SystemClock_Config();//Low power of low frequency 8MHz
+			PWR_Enter_Stop();
 			   
 		  }
 		  break;
@@ -837,5 +820,38 @@ void Panel_Lock_Handler(void)
  
 	}
          
+}
+
+
+static void PWR_Enter_Stop(void)
+{
+
+	  #ifdef DEBUG_FLAG
+
+			       GPIO_Standby_Init();
+
+			   #endif 
+          		/*close tick timer low power Mode */
+		        #if DEBUG
+
+				printf("inter stop\n");
+
+				#endif 
+			    run_t.lowPower_flag=0;
+              //  __HAL_IWDG_START(__HANDLE__)
+				//HAL_SuspendTick();
+				SysTick->CTRL = 0x00;//关闭定时器
+                SysTick->VAL = 0x00;//清空val,清空定时器
+
+				   	__HAL_RCC_PWR_CLK_ENABLE();         //Ê¹ÄÜPWRÊ±ÖÓ
+				
+				/* input low power mode "STOP"*/
+				//HAL_PWR_EnableWakeUpPin(SC12B_KEY_Pin);
+				//Sys_Enter_Standby();
+		        HAL_PWR_EnterSTOPMode(PWR_LOWPOWERREGULATOR_ON,PWR_STOPENTRY_WFI);//WFI ->wait for interrupt
+
+              //  SystemClock_Config();//Low power of low frequency 8MHz
+
+
 }
 

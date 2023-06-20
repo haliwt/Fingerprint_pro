@@ -104,7 +104,7 @@ int main(void)
   SystemClock_Config();	
 
   /* USER CODE BEGIN SysInit */
-__HAL_RCC_PWR_CLK_ENABLE();
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -123,12 +123,13 @@ __HAL_RCC_PWR_CLK_ENABLE();
   //MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_TIM_Base_Start_IT(&htim14);//
-  ICman_Init_SET(SC12B_ADDR);
+ // ICman_Init_SET(SC12B_ADDR);
 
    HAL_UART_Receive_IT(&huart1,UART1_RX_DataBuf,1);
   /* USER CODE END 2 */
   
 	printf("initialize is over \n");
+  run_t.lowPower_flag=1;
 	 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */

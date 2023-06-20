@@ -63,15 +63,15 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 
-
-
-   if(GPIO_Pin == SC12B_INT_INPUT_Pin){
    
-    
+   switch(GPIO_Pin){
+   	
 
-     
-      
-      if(run_t.lowPower_flag==0){
+   case SC12B_INT_INPUT_Pin:
+
+        
+        if(Read_SC12B_KEY()==1){ 
+        if(run_t.lowPower_flag==0){
 			SystemClock_Config();
 			__HAL_RCC_PWR_CLK_ENABLE();
 			HAL_ResumeTick();
@@ -101,15 +101,13 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 		   
 	      }
 
- 	}
-  
-   //fingerprint 
-  if(GPIO_Pin==FP_INT_INPUT_Pin){
-  	
- 
-		 __HAL_GPIO_EXTI_CLEAR_RISING_IT(FP_INT_INPUT_Pin); //__HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
-    
+        }
 
+   break;
+
+   case FP_INT_INPUT_Pin: //fingerprint //__HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+    
+     if(FP_KEY_INPUT_DETECT() ==1){
 	 if(run_t.lowPower_flag==0){
 		SystemClock_Config();
 		__HAL_RCC_PWR_CLK_ENABLE();
@@ -142,12 +140,15 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			
 			  
 		}
+     	}
+       break;
 
+   	}
 
-        }
-  
-  
 }
+  
+  
+
 
 /****************************************************************************
 *
