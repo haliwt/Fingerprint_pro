@@ -158,7 +158,6 @@ static void BackLight_Fun(void)
            BACKLIGHT_OFF();
 		   PS_LED_ALL_OFF();
 
-           run_t.lowPower_flag=0;
 		}
 		
 		run_t.backlight_run_flag=1;
@@ -179,7 +178,7 @@ static void BackLight_Fun(void)
 	 
 	   run_t.Confirm_newPassword = 0;
    
-        run_t.lowPower_flag=0;
+      
 	    syspara_t.PS_login_times=0;	//fingerprint input times 
 		Panel_LED_Off();
 		HAL_ADC_Stop(&hadc1);
@@ -742,8 +741,8 @@ void BackLight_Control_Handler(void)
 
               if(run_t.inputDeepSleep_times > 19){  //wait 30s  
 			   run_t.inputDeepSleep_times =0;
-
-			PWR_Enter_Stop();
+               
+               PWR_Enter_Stop();
 			   
 		  }
 		  break;
@@ -839,11 +838,11 @@ static void PWR_Enter_Stop(void)
 				#endif 
 			    run_t.lowPower_flag=0;
               //  __HAL_IWDG_START(__HANDLE__)
-				//HAL_SuspendTick();
+				HAL_SuspendTick();
 				SysTick->CTRL = 0x00;//关闭定时器
                 SysTick->VAL = 0x00;//清空val,清空定时器
 
-				   	__HAL_RCC_PWR_CLK_ENABLE();         //Ê¹ÄÜPWRÊ±ÖÓ
+				//   	__HAL_RCC_PWR_CLK_ENABLE();         //Ê¹ÄÜPWRÊ±ÖÓ
 				
 				/* input low power mode "STOP"*/
 				//HAL_PWR_EnableWakeUpPin(SC12B_KEY_Pin);

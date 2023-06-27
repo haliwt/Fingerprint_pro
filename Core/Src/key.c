@@ -70,6 +70,11 @@ uint8_t Scan_Key(void)
 		key.read &= ~0x01; // 0x1f & 0xfe =  0x1E
 		POWER_ON();
 		BACKLIGHT_ON();
+		#if DEBUG
+
+			 printf("side_key\n");
+
+	   #endif 
 	}
 	
 	
@@ -96,7 +101,7 @@ uint8_t Scan_Key(void)
 
                 if(run_t.thefirst_side_key==0){
 					run_t.thefirst_side_key++;
-					if(++key.on_time> 10) //1000  0.5us -> short time key
+					if(++key.on_time> 0) //1000  0.5us -> short time key
 					{
 						key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
 						key.on_time = 0;
@@ -151,7 +156,7 @@ uint8_t Scan_Key(void)
                         BUZZER_OFF(); 
                         ERR_LED_OFF();
                         PS_Blue_Led_ON();
-                        HAL_Delay(200);
+                        HAL_Delay(20);
                        if(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==1){
                          buzzertimes=0;
                          return 0;
@@ -162,7 +167,7 @@ uint8_t Scan_Key(void)
                         buzzertimes=0;
                         Buzzer_ShortSound();
                         BUZZER_OFF(); 
-                        HAL_Delay(100);
+                        HAL_Delay(10);
                         Buzzer_ShortSound();
                         BUZZER_OFF(); //BUZZER_OFF(); 
                         run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
@@ -501,7 +506,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k0\n");
+	//	printf("k0\n");
 	  //  digital_numbers_run =1;
              
 	break;
@@ -511,7 +516,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k1\n");
+		//printf("k1\n");
 		// digital_numbers_run =1;
 	break;
 			
@@ -520,14 +525,14 @@ void RunCheck_Mode(uint16_t dat)
 	    run_t.getNumbers_key++;
 	    run_t.keyPressed_flag =1;
 		/// digital_numbers_run =1;
-	 	printf("k2\n");
+	 ///	printf("k2\n");
 	break;
 			
 	case  KEY_3:
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k3\n");
+	//	printf("k3\n");
 	// digital_numbers_run =1;
     break;
 			
@@ -536,7 +541,7 @@ void RunCheck_Mode(uint16_t dat)
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
 
-		printf("k4\n");
+	//	printf("k4\n");
 		//digital_numbers_run =1;
 	break;
 			
@@ -544,7 +549,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k5\n");
+	//	printf("k5\n");
 		// digital_numbers_run =1;
     break;
 			
@@ -553,7 +558,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k6\n");
+	//	printf("k6\n");
 	// digital_numbers_run =1;
     break;
 	
@@ -561,7 +566,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k7\n");
+	//	printf("k7\n");
 	// digital_numbers_run =1;
 	break;
 			
@@ -569,7 +574,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 		run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k8\n");
+	//	printf("k8\n");
 	   // digital_numbers_run =1;
 	break;
 
@@ -577,7 +582,7 @@ void RunCheck_Mode(uint16_t dat)
 		key=1;
 	    run_t.getNumbers_key++;
 		run_t.keyPressed_flag =1;
-		printf("k9\n");
+	//	printf("k9\n");
 		// digital_numbers_run =1;
 	break;
 
@@ -695,7 +700,7 @@ static void ReadDigital_Inputkey_Fun(void)
           }
 		else 
             pwd1[run_t.input_digital_key_number_counter-1] =read_digital_key;
-	 printf("readdigital_fun\n");
+	// printf("readdigital_fun\n");
 
 	}
 
@@ -717,12 +722,18 @@ void TouchKey_Handler(void)
 
 	      //  read_key_value=Read_SC12B_KEY();
 	       KeyValue =(uint16_t)(SC_Data[0]<<8) + SC_Data[1];
-		  // HAL_Delay(10);
+		   HAL_Delay(10);
 	       while(key_up==1 &&  KeyValue !=0){
 		   	    key_up=0;
-      
-		  
+          
+		        run_t.keyPressed_flag =1;
 		   		RunCheck_Mode(KeyValue); 
+				#if DEBUG
+
+			    printf("touch_key_in\n");
+
+			 #endif 
+               
 
 	      }
 		   

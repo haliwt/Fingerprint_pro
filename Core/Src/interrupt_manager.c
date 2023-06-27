@@ -8,6 +8,7 @@
 #include "usart.h"
 #include "cmd_link.h"
 
+
 /*******************************************************************************
     *
     * Function Name: void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -24,12 +25,12 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 	if(GPIO_Pin == SIDE_KEY_INPUT_Pin){
 
 
-	// __HAL_GPIO_EXTI_CLEAR_FALLING_IT(SIDE_KEY_INPUT_Pin); // 清除下降沿触发的中断标志位 // __HAL_GPIO_EXTI_CLEAR_IT(SIDE_KEY_INPUT_Pin);
+	__HAL_GPIO_EXTI_CLEAR_FALLING_IT(SIDE_KEY_INPUT_Pin); // 清除下降沿触发的中断标志位 // __HAL_GPIO_EXTI_CLEAR_IT(SIDE_KEY_INPUT_Pin);
 	
+     //  if(SIDE_KEY_INPUT_DETECT()  ==0){
 		if(run_t.lowPower_flag==0){
 			
 			SystemClock_Config();
-			__HAL_RCC_PWR_CLK_ENABLE();
 			HAL_ResumeTick();
             MX_GPIO_Init();
 			HAL_TIM_Base_Start_IT(&htim14);//
@@ -40,25 +41,32 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 			 run_t.gTimer_8s=0;
 			run_t.lowPower_flag++;
 			 run_t.keyPressed_flag =1;	
-			
-		}
-		else{
-		      POWER_ON();
-			  FP_POWER_ON()  ;
-			   run_t.keyPressed_flag =1;
-		    run_t.gTimer_8s=0;
-				 #if DEBUG
+			#if DEBUG
 
-			 printf("side_key\n");
+			 printf("side_key_interrupt\n");
 
 			 #endif 
-
-
+			
 		}
-	   	
+//		else{
+//		      POWER_ON();
+//			  FP_POWER_ON()  ;
+//			   run_t.keyPressed_flag =1;
+//		    run_t.gTimer_8s=0;
+//				 #if DEBUG
+//
+//			 printf("side_key\n");
+//
+//			 #endif 
+//
+//
+//		}
+       	}
 
-	}
 }
+
+
+
 
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
@@ -69,11 +77,12 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
    case SC12B_INT_INPUT_Pin:
 
-        
-        if(Read_SC12B_KEY()==1){ 
+
+         __HAL_GPIO_EXTI_CLEAR_IT(SC12B_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+       // if(Read_SC12B_KEY()==1){ 
         if(run_t.lowPower_flag==0){
 			SystemClock_Config();
-			__HAL_RCC_PWR_CLK_ENABLE();
+		
 			HAL_ResumeTick();
              MX_GPIO_Init();
 			HAL_TIM_Base_Start_IT(&htim14);//
@@ -86,31 +95,42 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 			run_t.inputDeepSleep_times =0;
 					   
 			run_t.lowPower_flag++;
-		}
-	    else{
-		   
-	       POWER_ON();
-	       FP_POWER_ON()  ;
-		   run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
-           run_t.keyPressed_flag =1;
-		   	 #if DEBUG
+            
 
-			 printf("pwd_key\n");
+             #if DEBUG
+
+			 printf("pwd_key_one\n");
 
 			 #endif 
-		   
-	      }
+		}
 
-        }
+ 
+//	    else{
+//		   
+//	       POWER_ON();
+//	       FP_POWER_ON()  ;
+//		   run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
+//           run_t.keyPressed_flag =1;
+//		   	 #if DEBUG
+//
+//			 printf("pwd_key\n");
+//
+//			 #endif 
+//		   
+//	      }
+
+        
 
    break;
 
-   case FP_INT_INPUT_Pin: //fingerprint //__HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
+   case FP_INT_INPUT_Pin: //fingerprint //
+
+   __HAL_GPIO_EXTI_CLEAR_IT(FP_INT_INPUT_Pin);//WT.EDIT 2022.09.09
     
-     if(FP_KEY_INPUT_DETECT() ==1){
+   //  if(FP_KEY_INPUT_DETECT() ==1){
 	 if(run_t.lowPower_flag==0){
 		SystemClock_Config();
-		__HAL_RCC_PWR_CLK_ENABLE();
+
 		HAL_ResumeTick();
          MX_GPIO_Init();
 		HAL_TIM_Base_Start_IT(&htim14);//
@@ -124,23 +144,28 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	   
 	    run_t.gTimer_8s=0;
 		run_t.inputDeepSleep_times =0;
+         #if DEBUG
+
+			 printf("fp_key_one\n");
+
+			 #endif 
 
 	      
       }
-	  else{
-	  	     run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
-			 POWER_ON();
-			 FP_POWER_ON()  ;
-			 BACKLIGHT_ON();
-			 #if DEBUG
-
-			 printf("fp_key\n");
-
-			 #endif 
-			
-			  
-		}
-     	}
+//	  else{
+//	  	     run_t.gTimer_8s=0;//WT.EDIT 2022.10.08
+//			 POWER_ON();
+//			 FP_POWER_ON()  ;
+//			 BACKLIGHT_ON();
+//			 #if DEBUG
+//
+//			 printf("fp_key\n");
+//
+//			 #endif 
+//			
+//			  
+//		}
+     	
        break;
 
    	}
@@ -166,6 +191,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM14){
 
 	   t0++;
+       run_t.gTimer_detected_side_key++;
       if(t0>99){ //10*100 =1000ms "1s"
 		t0=0;
         run_t.gTimer_8s++;

@@ -161,7 +161,7 @@ void CheckPassword_UnLock_Handler(void)
 
 	   case confirm_button_donot_pressed:
 	     if(run_t.factory_test == 0)
-		    TouchKey_Handler();//TouchKey_Handler();
+		   TouchKey_Handler();
 	   
 
        break;

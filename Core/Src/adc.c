@@ -189,7 +189,7 @@ uint16_t Get_Adc_Average(uint8_t times)
 
 void ADC_Detected_LowVoltage(void)
 {
-if(run_t.gTimer_ADC >6){
+if(run_t.gTimer_ADC >10 && run_t.keyPressed_flag ==0){
 	   
 	   run_t.gTimer_ADC=0;
 

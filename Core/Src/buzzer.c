@@ -23,7 +23,7 @@ static void Buzzer_Two_KeySound(void);
 void BUZZER_KeySound(void)
 {
   //unsigned int m=300;//80
-  unsigned int m=70;//100//80
+  unsigned int m=50;//60//100//80
 	while(m--){
 
     HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
@@ -291,7 +291,7 @@ void Buzzer_Sound_Handler(void)
 
 	 case buzzer_sound_null:
        sound_continuce=0;
-	 	   BUZZER_OFF() ;
+	 	   //BUZZER_OFF() ;
 
 	 break;
 

@@ -179,8 +179,7 @@ void RunMotor_Definite_Handler(void) //definite motor
 		  break;
 		  
 		  default:
-
-		  break;
+          break;
 	   }
  
 }

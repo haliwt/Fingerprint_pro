@@ -92,8 +92,7 @@ int main(void)
 
   /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */  HAL_Init();
 
   /* USER CODE BEGIN Init */
  
@@ -141,7 +140,8 @@ int main(void)
 	
         Start_PowerOn_Handler();
            
-        if(run_t.panel_lock==0 && run_t.factory_test ==0){
+       if(run_t.panel_lock==0 && run_t.factory_test ==0 && run_t.gTimer_detected_side_key > 2){
+             run_t.gTimer_detected_side_key=0;
              sidekey = Scan_Key();
              SideKey_Fun(sidekey);
         } 
@@ -152,7 +152,7 @@ int main(void)
 	   Buzzer_Sound_Handler();
   	 
        BackLight_Control_Handler();
-	   USART1_Cmd_Error_Handler(&huart1);
+	 //  USART1_Cmd_Error_Handler(&huart1);
 
 	  
 	}
