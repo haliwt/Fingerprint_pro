@@ -110,7 +110,7 @@ int main(void)
   delay_init(64);
   MX_GPIO_Init();
   MX_ADC1_Init();
- // MX_TIM3_Init();
+  MX_TIM3_Init();
   MX_TIM14_Init();
   AT24CXX_Init();
   MX_USART1_UART_Init();

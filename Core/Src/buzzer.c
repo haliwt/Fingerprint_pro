@@ -22,6 +22,13 @@ static void Buzzer_Two_KeySound(void);
 *****************************************************************/
 void BUZZER_KeySound(void)
 {
+
+    // HAL_TIM_Base_Start(&htim3);
+     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+     HAL_Delay(5);
+   // HAL_TIM_Base_Stop(TIM_HandleTypeDef *htim);
+
+  #if 0
   //unsigned int m=300;//80
   unsigned int m=50;//60//100//80
 	while(m--){
@@ -33,6 +40,7 @@ void BUZZER_KeySound(void)
        
 
   }
+  #endif 
 }
 
 /*****************************************************************
@@ -83,6 +91,10 @@ static void Buzzer_Two_KeySound(void)
 *****************************************************************/
 void Buzzer_LongSound(void)
 {
+
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+    HAL_Delay(500);
+    #if 0 
     unsigned int m=400;//400
 	while(m--){
 
@@ -91,6 +103,8 @@ void Buzzer_LongSound(void)
      delay_us(500);
      
     }
+
+    #endif 
 }
 /*****************************************************************
   *
@@ -292,6 +306,8 @@ void Buzzer_Sound_Handler(void)
 	 case buzzer_sound_null:
        sound_continuce=0;
 	 	   //BUZZER_OFF() ;
+	 	   // HAL_TIM_Base_Stop(&htim3);
+           HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_3);
 
 	 break;
 
