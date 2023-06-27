@@ -25,7 +25,7 @@ void BUZZER_KeySound(void)
 
     // HAL_TIM_Base_Start(&htim3);
      HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-     HAL_Delay(5);
+     HAL_Delay(40);
    // HAL_TIM_Base_Stop(TIM_HandleTypeDef *htim);
 
   #if 0
@@ -93,7 +93,7 @@ void Buzzer_LongSound(void)
 {
 
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-    HAL_Delay(500);
+    HAL_Delay(300);
     #if 0 
     unsigned int m=400;//400
 	while(m--){
@@ -116,6 +116,11 @@ void Buzzer_LongSound(void)
 *****************************************************************/
 void Buzzer_ShortSound(void)
 {
+
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+    HAL_Delay(20);
+
+   #if 0
     unsigned int m=50;//200
 	
 
@@ -128,6 +133,8 @@ void Buzzer_ShortSound(void)
 
 	 }
 
+    #endif 
+
 }
 /*****************************************************************
   *
@@ -139,7 +146,12 @@ void Buzzer_ShortSound(void)
 *****************************************************************/
 void Buzzer_ErrorSound(void)
 {
-	unsigned int m=200;//70//80//200
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+    HAL_Delay(50);
+
+
+    #if 0
+    unsigned int m=200;//70//80//200
   
 	while(m--){
 
@@ -149,7 +161,7 @@ void Buzzer_ErrorSound(void)
  
 
   }
-
+  #endif 
 
 }
 
@@ -163,24 +175,36 @@ void Buzzer_ErrorSound(void)
 *****************************************************************/
 void Buzzer_High_Sound(void)
 {
+
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+    HAL_Delay(400);
+
+    #if 0
      unsigned int m=50;//250
-	
-  
-      while(m--){
+	 while(m--){
           HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
           delay_us(600);//480
          
        }
+
+     #endif 
 }
 
 void Buzzer_High_Sound_2(void)
 {
+
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+    HAL_Delay(500);
+   #if 0
+
      unsigned int m=70;//40;//100
 
       while(m--){
           HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
           delay_us(700);//__delay_us(500);//delayUS(99);
        }
+
+    #endif 
 }
 
 
@@ -196,13 +220,16 @@ void Buzzer_High_Sound_2(void)
 void Buzzer_Fail_Sound(void)
 {
 	   Buzzer_ErrorSound();//Buzzer_ShortSound();//Buzzer_ReSound();//fail sound has two sound //WT.EDIT 2022.09.13
-		BUZZER_OFF();
-		HAL_Delay(100);
+	   HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_3);
+       HAL_Delay(50);
+		
 		Buzzer_ErrorSound();//Buzzer_ShortSound();//Buzzer_ReSound();//fail sound has two sound 
-		BUZZER_OFF();
-		HAL_Delay(100);
+	 HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_3);
+         HAL_Delay(50);
+		
 		Buzzer_ErrorSound();
-		BUZZER_OFF();
+	 HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_3);
+       HAL_Delay(50);
 
 
 
