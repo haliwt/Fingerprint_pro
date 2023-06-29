@@ -68,8 +68,7 @@ uint8_t Scan_Key(void)
    if(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==0 )
 	{
 		key.read &= ~0x01; // 0x1f & 0xfe =  0x1E
-		POWER_ON();
-		BACKLIGHT_ON();
+
 		#if DEBUG
 
 			 printf("side_key\n");
@@ -101,7 +100,7 @@ uint8_t Scan_Key(void)
 
                 if(run_t.thefirst_side_key==0){
 					run_t.thefirst_side_key++;
-					if(++key.on_time> 0) //1000  0.5us -> short time key
+					if(++key.on_time> 2) //1000  0.5us -> short time key
 					{
 						key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
 						key.on_time = 0;
@@ -112,7 +111,7 @@ uint8_t Scan_Key(void)
 
                 }
 				else{
-				if(++key.on_time> 50 && ++key.on_time < 100) //1000  0.5us -> short time key
+				if(++key.on_time> 1 && ++key.on_time < 100) //1000  0.5us -> short time key
 				{
 					key.value = key.buffer^_KEY_ALL_OFF; // key.value = 0x1E ^ 0x1f = 0x01, com = 0x0E ^ 0x1f = 0x11
 					key.on_time = 0;
@@ -135,14 +134,14 @@ uint8_t Scan_Key(void)
 			    if(run_t.thefirst_side_key==1){
 					
 
-				     if(++key.on_time>80 ){// 2000 = 7s long key be down
+				     if(++key.on_time>10 ){// 2000 = 7s long key be down
 				     
 					     run_t.thefirst_side_key++;
 
 				     }
 				}
 
-				if((++key.on_time>60  || run_t.thefirst_side_key==2) && run_t.thefirst_side_key!=1)// 2000 = 7s long key be down
+				if((++key.on_time>1  || run_t.thefirst_side_key==2) && run_t.thefirst_side_key!=1)// 2000 = 7s long key be down
 				{
 					
 					//key.value = key.value|0x80; //key.value = 0x01 | 0x80  =0x81  
@@ -153,10 +152,11 @@ uint8_t Scan_Key(void)
 						run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
 						run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         Buzzer_KeySound();
-                        BUZZER_OFF(); 
+                        Buzzer_Sound_Stop();
+            
                         ERR_LED_OFF();
                         PS_Blue_Led_ON();
-                        HAL_Delay(20);
+                       // HAL_Delay(20);
                        if(HAL_GPIO_ReadPin(SIDE_KEY_INPUT_GPIO_Port,SIDE_KEY_INPUT_Pin) ==1){
                          buzzertimes=0;
                          return 0;
@@ -166,10 +166,12 @@ uint8_t Scan_Key(void)
                     if(buzzertimes > 9){
                         buzzertimes=0;
                         Buzzer_ShortSound();
-                        BUZZER_OFF(); 
-                        HAL_Delay(10);
+                        Buzzer_Sound_Stop();
+                        
+                        HAL_Delay(300);
                         Buzzer_ShortSound();
-                        BUZZER_OFF(); //BUZZER_OFF(); 
+                        Buzzer_Sound_Stop();
+                       
                         run_t.gTimer_8s=0;//WT.EDIT 2022.10.26
                         run_t.inputDeepSleep_times =0; //WT.EDIT 2022.10.26
                         ERR_LED_OFF();
@@ -197,6 +199,11 @@ uint8_t Scan_Key(void)
 			
 			reval = key.value; // is short time  TIMER_KEY = 0x01  2. long times TIMER_KEY = 0X81
 			key.state   = end;
+            #if DEBUG
+
+			 printf("side_key= %d \n",reval);
+
+	        #endif 
          
 			break;
 		}
@@ -261,6 +268,12 @@ void  SideKey_Fun(uint8_t keyvalue)
 		BACKLIGHT_ON();   
 		OK_LED_OFF();//WT.EDIT .2022.10.31
 		ERR_LED_OFF();
+
+        #if DEBUG
+
+        printf("side run process\n");
+
+        #endif 
 		
 	 
        }
@@ -451,6 +464,7 @@ void RunCheck_Mode(uint16_t dat)
 					//Confirm Key "#"
 					run_t.input_digital_key_number_counter =0 ;
 					//run_t.buzzer_two_short = 2;
+					//sound buzzer
 					run_t.buzzer_sound_tag = two_short_two_sound;
 				
                     run_t.input_digital_key_number_counter=0;
@@ -463,10 +477,10 @@ void RunCheck_Mode(uint16_t dat)
 					case 2:
 					//Confirm Key "#"
 				
-                   // run_t.input_digital_key_number_counter=0;
+                 
 			
 					run_t.confirm_button_flag=confirm_button_save_new_password;
-				    //run_t.new_pwd_save_data_tag = NEW_PWD_SAVE_DATA_TO_EEPROM;
+				 
 					run_t.inputDeepSleep_times =0;
 					run_t.gTimer_8s=0;
 
@@ -687,15 +701,26 @@ static void ReadDigital_Inputkey_Fun(void)
 	
 	if(run_t.input_digital_key_number_counter < 7){//run_t.inputNewPasswordTimes
 
-		if(run_t.inputNewPasswordTimes ==0 && run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.14
+		//if(run_t.inputNewPasswordTimes ==0 && run_t.inputNewPassword_Enable ==1){
+        
+        if( run_t.inputNewPassword_Enable ==1){//WT.EDIT 2022.10.14
             read_numbers = OverNumbers_Password_Handler();
             if(read_numbers==1){
 	            run_t.confirm_button_flag= confirm_button_over_numbers; //over times ten group numbers password
 	            run_t.input_digital_key_number_counter =0;
+                #if DEBUG
+                   printf("over 10 new pwd \n");
+
+                #endif 
             }
             else{
                 run_t.new_password_the_first_numbers = run_t.input_digital_key_number_counter;
                 pwd2[run_t.input_digital_key_number_counter-1]=read_digital_key; //the first input new password .
+                #if DEBUG
+                        printf("not_over 10 new pwd \n");
+            
+               #endif 
+
             }
           }
 		else 

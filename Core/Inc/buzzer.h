@@ -33,6 +33,7 @@ void Buzzer_LongSound(void);
 void Buzzer_Fail_Sound(void);
 void Buzzer_Fail_Sound(void);
 void Buzzer_Sound_Handler(void);
+void Buzzer_Sound_Stop(void);
 
 
 

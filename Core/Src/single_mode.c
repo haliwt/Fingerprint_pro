@@ -58,7 +58,8 @@ void Start_PowerOn_Handler(void)
 			BACKLIGHT_ON();
 			OK_LED_OFF();
 			ERR_LED_OFF();
-			BUZZER_KeySound();//WT.EDIT 2022.09.12
+			Buzzer_KeySound();//WT.EDIT 2022.09.12
+			Buzzer_Sound_Stop();
 		           
 		} 
 	 }
@@ -267,6 +268,7 @@ static void Over_Input_MaxDigital_Fun(void)
 	run_t.clear_inputNumbers_newpassword=0;
 
     run_t.backlight_label = BACKLIGHT_ERROR_BLINK;
+    run_t.keyPressed_flag =0;
 	run_t.confirm_button_flag=confirm_button_donot_pressed  ; 
 
 

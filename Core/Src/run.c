@@ -30,6 +30,9 @@ uint8_t default_read;
 
 uint8_t default_read_value;
 
+uint8_t   read_over_ten_numbers_flag;
+
+
 
 
 
@@ -183,7 +186,7 @@ void SavePassword_To_EEPROM(void)
     static uint8_t eeNumbers,i;
    static uint8_t initvalue =0x01;
    run_t.gTimer_8s=0;
-  for(eeNumbers =0; eeNumbers< 10;eeNumbers++){// password is ten numbers
+  for(eeNumbers =0; eeNumbers< 11;eeNumbers++){// password is ten numbers
       
 	  switch(eeNumbers){	  
 		   case 0:
@@ -233,13 +236,50 @@ void SavePassword_To_EEPROM(void)
 			run_t.userId = USER_9; 
 				
 			break;
+           
+           case 10:
+               
+               //error
+				run_t.inputNewPasswordTimes =0;
+				run_t.Confirm_newPassword =0; 
+			    run_t.inputNewPassword_Enable =0; 
+				run_t.input_digital_key_number_counter =0 ;
+
+				run_t.password_unlock=UNLOCK_NULL;
+				//run_t.new_pwd_save_data_tag = UNLOCK_NULL;
+				run_t.confirm_button_flag=confirm_button_donot_pressed;
+                 
+      
+				//run_t.fail_sound_flag=1;
+				run_t.buzzer_sound_tag = fail_sound;
+				//run_t.buzzer_longsound_flag =0;
+			
+				run_t.inputDeepSleep_times =0;
+		
+				run_t.clear_inputNumbers_newpassword=0;
+
+	
+				run_t.gTimer_8s=3;//WT.EDIT 2023.02.11
+			
+				run_t.backlight_label = BACKLIGHT_ERROR_BLINK;
+				for(i=0;i<6;i++){
+				   pwd1[i]=0;
+				   pwd2[i]=0;
+				   virtualPwd[i]=0;
+				}
+                #if DEBUG
+                 printf("over ten new pwd \n");
+
+                #endif 
+				return ;
+           break;
 
 
 
 		  }
 
         EEPROM_Read_Byte(run_t.userId,&run_t.readEepromData,1);
-		HAL_Delay(1);
+		//HAL_Delay(1);
 		if(run_t.readEepromData ==0){//if(run_t.readEepromData !=1){
 
 		     if(run_t.new_password_the_first_numbers ==run_t.input_digital_key_number_counter){
@@ -249,9 +289,9 @@ void SavePassword_To_EEPROM(void)
 			 if(compare_value ==1){ //be save data to eeprom flag 
 		 	     
 		        EEPROM_Write_Byte(run_t.userId ,&initvalue,1);//EEPROM_Write_Byte(run_t.userId ,&initvalue,1); //physical_length
-				 HAL_Delay(5);
+				// HAL_Delay(5);
 				 EEPROM_Write_Byte(run_t.userId + 0x01,pwd1,run_t.input_digital_key_number_counter);
-				 HAL_Delay(5);
+				// HAL_Delay(5);
 			 
 	           
 				//clear data reference 
@@ -845,28 +885,28 @@ unsigned char  InputNumber_ToSpecialNumbers(TouchKey_Numbers number)
 *Function Name:void OverNumbers_Password_Handler(void)
 *Function : run is main 
 *Input Ref: NO
-*Retrun Ref:NO
+*Retrun Ref: 1-> over ten numbers new password
 *
 ****************************************************************************/
 uint8_t OverNumbers_Password_Handler(void)
 {
      uint32_t    ReadAddress; 
-     uint8_t   read_flag;
+     
 
 	ReadAddress = USER_9;
-	EEPROM_Read_Byte(ReadAddress,readFlag,0x01);
+	EEPROM_Read_Byte(ReadAddress,&read_over_ten_numbers_flag,0x01);
 
 
 	if(readFlag[0] ==1){ //over ten numbers password
 		
-		read_flag = 1;
+		read_over_ten_numbers_flag = 1;
 	}
 	else{
 	   
-	   read_flag = 0;
+	   read_over_ten_numbers_flag = 0;
 	}
 
-	return read_flag;
+	return read_over_ten_numbers_flag;
 
 
 }

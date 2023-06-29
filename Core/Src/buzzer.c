@@ -14,38 +14,7 @@ static void Buzzer_Two_KeySound(void);
 
 /*****************************************************************
   *
-  *Function Name: void BUZZER_KeySound(void)
-  *Function: Key be pressed carry out sound
-  *Input Ref:NO
-  *Return Ref:NO
-  *
-*****************************************************************/
-void BUZZER_KeySound(void)
-{
-
-    // HAL_TIM_Base_Start(&htim3);
-     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-     HAL_Delay(40);
-   // HAL_TIM_Base_Stop(TIM_HandleTypeDef *htim);
-
-  #if 0
-  //unsigned int m=300;//80
-  unsigned int m=50;//60//100//80
-	while(m--){
-
-    HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-    //delay_us(600);
-    delay_us(500);//460//__delay_us(300);;//__delay_us(800);//delayUS(300);
-   
-       
-
-  }
-  #endif 
-}
-
-/*****************************************************************
-  *
-  *Function Name: void BUZZER_KeySound(void)
+  *Function Name: void Buzzer_KeySound(void)
   *Function: Key be pressed carry out sound
   *Input Ref:NO
   *Return Ref:NO
@@ -53,37 +22,32 @@ void BUZZER_KeySound(void)
 *****************************************************************/
 void Buzzer_KeySound(void)
 {
-  //unsigned int m=300;//80
-  unsigned int m=70;//100//80
-	while(m--){
 
-    HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-    //delay_us(600);
-    delay_us(500);//460//__delay_us(300);;//__delay_us(800);//delayUS(300);
-   
-       
-
-  }
-}
-
-static void Buzzer_Two_KeySound(void)
-{
-  //unsigned int m=300;//80
-  unsigned int m=90;//100//80
-	while(m--){
-
-    HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-    //delay_us(600);
-    delay_us(600);//460//__delay_us(300);;//__delay_us(800);//delayUS(300);
-   
-       
-
-  }
+    // HAL_TIM_Base_Start(&htim3);
+     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+     HAL_Delay(40);
+  
 }
 
 /*****************************************************************
   *
-  *Function Name: void BUZZER_KeySound(void)
+  *Function Name: void Buzzer_KeySound(void)
+  *Function: Key be pressed carry out sound
+  *Input Ref:NO
+  *Return Ref:NO
+  *
+*****************************************************************/
+static void Buzzer_Two_KeySound(void)
+{
+    HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+    HAL_Delay(60);
+
+
+}
+
+/*****************************************************************
+  *
+  *Function Name: void Buzzer_KeySound(void)
   *Function: Key be pressed carry out sound
   *Input Ref:NO
   *Return Ref:NO
@@ -93,18 +57,8 @@ void Buzzer_LongSound(void)
 {
 
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-    HAL_Delay(300);
-    #if 0 
-    unsigned int m=400;//400
-	while(m--){
-
-	   HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-	 //delay_us(600);//(600)__delay_us(300);//delayUS(600);
-     delay_us(500);
-     
-    }
-
-    #endif 
+    HAL_Delay(500);
+  
 }
 /*****************************************************************
   *
@@ -120,20 +74,6 @@ void Buzzer_ShortSound(void)
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
     HAL_Delay(20);
 
-   #if 0
-    unsigned int m=50;//200
-	
-
-	 while(m--){
-
-	   HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-	  delay_us(500);//460
-
-
-
-	 }
-
-    #endif 
 
 }
 /*****************************************************************
@@ -149,20 +89,6 @@ void Buzzer_ErrorSound(void)
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
     HAL_Delay(50);
 
-
-    #if 0
-    unsigned int m=200;//70//80//200
-  
-	while(m--){
-
-  	HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-  //delay_us(600);
-     delay_us(500);  
- 
-
-  }
-  #endif 
-
 }
 
 /*****************************************************************
@@ -177,34 +103,17 @@ void Buzzer_High_Sound(void)
 {
 
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-    HAL_Delay(400);
+    HAL_Delay(30);
 
-    #if 0
-     unsigned int m=50;//250
-	 while(m--){
-          HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-          delay_us(600);//480
-         
-       }
-
-     #endif 
+   
 }
 
 void Buzzer_High_Sound_2(void)
 {
 
     HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
-    HAL_Delay(500);
-   #if 0
-
-     unsigned int m=70;//40;//100
-
-      while(m--){
-          HAL_GPIO_TogglePin(BEEP_GPIO_Port,BEEP_GPIO_Pin);//BEEP=!BEEP;
-          delay_us(700);//__delay_us(500);//delayUS(99);
-       }
-
-    #endif 
+    HAL_Delay(40);
+  
 }
 
 
@@ -235,23 +144,12 @@ void Buzzer_Fail_Sound(void)
 
 }
 
+void Buzzer_Sound_Stop(void)
+{
+   HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_3);
 
 
-
-//static void Fail_Buzzer_Sound(void)
-//{
-//
-//	Buzzer_ErrorSound();//Buzzer_ShortSound();//Buzzer_ReSound();//fail sound has two sound //WT.EDIT 2022.09.13
-//    BUZZER_OFF();
-//	HAL_Delay(100);
-//	Buzzer_ErrorSound();//Buzzer_ShortSound();//Buzzer_ReSound();//fail sound has two sound 
-//	BUZZER_OFF();
-//    HAL_Delay(100);
-//	Buzzer_ErrorSound();
-//	BUZZER_OFF();
-//	//HAL_Delay(50);
-//
-//}
+}
 /****************************************************************************
 *
 *Function Name:void Buzzer_Sound_Handler(void)
@@ -269,7 +167,7 @@ void Buzzer_Sound_Handler(void)
 	   case key_sound:
 	   	    if(sound_continuce==0){
                 sound_continuce++;
-                BUZZER_KeySound();
+                Buzzer_KeySound();
               
                 
             }
@@ -287,8 +185,10 @@ void Buzzer_Sound_Handler(void)
 	   case two_short_two_sound://run_t.buzzer_two_short ==2
         
 	          Buzzer_Two_KeySound();//Buzzer_ShortSound(); //WT.EDIT 2022.09.13
-			  HAL_Delay(200);
+	          Buzzer_Sound_Stop();
+			  HAL_Delay(100);
 			  Buzzer_Two_KeySound();
+              Buzzer_Sound_Stop();
           	
 		 run_t.buzzer_sound_tag = buzzer_sound_null;
 			
@@ -296,11 +196,13 @@ void Buzzer_Sound_Handler(void)
 	  break;
 	  
 
-	  case high_sound://run_t.buzzer_highsound_flag==1
+	  case high_sound://run_t.buzzer_highsound_flag==1,one times new password confirm
 
          Buzzer_High_Sound();
+         Buzzer_Sound_Stop();
 	     HAL_Delay(100);
 		 Buzzer_High_Sound_2();
+         Buzzer_Sound_Stop();
 			
 		 run_t.buzzer_sound_tag = buzzer_sound_null;
 	 break;
@@ -331,10 +233,9 @@ void Buzzer_Sound_Handler(void)
 	 break;
 
 	 case buzzer_sound_null:
-       sound_continuce=0;
-	 	   //BUZZER_OFF() ;
-	 	   // HAL_TIM_Base_Stop(&htim3);
-           HAL_TIM_PWM_Stop(&htim3,TIM_CHANNEL_3);
+        sound_continuce=0;
+        Buzzer_Sound_Stop();
+	 	   
 
 	 break;
 

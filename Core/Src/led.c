@@ -699,13 +699,14 @@ void BackLight_Control_Handler(void)
 		if(run_t.gTimer_input_error_times_60s > 59){
 			run_t.factory_test =0;
 			run_t.gTimer_8s=10;
-			  BACKLIGHT_OFF();
-			  OK_LED_OFF();
-			  ERR_LED_OFF();
-			  BAT_LED_OFF();
-	          run_t.backlight_label =BACKLIGHT_AT_ONCE_OFF;
-		}
-	
+            if(run_t.keyPressed_flag ==0){
+    			  BACKLIGHT_OFF();
+    			  OK_LED_OFF();
+    			  ERR_LED_OFF();
+    			  BAT_LED_OFF();
+    	          run_t.backlight_label =BACKLIGHT_AT_ONCE_OFF;
+    		}
+        }
 	    break;
 
 		case BACKLIGHT_INPUT_STOP_MODEL: //8
@@ -734,17 +735,17 @@ void BackLight_Control_Handler(void)
 					*(pwd1+i)=0;//pwd1[i]=0;
 
 			}
-			  POWER_OFF();
-			  Panel_LED_Off();
-			  HAL_ADC_Stop(&hadc1);
-		     
-
-              if(run_t.inputDeepSleep_times > 19){  //wait 30s  
+            
+              if(run_t.inputDeepSleep_times > 19 ){  //wait 30s  
 			   run_t.inputDeepSleep_times =0;
-               
-               PWR_Enter_Stop();
-			   
-		  }
+
+              if(run_t.keyPressed_flag ==0){
+    			  POWER_OFF();
+    			  Panel_LED_Off();
+    			  HAL_ADC_Stop(&hadc1);
+    		      PWR_Enter_Stop();
+              } 
+		      }
 		  break;
 		}
 		//ClearEEPROM_Data_Fun();
