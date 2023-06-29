@@ -191,7 +191,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(htim->Instance==TIM14){
 
 	   t0++;
-       run_t.gTimer_detected_side_key++;
       if(t0>99){ //10*100 =1000ms "1s"
 		t0=0;
         run_t.gTimer_8s++;

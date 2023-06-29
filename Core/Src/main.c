@@ -141,7 +141,7 @@ int main(void)
         Start_PowerOn_Handler();
            
        if(run_t.panel_lock==0 && run_t.factory_test ==0){
-             run_t.gTimer_detected_side_key=0;
+          
              sidekey = Scan_Key();
              SideKey_Fun(sidekey);
         } 

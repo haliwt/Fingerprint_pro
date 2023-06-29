@@ -80,7 +80,7 @@ typedef struct __RUN_T{
 	uint8_t thefirst_side_key;
 
     //key
-    uint8_t gTimer_detected_side_key;
+   
 
 	//usart
 	 uint8_t gTimer_usart_error ;

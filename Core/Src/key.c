@@ -33,7 +33,7 @@ uint8_t read_key_value;
 uint8_t key_up =1 ;
 
 
-static void ReadDigital_Inputkey_Fun(void);
+static void ReadDigital_Key_Numbers_Inputkey_Fun(void);
 static void Input_NewPwd_Digital_Fun(uint16_t dat);
 /*******************************************************************************
     *
@@ -46,7 +46,7 @@ static void Input_NewPwd_Digital_Fun(uint16_t dat);
 void KeyFiles_Init(void)
 {
 
-	ReadInput_KeyNumber_Handler(ReadDigital_Inputkey_Fun);
+	ReadInput_KeyNumber_Handler(ReadDigital_Key_Numbers_Inputkey_Fun);
 	Input_NewPwd_Digital_Handler(Input_NewPwd_Digital_Fun);
 
 
@@ -688,13 +688,13 @@ static void Input_NewPwd_Digital_Fun(uint16_t dat)
 }
 /********************************************************************
 	*
-	*Function Name: static void ReadDigital_Inputkey_Fun(void)
+	*Function Name: static void ReadDigital_Key_Numbers_Inputkey_Fun(void)
 	*Function : read touch key input digital numbers
 	*
 	*
 	*
 ********************************************************************/
-static void ReadDigital_Inputkey_Fun(void)
+static void ReadDigital_Key_Numbers_Inputkey_Fun(void)
 {
     uint8_t read_numbers;
    
