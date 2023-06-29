@@ -897,15 +897,6 @@ uint8_t OverNumbers_Password_Handler(void)
 	EEPROM_Read_Byte(ReadAddress,&read_over_ten_numbers_flag,0x01);
 
 
-	if(readFlag[0] ==1){ //over ten numbers password
-		
-		read_over_ten_numbers_flag = 1;
-	}
-	else{
-	   
-	   read_over_ten_numbers_flag = 0;
-	}
-
 	return read_over_ten_numbers_flag;
 
 
